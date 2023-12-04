@@ -14,6 +14,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // if (localStorage.getItem('theme')){
+  //   if (localStorage.getItem('theme') === 'dark'){
+  //     document.body.classList.add('dark');
+  //   }else{
+  //     document.body.classList.remove('dark');
+  //   }
+  // }else{
+  //   localStorage.setItem('theme', 'light');
+  // }
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>
