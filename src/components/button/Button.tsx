@@ -6,13 +6,13 @@ interface ButtonProps {
     classNames?: string,
 }
 
-let colorConfig = 'bg-cyan-400 text-white hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400';
+let colorConfig = 'bg-custom-blue text-white hover:bg-custom-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400';
 
 
 const Button = ({children, colorType, classNames}: ButtonProps) => {
     switch (colorType) {
         case 'primary':
-           colorConfig = 'bg-cyan-400 text-white hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400';
+           colorConfig = 'bg-custom-blue text-white hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400';
             break;
         case 'secondary':
             colorConfig = 'bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50';

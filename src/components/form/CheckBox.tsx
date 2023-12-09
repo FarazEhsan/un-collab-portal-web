@@ -26,7 +26,7 @@ export default function CheckBox({name, label, subtitle, data:elements, onChange
                                     checked={element?.checked}
                                     type="checkbox"
                                     onChange={onChange}
-                                    className="h-4 w-4 rounded border-gray-300 text-cyan-400 focus:ring-cyan-400"
+                                    className="h-4 w-4 rounded border-gray-300 text-custom-teal focus:ring-custom-teal"
                                 />
                             </div>
                             <div className="ml-3 text-sm leading-6">

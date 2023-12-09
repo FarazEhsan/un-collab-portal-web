@@ -44,7 +44,7 @@ export default function Input (
                     className={classNames(error ?
                             'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500'
                             :
-                            'text-gray-900 ring-gray-300 placeholder:text-gray-300 focus:ring-cyan-500',
+                            'text-gray-900 ring-gray-300 placeholder:text-gray-300 focus:ring-custom-teal',
                         'block w-full rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6')}
                     placeholder={placeholder}
                     value={value}

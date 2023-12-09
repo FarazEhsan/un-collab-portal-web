@@ -26,7 +26,7 @@ export default function Radio({name, label, subtitle, defaultChecked, data:eleme
                                 type="radio"
                                 defaultChecked={element?.id === defaultChecked}
                                 onChange={onChange}
-                                className="h-4 w-4 border-gray-300 text-cyan-400 focus:ring-cyan-400"
+                                className="h-4 w-4 border-gray-300 text-custom-teal focus:ring-custom-teal"
                             />
                             <label htmlFor={element?.id} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
                                 {element?.title ? element?.title : element?.name}
