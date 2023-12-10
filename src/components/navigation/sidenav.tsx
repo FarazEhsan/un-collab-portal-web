@@ -18,10 +18,11 @@ import {ChevronDownIcon, MagnifyingGlassIcon} from "@heroicons/react/20/solid";
 import Button from "@/components/button/Button";
 import TwoColumnContainer from "@/components/navigation/twoColumnContainer";
 import {useTheme} from "next-themes";
+import Link from "next/link";
 
 const userNavigation = [
-    {name: 'Your profile', href: '#'},
-    {name: 'Sign out', href: '#'},
+    {name: 'Your profile', href: '/profile'},
+    {name: 'Sign out', href: '/'},
 ]
 
 const navigation = [
@@ -355,7 +356,7 @@ export default function SideNav({children}: SideNavProps) {
                                             {userNavigation.map((item) => (
                                                 <Menu.Item key={item.name}>
                                                     {({active}) => (
-                                                        <a
+                                                        <Link
                                                             href={item.href}
                                                             className={classNames(
                                                                 active ? 'bg-gray-50 dark:bg-gray-700' : '',
@@ -363,7 +364,7 @@ export default function SideNav({children}: SideNavProps) {
                                                             )}
                                                         >
                                                             {item.name}
-                                                        </a>
+                                                        </Link>
                                                     )}
                                                 </Menu.Item>
                                             ))}
