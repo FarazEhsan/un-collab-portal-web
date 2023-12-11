@@ -4,6 +4,12 @@ import {ApolloClient, gql, InMemoryCache} from "@apollo/client";
 import SingleColumnContainer
     from '@/components/navigation/singleColumnContainer';
 import CardSkeleton from "@/components/skeletons/card-skeleton";
+import ListSkeleton from "@/components/skeletons/list-skeleton";
+import DefaultSkeleton from "@/components/skeletons/default-skeleton";
+import Button from "@/components/button/Button";
+import Input from "@/components/form/Input";
+import TextArea from "@/components/form/TextArea";
+import Radio from "@/components/form/Radio";
 
 export default function Home() {
     const RadioData = [
@@ -83,6 +89,8 @@ export default function Home() {
             {/*    </div>*/}
             {/*</div>*/}
             <CardSkeleton/>
+            {/*<ListSkeleton/>*/}
+            {/*<DefaultSkeleton/>*/}
         </SingleColumnContainer>
     )
 }
