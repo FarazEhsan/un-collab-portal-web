@@ -1,7 +1,9 @@
-import Image from 'next/image'
+import LoginPage from "@/app/login/page";
 
 export default function Home() {
-  return (
-    <h1>Application root page</h1>
-  )
+    return (
+        <>
+        <LoginPage/>
+        </>
+    )
 }
