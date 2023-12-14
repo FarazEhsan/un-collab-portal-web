@@ -89,8 +89,8 @@ export default function Home() {
             {/*    </div>*/}
             {/*</div>*/}
             <CardSkeleton/>
-            {/*<ListSkeleton/>*/}
-            {/*<DefaultSkeleton/>*/}
+            <ListSkeleton/>
+            <DefaultSkeleton/>
         </SingleColumnContainer>
     )
 }
