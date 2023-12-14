@@ -19,6 +19,7 @@ import Button from "@/components/button/Button";
 import TwoColumnContainer from "@/components/navigation/twoColumnContainer";
 import {useTheme} from "next-themes";
 import Link from "next/link";
+import UN_Habitat_Logo from '../../../public/UN-Habitat_logo_English.png'
 
 const userNavigation = [
     {name: 'Your profile', href: '/profile'},
@@ -26,7 +27,7 @@ const userNavigation = [
 ]
 
 const navigation = [
-    {name: 'Dashboard', href: '#', icon: HomeIcon, current: true},
+    {name: 'Dashboard', href: '/home', icon: HomeIcon, current: true},
     {name: 'Team', href: '#', icon: UsersIcon, current: false},
     {name: 'Projects', href: '#', icon: FolderIcon, current: false},
     {name: 'Calendar', href: '#', icon: CalendarIcon, current: false},
@@ -116,7 +117,7 @@ export default function SideNav({children}: SideNavProps) {
                                                         className="-mx-2 space-y-1">
                                                         {navigation.map((item) => (
                                                             <li key={item.name}>
-                                                                <a
+                                                                <Link
                                                                     href={item.href}
                                                                     className={classNames(
                                                                         item.current
@@ -133,7 +134,7 @@ export default function SideNav({children}: SideNavProps) {
                                                                         aria-hidden="true"
                                                                     />
                                                                     {item.name}
-                                                                </a>
+                                                                </Link>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -183,10 +184,10 @@ export default function SideNav({children}: SideNavProps) {
                     {/* Sidebar component, swap this element with another sidebar if you like */}
                     <div
                         className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 dark:bg-gray-900 dark:border-gray-700">
-                        <div className="flex h-16 shrink-0 items-center">
+                        <div className="flex h-20 shrink-0 items-center">
                             <img
-                                className="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                                className="h-14 w-auto"
+                                src={UN_Habitat_Logo.src}
                                 alt="Your Company"
                             />
                         </div>
@@ -197,7 +198,7 @@ export default function SideNav({children}: SideNavProps) {
                                     <ul role="list" className="-mx-2 space-y-1">
                                         {navigation.map((item) => (
                                             <li key={item.name}>
-                                                <a
+                                                <Link
                                                     href={item.href}
                                                     className={classNames(
                                                         item.current
@@ -214,7 +215,7 @@ export default function SideNav({children}: SideNavProps) {
                                                         aria-hidden="true"
                                                     />
                                                     {item.name}
-                                                </a>
+                                                </Link>
                                             </li>
                                         ))}
                                     </ul>

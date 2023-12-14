@@ -6,39 +6,40 @@ const ProfilePage = () => {
         <SingleColumnContainer>
             <div className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
                 <div>
-                    <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">Profile
-                                                                                                       Picture</h2>
-                    <p className="mt-1 text-sm leading-6 text-gray-500 ">
-                        Your profile picture will be displayed publicly.
-                    </p>
-                    <div className="mt-4">
+                    <div className="flex flex-col items-center">
                         <img
                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                             alt=""
                             className="h-32 w-32 flex-none rounded-full bg-white dark:bg-gray-800 object-cover"
                         />
+                        <h2 className="mt-4 text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
+                            Tom Cook
+                        </h2>
+                        <p
+                            className="text-gray-900 dark:text-gray-100">He/Him
+                        </p>
                     </div>
                 </div>
                 <div>
-                    <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
+                <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
                         Personal Info
                     </h2>
                     <p className="mt-1 text-sm leading-6 text-gray-500 ">
                         This information will be displayed publicly so be careful what you share.
                     </p>
                     <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Name</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">Tom</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Surname</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">Cook</div>
-                            </dd>
-                        </div>
+                        {/*<div className="pt-6 sm:flex">*/}
+                        {/*    <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Name</dt>*/}
+                        {/*    <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                        {/*        <div className="text-gray-900 dark:text-gray-100">Tom</div>*/}
+                        {/*    </dd>*/}
+                        {/*</div>*/}
+                        {/*<div className="pt-6 sm:flex">*/}
+                        {/*    <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Surname</dt>*/}
+                        {/*    <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                        {/*        <div className="text-gray-900 dark:text-gray-100">Cook</div>*/}
+                        {/*    </dd>*/}
+                        {/*</div>*/}
                         <div className="pt-6 sm:flex">
                             <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">City</dt>
                             <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
@@ -57,12 +58,12 @@ const ProfilePage = () => {
                                 <div className="text-gray-900 dark:text-gray-100">50</div>
                             </dd>
                         </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Pronouns</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">Him/He</div>
-                            </dd>
-                        </div>
+                        {/*<div className="pt-6 sm:flex">*/}
+                        {/*    <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Pronouns</dt>*/}
+                        {/*    <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                        {/*        <div className="text-gray-900 dark:text-gray-100">Him/He</div>*/}
+                        {/*    </dd>*/}
+                        {/*</div>*/}
                     </dl>
                 </div>
                 <div>
