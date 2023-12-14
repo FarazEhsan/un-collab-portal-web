@@ -23,7 +23,7 @@ import UN_Habitat_Logo from '../../../public/UN-Habitat_logo_English.png'
 
 const userNavigation = [
     {name: 'Your profile', href: '/profile'},
-    {name: 'Sign out', href: '/'},
+    {name: 'Sign out', href: '/api/auth/logout'},
 ]
 
 const navigation = [
