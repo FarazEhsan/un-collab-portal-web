@@ -3,7 +3,7 @@ import LoginPage from "@/app/login/page";
 export default function Home() {
     return (
         <>
-        <LoginPage/>
+        <h1>Home  <a href="/api/auth/logout">Logout</a></h1>
         </>
     )
 }
