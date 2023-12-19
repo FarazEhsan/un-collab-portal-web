@@ -28,7 +28,7 @@ import UN_Habitat_Logo from "../../../public/UN-Habitat_logo_English.png";
 export type NavItem = {
   name: string;
   href: string;
-  icon: string;
+  icon: any;
   current: boolean;
 };
 const userNavigation = [
