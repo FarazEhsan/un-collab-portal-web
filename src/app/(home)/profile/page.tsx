@@ -1,6 +1,7 @@
 import React from 'react';
 import SingleColumnContainer from "@/components/navigation/singleColumnContainer";
 import RoundButton from "@/components/button/round-button";
+import ProjectCard from "@/components/cards/project-card";
 
 const ProfilePage = () => {
     return (
@@ -158,46 +159,46 @@ const ProfilePage = () => {
                         </div>
                     </dl>
                 </div>
-                <div>
-                    <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
-                        Social media Accounts
-                    </h2>
-                    <p className="mt-1 text-sm leading-6 text-gray-500 ">
-                        This information will be displayed publicly so be careful what you share.
-                    </p>
-                    <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Linkedin</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">linkedin.com/tom-cook</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Facebook</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">facebook.com/tom-cook</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Instagram</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">instagram.com/tom-cook</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">X</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">x.com/tom-cook</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">TikTok</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">N/A</div>
-                            </dd>
-                        </div>
-                    </dl>
-                </div>
+                {/*<div>*/}
+                {/*    <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">*/}
+                {/*        Social media Accounts*/}
+                {/*    </h2>*/}
+                {/*    <p className="mt-1 text-sm leading-6 text-gray-500 ">*/}
+                {/*        This information will be displayed publicly so be careful what you share.*/}
+                {/*    </p>*/}
+                {/*    <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">*/}
+                {/*        <div className="pt-6 sm:flex">*/}
+                {/*            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Linkedin</dt>*/}
+                {/*            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                {/*                <div className="text-gray-900 dark:text-gray-100">linkedin.com/tom-cook</div>*/}
+                {/*            </dd>*/}
+                {/*        </div>*/}
+                {/*        <div className="pt-6 sm:flex">*/}
+                {/*            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Facebook</dt>*/}
+                {/*            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                {/*                <div className="text-gray-900 dark:text-gray-100">facebook.com/tom-cook</div>*/}
+                {/*            </dd>*/}
+                {/*        </div>*/}
+                {/*        <div className="pt-6 sm:flex">*/}
+                {/*            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Instagram</dt>*/}
+                {/*            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                {/*                <div className="text-gray-900 dark:text-gray-100">instagram.com/tom-cook</div>*/}
+                {/*            </dd>*/}
+                {/*        </div>*/}
+                {/*        <div className="pt-6 sm:flex">*/}
+                {/*            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">X</dt>*/}
+                {/*            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                {/*                <div className="text-gray-900 dark:text-gray-100">x.com/tom-cook</div>*/}
+                {/*            </dd>*/}
+                {/*        </div>*/}
+                {/*        <div className="pt-6 sm:flex">*/}
+                {/*            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">TikTok</dt>*/}
+                {/*            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                {/*                <div className="text-gray-900 dark:text-gray-100">N/A</div>*/}
+                {/*            </dd>*/}
+                {/*        </div>*/}
+                {/*    </dl>*/}
+                {/*</div>*/}
                 <div>
                     <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
                         Groups
@@ -223,62 +224,69 @@ const ProfilePage = () => {
                         Highlights
                     </h2>
                     <p className="mt-1 text-sm leading-6 text-gray-500 ">
-                        This information will be displayed publicly so be careful what you share.
+                        This information will be displayed publicly so be
+                        careful what you share.
                     </p>
-                    <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Project Name</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">Example Project</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Targeted SDGs</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <ul>
-                                    <li className="text-gray-900 dark:text-gray-100">No Poverty</li>
-                                    <li className="text-gray-900 dark:text-gray-100">Zero Hunger</li>
-                                    <li className="text-gray-900 dark:text-gray-100">Quality Education</li>
-                                </ul>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Timeline</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                            <div className="text-gray-900 dark:text-gray-100">01/01/2021 - 01/01/2023</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Description</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">Just a random description under 100 words</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Key Achievements</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">None</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Partners</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">Tom Chef</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Method of monitoring and evaluation, reporting</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">None</div>
-                            </dd>
-                        </div>
-                        <div className="pt-6 sm:flex">
-                            <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Pictures</dt>
-                            <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
-                                <div className="text-gray-900 dark:text-gray-100">None</div>
-                            </dd>
-                        </div>
-                    </dl>
+                    <div className="grid grid-cols-3 gap-4 mt-4">
+                        <ProjectCard/>
+                        <ProjectCard/>
+                        <ProjectCard/>
+                    </div>
+
+                    {/*<dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Project Name</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*            <div className="text-gray-900 dark:text-gray-100">Example Project</div>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Targeted SDGs</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*            <ul>*/}
+                    {/*                <li className="text-gray-900 dark:text-gray-100">No Poverty</li>*/}
+                    {/*                <li className="text-gray-900 dark:text-gray-100">Zero Hunger</li>*/}
+                    {/*                <li className="text-gray-900 dark:text-gray-100">Quality Education</li>*/}
+                    {/*            </ul>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Timeline</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*        <div className="text-gray-900 dark:text-gray-100">01/01/2021 - 01/01/2023</div>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Description</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*            <div className="text-gray-900 dark:text-gray-100">Just a random description under 100 words</div>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Key Achievements</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*            <div className="text-gray-900 dark:text-gray-100">None</div>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Partners</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*            <div className="text-gray-900 dark:text-gray-100">Tom Chef</div>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Method of monitoring and evaluation, reporting</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*            <div className="text-gray-900 dark:text-gray-100">None</div>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*    <div className="pt-6 sm:flex">*/}
+                    {/*        <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">Pictures</dt>*/}
+                    {/*        <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">*/}
+                    {/*            <div className="text-gray-900 dark:text-gray-100">None</div>*/}
+                    {/*        </dd>*/}
+                    {/*    </div>*/}
+                    {/*</dl>*/}
                 </div>
 
             </div>

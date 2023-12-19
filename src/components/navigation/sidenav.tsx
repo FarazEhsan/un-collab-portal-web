@@ -271,7 +271,8 @@ export default function SideNav({children}: SideNavProps) {
 
                         <div
                             className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6  ">
-                            <form className="relative flex flex-1" action="#"
+                            <form autoComplete="none"
+                                  className="relative flex flex-1" action="#"
                                   method="GET">
                                 <label htmlFor="search-field"
                                        className="sr-only">
@@ -281,12 +282,16 @@ export default function SideNav({children}: SideNavProps) {
                                     className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400 dark:text-gray-600"
                                     aria-hidden="true"
                                 />
+                                <input autoComplete="on"
+                                       style={{display: 'none'}}
+                                       id="fake-hidden-input-to-stop-google-address-lookup"/>
                                 <input
                                     id="search-field"
                                     className="dark:bg-gray-900 block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:ring-0 sm:text-sm"
                                     placeholder="Search..."
                                     type="search"
                                     name="search"
+                                    autoComplete="none"
                                 />
                             </form>
                             <div
