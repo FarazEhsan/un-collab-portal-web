@@ -1,27 +1,39 @@
-import React, {ReactNode} from 'react';
 import SideNav, { NavItem } from "@/components/navigation/sidenav";
+import { ReactNode } from "react";
+import {
+    Bars3Icon,
+    BellIcon,
+    CalendarIcon,
+    ChartPieIcon,
+    DocumentDuplicateIcon,
+    FolderIcon,
+    HomeIcon, MoonIcon,
+    SunIcon,
+    UsersIcon,
+    XMarkIcon,
+} from '@heroicons/react/24/outline'
 
-
-interface HomeLayoutProps {
+interface AdminLayoutProps {
     children: ReactNode
 }
-const HomeLayout = ({children}:HomeLayoutProps) => {
+
+const AdminLayout = ({children}:AdminLayoutProps)=>{
     const navData:NavItem[]= [
-        {name: 'Dashboard', href: '/home', icon: 'HomeIcon', current: true},
+        {name: 'Dashboardaa', href: '/home', icon: 'HomeIcon', current: true},
         {name: 'Team', href: '#', icon: 'UsersIcon', current: false},
         {name: 'Projects', href: '#', icon: 'FolderIcon', current: false},
         {name: 'Calendar', href: '#', icon: 'CalendarIcon', current: false},
         {name: 'Documents', href: '#', icon: 'DocumentDuplicateIcon', current: false},
         {name: 'Reports', href: '#', icon: 'ChartPieIcon', current: false},
     ]
-
-    return (
+    return(
         <>
         <SideNav navData={navData}>
             {children}
         </SideNav>
         </>
-    );
-};
+        
+    )
+}
 
-export default HomeLayout;
+export default AdminLayout
