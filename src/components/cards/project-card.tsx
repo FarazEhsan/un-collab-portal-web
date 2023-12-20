@@ -1,7 +1,7 @@
 'use client'
 import React, {useState} from 'react';
 import Badge from "@/components/badge";
-import SlideOver from "@/components/overlays/slide-over";
+import ProjectSlideOver from "@/components/overlays/project-slide-over";
 import CarouselModal from "@/components/modals/carousel-modal";
 
 
@@ -24,7 +24,7 @@ const ProjectCard = () => {
             <div onClick={() => setOpenCarouselModal(!openCarouselModal)} className="h-56">
                 <img
                     src="https://source.unsplash.com/random/300x500"
-                    className="h-full w-full object-fill"
+                    className="h-full w-full object-cover"
                 />
                 <CarouselModal open={openCarouselModal}
                                setOpen={setOpenCarouselModal}/>
@@ -50,7 +50,7 @@ const ProjectCard = () => {
                 <p className="hover:underline cursor-pointer text-sm leading-6 text-gray-400 ">Read
                     more.</p>
             </div>
-            <SlideOver open={open} setOpen={setOpen}/>
+            <ProjectSlideOver open={open} setOpen={setOpen}/>
         </div>
     );
 };
