@@ -4,12 +4,14 @@ interface ButtonProps {
     children: React.ReactNode,
     colorType?: string,
     classNames?: string,
+    type?: 'button' | 'submit' | 'reset';
+    action?: (event:any) => void
 }
 
 let colorConfig = 'bg-custom-blue text-white hover:bg-custom-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400';
 
 
-const Button = ({children, colorType, classNames}: ButtonProps) => {
+const Button = ({children, colorType, classNames, type, action}: ButtonProps) => {
     switch (colorType) {
         case 'primary':
            colorConfig = 'bg-custom-blue text-white hover:bg-cyan-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-400';
@@ -26,7 +28,7 @@ const Button = ({children, colorType, classNames}: ButtonProps) => {
     }
     return (
         <button
-            type="button"
+            type={type?type:"button"}
             className={`rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm ${colorConfig} ${classNames}`}
         >
             {children}

@@ -7,7 +7,7 @@ type Role = 'admin' | 'user';
 
 // Define a mapping of roles to paths
 const rolePaths: Record<Role, string[]> = {
-  admin: ['/register', '/admin', '/profile'],
+  admin: ['/register', '/admin', '/profile', '/admin/user/add'],
   user: ['/dashboard', '/profile'],
   // Add more roles and paths as needed
 };
