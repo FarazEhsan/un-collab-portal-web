@@ -1,9 +1,9 @@
 import {gql} from "@apollo/client";
 
-export const GET_ALL_USERS_QUERY = gql`
+const QUERY = gql`
   {
-    allusers {
-    name
-    }
+  allusers {
+  name
+}
 }
 `;

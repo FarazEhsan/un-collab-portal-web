@@ -1,5 +1,6 @@
 import type { Config } from 'tailwindcss'
 
+
 const config: Config = {
   darkMode: ["class"],
   content: [
@@ -20,6 +21,7 @@ const config: Config = {
   },
   plugins: [
     require('@tailwindcss/forms'),
+    require('flowbite/plugin')
     // plugin(function({ addBase, theme }) {
     //   addBase({
     //     'h1': { fontSize: theme('fontSize.5xl'), fontWeight: theme('fontWeight.semibold') },
