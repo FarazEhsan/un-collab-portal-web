@@ -1,6 +1,5 @@
-import SingleColumnContainer
-    from '@/components/navigation/singleColumnContainer';
-import {Carousel} from "flowbite-react";
+import TwoColumnContainer from "@/components/navigation/twoColumnContainer";
+import PostCard from "@/components/cards/post-card";
 
 export default function Home() {
     const RadioData = [
@@ -16,30 +15,8 @@ export default function Home() {
 
     const images = ['https://source.unsplash.com/random', 'https://source.unsplash.com/random']
     return (
-        <SingleColumnContainer>
-
-            {/*<ImageCarousel>*/}
-            {/*    {[...images.map((s) => (*/}
-            {/*        <img src={s} className="object-contain"/>*/}
-            {/*    ))]}*/}
-            {/*</ImageCarousel>*/}
-
-
-                <Carousel slide={false}>
-                    <div className="flex items-center justify-center">
-                        <img src="https://source.unsplash.com/random/1300x1300" className="
-                        object-contain"/>
-                    </div>
-                    <div className="flex items-center justify-center">
-                        <img src="https://source.unsplash.com/random/500x300" className="
-                        object-contain"/>
-                    </div>
-                    <div className="flex items-center justify-center">
-                        <img src="https://source.unsplash.com/random/300x500" className="
-                        object-contain"/>
-                    </div>
-                </Carousel>
-
-        </SingleColumnContainer>
+        <TwoColumnContainer secondaryContent={<div>hello</div>}>
+            <PostCard/>
+        </TwoColumnContainer>
     )
 }

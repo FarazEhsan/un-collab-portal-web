@@ -19,7 +19,7 @@ const ProjectCard = () => {
     const [openCarouselModal, setOpenCarouselModal] = useState(false)
     return (
         <div
-             className="dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-4 cursor-pointer">
+             className="dark:bg-gray-900 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4 cursor-pointer">
 
             <div onClick={() => setOpenCarouselModal(!openCarouselModal)} className="h-56">
                 <img
