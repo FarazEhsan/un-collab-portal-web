@@ -32,7 +32,7 @@ const Button = ({children, colorType = 'primary', classNames, onClick, type, act
     }
     return (
         <button
-            type="button"
+            type="submit"
             onClick={onClick}
             className={`rounded-md px-3.5 py-2.5 text-sm font-semibold shadow-sm ${colorConfig} ${classNames}`}
         >

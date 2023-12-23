@@ -21,32 +21,119 @@ export default function AddUser() {
       const token=  await getManagementApiToken()
       console.log('Token', token)
 
-     const userRes=  await fetch('https://dev-3g9q6q7d.us.auth0.com/api/v2/users', {
+     const userRes=  await fetch('https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/users', {
         method:'POST',
+        
         headers:{
           'Content-Type': 'application/json',
-          "Authorization": `Bearer ${token}`
+          "Accept": "application/json",
+          "authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
             "email": formData.get('email'),
-            "username": formData.get('username'),
-            "given_name": formData.get('firstname'),
-            "family_name": formData.get('lastname'),
             "connection": "Username-Password-Authentication",
-            "password": "Password1234",
-            "app_metadata": {
-              "metadata":[
-                {
-                  "key": "requiredPassReset",
-                  "value": true
-                }
-              ]
-            }
-
+            "password": "Falcon_303303",
         })
       })
-      console.log('User Response', userRes)
-      return userRes
+      console.log('User Response', userRes.status)
+
+      if(userRes.status === 409){
+        userNameError = 'User already exists'
+      }
+
+      else if(userRes.status === 201){
+
+        // 1- Get the roles and Assign role to the userI
+        // 2- Send email to the user to reset password
+        
+        const userJson = await userRes.json()
+        console.log('User Json', userJson)
+        const userId = userJson.user_id
+        console.log('User Id', userId)
+        const rolesRes = await fetch('https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/roles', {
+          method:'GET',
+          headers:{
+            "Accept": "application/json",
+            "authorization": `Bearer ${token}`
+          }}
+        )
+          if(rolesRes.status === 200){
+            const rolesJson = await rolesRes.json()
+            console.log('Roles Json', rolesJson)
+
+
+            const userRole= rolesJson.filter( (role: { name: string }) => role.name === 'user')
+            console.log('User Role', userRole)
+            const userRoleRes = await fetch(`https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/users/${userId}/roles`, {
+              method:'POST',
+              
+              headers:{
+                'Content-Type': 'application/json',
+                "authorization": `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                  "roles": [userRole[0].id]
+              }),
+            })
+            console.log('User Role Response', userRoleRes.status)
+            if(userRoleRes.status === 200){
+              console.log('User Role Assigned')
+            }
+          }
+        // const userRoleRes = await fetch(`https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/roles/rol_8GZ6J4Z8d3QaWVQm/users`, {
+        //   method:'POST',
+          
+        //   headers:{
+        //     'Content-Type': 'application/json',
+        //     "Accept": "application/json",
+        //     "authorization": `Bearer ${token}`
+        //   },
+        //   body: JSON.stringify({
+        //       "users": [userId]
+        //   })
+        // })
+        // const userUpdateRes = await fetch(`https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/users/${userId}`, {
+        //   method:'PATCH',
+          
+        //   headers:{
+        //     'Content-Type': 'application/json',
+        //     "Accept": "application/json",
+        //     "authorization": `Bearer ${token}`
+        //   },
+        //   body: JSON.stringify({
+        //       user_metadata: {
+        //       "first_login":true 
+        //    }
+        //   })
+        // })
+        // console.log('User Update Response', userUpdateRes.status)
+        // if(userUpdateRes.status === 200){
+        //   const userUpdateJson = await userUpdateRes.json()
+        //   console.log('User Update Json', userUpdateJson)
+        // }
+        
+        const userPasswordResetRes = await fetch ('https://dev-huxjkvfkb5f36hh4.us.auth0.com/dbconnections/change_password',{
+          method:'POST',
+          headers:{
+            'Content-Type': 'application/json',
+            "Accept": "application/json",
+            "authorization": `Bearer ${token}`
+          },
+          body:JSON.stringify({
+            "client_id":process.env.AUTH0_CLIENT_ID,
+            "email": formData.get('email'),
+            "connection":"Username-Password-Authentication"
+          })
+
+        })
+
+        console.log('User Password Reset Response', userPasswordResetRes.status)
+        if(userPasswordResetRes.status === 200){
+          //const userPasswordResetJson = await userPasswordResetRes.json()
+          console.log('User Password Reset Json', userPasswordResetRes)
+        }
+      }
+     // return userRes
   
     }
 
@@ -279,7 +366,7 @@ export default function AddUser() {
         </button>
 
         <Button type="submit"> Save</Button>
-        {/* <button
+        {/* <button   
           type="submit"
           className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         
