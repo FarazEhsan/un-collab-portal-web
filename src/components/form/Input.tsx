@@ -48,7 +48,7 @@ export default function Input (
                             'text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500 dark:text-red-700 dark:ring-red-900 dark:placeholder:text-red-800'
                             :
                             'text-gray-900 ring-gray-300 dark:text-gray-100 dark:ring-gray-600 placeholder:text-gray-300 dark:placeholder:text-gray-500 focus:ring-custom-teal',
-                        'block w-full dark:bg-gray-800 rounded-md border-0 py-1.5 pr-10 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6')}
+                        'block w-full dark:bg-gray-800 rounded-md border-0 py-1.5 ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6')}
                     placeholder={placeholder}
                     value={value}
                 />

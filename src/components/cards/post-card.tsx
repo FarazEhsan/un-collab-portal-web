@@ -55,20 +55,12 @@ const PostCard = () => {
     const [openCarouselModal, setOpenCarouselModal] = useState(false)
     return (
         <div
-            className="dark:bg-gray-900 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4">
+            className="dark:bg-gray-900 dark:hover:bg-gray-800 hover:bg-gray-200 bg-gray-100 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4">
             {/*Image*/}
-            <div onClick={() => setOpenCarouselModal(!openCarouselModal)}
-                 className="h-96">
-                <img
-                    src="https://source.unsplash.com/random/300x500"
-                    className="h-full w-full object-cover"
-                />
-                <CarouselModal open={openCarouselModal}
-                               setOpen={setOpenCarouselModal}/>
-            </div>
+
 
             {/*Post Body*/}
-            <div className="mt-6">
+            <div className="">
                 <div className="flex flex-row items-center">
                     <img
                         className="inline-block h-10 w-10 rounded-full"
@@ -80,11 +72,24 @@ const PostCard = () => {
                         <p className="text-xs text-gray-500 dark:text-gray-400">2
                             hours ago</p>
                     </div>
+
                 </div>
-                <div className="mt-6">
-                    <h2 className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">Title...</h2>
-                    <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{data.description}</p>
-                </div>
+                    <h2 className="mt-4 text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">Title...</h2>
+
+            </div>
+
+            <div onClick={() => setOpenCarouselModal(!openCarouselModal)}
+                 className="h-96 rounded-md">
+                <img
+                    src="https://source.unsplash.com/random/300x500"
+                    className="h-full w-full object-contain rounded-md"
+                />
+                <CarouselModal open={openCarouselModal}
+                               setOpen={setOpenCarouselModal}/>
+            </div>
+
+            <div className="mt-6">
+                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(data.description.substring(0, 225) + '...')}</p>
             </div>
 
             {/*Reactions*/}
@@ -93,9 +98,9 @@ const PostCard = () => {
             </div>
 
             {/*Comments*/}
-            <div className="mt-6">
-                <CommentSection comments={data.comments} />
-            </div>
+            {/*<div className="mt-6">*/}
+            {/*    <CommentSection comments={data.comments}/>*/}
+            {/*</div>*/}
         </div>
     );
 };

@@ -3,21 +3,14 @@ import {Dialog, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
 import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
+import TextArea from "@/components/form/TextArea";
 
 interface SlideOverProps {
     open: boolean,
     setOpen: React.Dispatch<SetStateAction<boolean>>
 }
 
-const data = {
-    heroImage: 'https://source.unsplash.com/random',
-    title: 'ProjectCard Title',
-    sdgs: ['sdg1', 'sdg2', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3'],
-    timeline: {from: '01/01/2021', to: '01/01/2023'},
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent consectetur faucibus tortor, id finibus lectus auctor in. Vivamus luctus iaculis dui, id posuere eros congue aliquam. In lobortis gravida iaculis. Vestibulum at ultricies arcu, eu scelerisque sem. Praesent in massa bibendum, egestas libero a, dignissim urna. Duis in mollis est. Nunc feugiat ipsum cursus urna vestibulum, sed fermentum eros mollis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-}
-
-export default function EditContactInfoSlideOver({open, setOpen}: SlideOverProps) {
+export default function AddProjectSlideOver({open, setOpen}: SlideOverProps) {
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={setOpen}>
@@ -56,7 +49,7 @@ export default function EditContactInfoSlideOver({open, setOpen}: SlideOverProps
                                                 className="flex items-start justify-between">
                                                 <h2 id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">
-                                                    Edit Contact Info
+                                                    Add Project
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -81,41 +74,25 @@ export default function EditContactInfoSlideOver({open, setOpen}: SlideOverProps
                                             <div
                                                 className="px-8">
                                                 <div>
-                                                    <Input label="Email"
-                                                           name="email"
-                                                           type="email"
-                                                           error="error body"
-                                                           placeholder="tomcook@example.com"/>
+                                                    <Input label="Title"
+                                                           name="title"
+                                                           placeholder="Project Title"/>
                                                 </div>
                                                 <div className="mt-4">
-                                                    <Input label="Phone"
-                                                           name="phone"
-                                                           placeholder="0123456789"/>
+                                                    <Input label="From"
+                                                           name="dateFrom"
+                                                           type="date"/>
                                                 </div>
                                                 <div className="mt-4">
-                                                    <Input label="Facebook"
-                                                           name="facebook"
-                                                           placeholder="www.facebook.com/tom-cook"/>
+                                                    <Input label="To"
+                                                           name="dateTo"
+                                                           type="date"/>
                                                 </div>
+                                                {/*TODO: Implement Combobox for SDGs*/}
                                                 <div className="mt-4">
-                                                    <Input label="Instagram"
-                                                           name="instagram"
-                                                           placeholder="www.instagram.com/tom-cook"/>
-                                                </div>
-                                                <div className="mt-4">
-                                                    <Input label="Twitter"
-                                                           name="twitter"
-                                                           placeholder="www.twitter.com/tom-cook"/>
-                                                </div>
-                                                <div className="mt-4">
-                                                    <Input label="TikTok"
-                                                           name="tiktok"
-                                                           placeholder="www.tiktok.com/tom-cook"/>
-                                                </div>
-                                                <div className="mt-4">
-                                                    <Input label="Linkedin"
-                                                           name="linkedin"
-                                                           placeholder="www.linkedin.com/tom-cook"/>
+                                                    <TextArea label="Description"
+                                                           name="description"
+                                                           placeholder="A short description of your project"/>
                                                 </div>
 
                                             </div>

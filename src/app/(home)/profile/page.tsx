@@ -9,10 +9,12 @@ import EditPersonalInfoSlideOver
     from "@/app/(home)/profile/edit-personal-info-slide-over";
 import EditContactInfoSlideOver
     from "@/app/(home)/profile/edit-contact-info-slide-over";
+import AddProjectSlideOver from "@/app/(home)/profile/add-project-slide-over";
 
 const ProfilePage = () => {
     const [openEditPersonalInfoSlideOver, setOpenEditPersonalInfoSlideOver] = useState(false)
     const [openEditContactInfoSlideOver, setOpenEditContactInfoSlideOver] = useState(false)
+    const [openAddProjectSlideOver, setOpenAddProjectSlideOver] = useState(false)
     return (
         <SingleColumnContainer>
             <div
@@ -120,7 +122,7 @@ const ProfilePage = () => {
                         </div>
                         <Button
                             onClick={() => setOpenEditPersonalInfoSlideOver(!openEditPersonalInfoSlideOver)}
-                            colorType="link" classNames="ml-auto">Edit</Button>
+                            colorType="link" classNames="ml-auto">Update</Button>
                     </div>
                     <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
                         {/*<div className="pt-6 sm:flex">*/}
@@ -181,7 +183,8 @@ const ProfilePage = () => {
                         </div>
                         <Button
                             onClick={() => setOpenEditContactInfoSlideOver(!openEditContactInfoSlideOver)}
-                            colorType="link" classNames="ml-auto">Edit</Button>
+                            colorType="link"
+                            classNames="ml-auto">Update</Button>
                     </div>
                     <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
                         <div className="pt-6 sm:flex">
@@ -255,7 +258,7 @@ const ProfilePage = () => {
                             </p>
                         </div>
                         <Button
-                            colorType="link" classNames="ml-auto">Edit</Button>
+                            colorType="link" classNames="ml-auto">Update</Button>
                     </div>
 
                     <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
@@ -292,7 +295,10 @@ const ProfilePage = () => {
                             </p>
                         </div>
                         <Button
-                            colorType="link" classNames="ml-auto">Edit</Button>
+                            colorType="link" classNames="ml-auto"
+                            onClick={() => setOpenAddProjectSlideOver(!openAddProjectSlideOver)}>Add</Button>
+                        <AddProjectSlideOver open={openAddProjectSlideOver}
+                                             setOpen={setOpenAddProjectSlideOver}/>
                     </div>
 
                     <div className="grid grid-cols-3 gap-4 mt-4">
