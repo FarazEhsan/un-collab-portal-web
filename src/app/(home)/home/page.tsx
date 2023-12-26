@@ -34,8 +34,8 @@ export default function Home() {
             {/*        <div key={item.id}>{item.name}</div>*/}
             {/*    ))*/}
             {/*}*/}
-            <ComboBox multiple={false} people={people}/>
-            <ComboBox multiple={true} people={people}/>
+            <ComboBox multiple={false} data={people} label='Single Select'/>
+            <ComboBox multiple={true} data={people} label='Multi Select'/>
             <PostCard/>
             <div className="mt-6"></div>
             <PostCard/>
