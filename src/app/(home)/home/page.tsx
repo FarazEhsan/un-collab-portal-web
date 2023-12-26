@@ -1,6 +1,10 @@
-import SingleColumnContainer
-    from '@/components/navigation/singleColumnContainer';
-import {Carousel} from "flowbite-react";
+'use client'
+import TwoColumnContainer from "@/components/navigation/twoColumnContainer";
+import PostCard from "@/components/cards/post-card";
+import MultiSelectCombobox from "@/components/form/combo-box";
+import {useState} from "react";
+import Combobox from "@/components/form/combo-box";
+import ComboBox from "@/components/form/combo-box";
 
 export default function Home() {
     const RadioData = [
@@ -13,33 +17,28 @@ export default function Home() {
         {id: 'sms1', title: 'Phone (SMS)', checked: false},
         {id: 'push1', title: 'Push notification', checked: true},
     ]
+    const people = [
+        {id: 1, name: 'Durward Reynolds'},
+        {id: 2, name: 'Kenton Towne'},
+        {id: 3, name: 'Therese Wunsch'},
+        {id: 4, name: 'Benedict Kessler'},
+        {id: 5, name: 'Katelyn Rohan'},
+    ]
+    const images = ['https://source.unsplash.com/random', 'https://source.unsplash.com/random'];
+    const [selectedPeople, setSelectedPeople] = useState([people[0], people[1]])
 
-    const images = ['https://source.unsplash.com/random', 'https://source.unsplash.com/random']
     return (
-        <SingleColumnContainer>
-
-            {/*<ImageCarousel>*/}
-            {/*    {[...images.map((s) => (*/}
-            {/*        <img src={s} className="object-contain"/>*/}
-            {/*    ))]}*/}
-            {/*</ImageCarousel>*/}
-
-
-                <Carousel slide={false}>
-                    <div className="flex items-center justify-center">
-                        <img src="https://source.unsplash.com/random/1300x1300" className="
-                        object-contain"/>
-                    </div>
-                    <div className="flex items-center justify-center">
-                        <img src="https://source.unsplash.com/random/500x300" className="
-                        object-contain"/>
-                    </div>
-                    <div className="flex items-center justify-center">
-                        <img src="https://source.unsplash.com/random/300x500" className="
-                        object-contain"/>
-                    </div>
-                </Carousel>
-
-        </SingleColumnContainer>
+        <TwoColumnContainer secondaryContent={<div>hello</div>}>
+            {/*{*/}
+            {/*    selectedData?.map(item => (*/}
+            {/*        <div key={item.id}>{item.name}</div>*/}
+            {/*    ))*/}
+            {/*}*/}
+            <ComboBox multiple={false} data={people} label='Single Select'/>
+            <ComboBox multiple={true} data={people} label='Multi Select'/>
+            <PostCard/>
+            <div className="mt-6"></div>
+            <PostCard/>
+        </TwoColumnContainer>
     )
 }

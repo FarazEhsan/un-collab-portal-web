@@ -41,7 +41,7 @@ export default function CarouselModal({open, setOpen}: CarouselModalProps) {
                             <Dialog.Panel
                                 className="h-screen w-full relative transform overflow-auto bg-black p-0 text-left shadow-xl transition-all">
                                 <div
-                                    className="absolute z-10 right-0 top-0 hidden pr-4 pt-4 sm:block">
+                                    className="absolute z-10 right-0 top-0 pr-4 pt-4 sm:block">
                                     <button
                                         type="button"
                                         className="rounded-md text-white hover:text-gray-500 focus:outline-none"

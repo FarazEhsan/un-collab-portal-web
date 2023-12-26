@@ -220,8 +220,8 @@ export default function SideNav({ children, navData }: SideNavProps) {
                           {React.createElement(item.icon, {
                             className: classNames(
                               item.current
-                                ? "text-indigo-600"
-                                : "text-gray-400 group-hover:text-indigo-600",
+                                ? "text-custom-teal dark:text-custom-orange"
+                                : "text-gray-400 group-hover:text-custom-blue",
                               "h-6 w-6 shrink-0"
                             ),
                             "aria-hidden": "true",
