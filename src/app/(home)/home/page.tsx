@@ -25,8 +25,10 @@ export default function Home() {
         {id: 5, name: 'Katelyn Rohan'},
     ]
     const images = ['https://source.unsplash.com/random', 'https://source.unsplash.com/random'];
-    const [selectedPeople, setSelectedPeople] = useState([people[0], people[1]])
-
+    const [selectedPeople, setSelectedPeople] = useState([1,2])
+    const [selectedPerson, setSelectedPerson] = useState(null);
+    console.log('selected ppl', selectedPeople);
+    console.log('selected person', selectedPerson);
     return (
         <TwoColumnContainer secondaryContent={<div>hello</div>}>
             {/*{*/}
@@ -34,8 +36,8 @@ export default function Home() {
             {/*        <div key={item.id}>{item.name}</div>*/}
             {/*    ))*/}
             {/*}*/}
-            <ComboBox multiple={false} data={people} label='Single Select'/>
-            <ComboBox multiple={true} data={people} label='Multi Select'/>
+            <ComboBox multiple={false} items={people} selectedData={selectedPerson} setSelectedData={setSelectedPerson} label='Single Select'/>
+            <ComboBox multiple={true} items={people} selectedData={selectedPeople} setSelectedData={setSelectedPeople} label='Multi Select'/>
             <PostCard/>
             <div className="mt-6"></div>
             <PostCard/>
