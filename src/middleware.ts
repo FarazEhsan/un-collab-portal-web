@@ -7,7 +7,7 @@ type Role = 'admin' | 'user';
 
 // Define a mapping of roles to paths
 const rolePaths: Record<Role, string[]> = {
-  admin: ['/register', '/admin', '/profile', '/admin/user/add', '/'],
+  admin: ['/register', '/admin', '/profile', '/admin/user/add', '/home'],
   user: ['/dashboard', '/profile'],
   // Add more roles and paths as needed
 };
@@ -26,10 +26,10 @@ export default withMiddlewareAuthRequired(async function middleware(req) {
 
   // Check if the user's roles allow them to access the requested path
   const canAccess = await roles.some(role => rolePaths[role]?.includes(requestedPath));
-  console.log('requested path', requestedPath)
-  console.log('user profile', user)
-  console.log('roles', roles)
-  console.log('can access from middleware', canAccess)
+  // console.log('requested path', requestedPath)
+  // console.log('user profile', user)
+  // console.log('roles', roles)
+  // console.log('can access from middleware', canAccess)
 
   if (canAccess) {
     return res;

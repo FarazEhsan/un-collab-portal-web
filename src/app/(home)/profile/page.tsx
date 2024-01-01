@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import SingleColumnContainer
     from "@/components/navigation/singleColumnContainer";
 import RoundButton from "@/components/button/round-button";
@@ -10,11 +10,44 @@ import EditPersonalInfoSlideOver
 import EditContactInfoSlideOver
     from "@/app/(home)/profile/edit-contact-info-slide-over";
 import AddProjectSlideOver from "@/app/(home)/profile/add-project-slide-over";
+import { gql, useQuery } from '@apollo/client';
+
 
 const ProfilePage = () => {
     const [openEditPersonalInfoSlideOver, setOpenEditPersonalInfoSlideOver] = useState(false)
     const [openEditContactInfoSlideOver, setOpenEditContactInfoSlideOver] = useState(false)
     const [openAddProjectSlideOver, setOpenAddProjectSlideOver] = useState(false)
+
+const GET_USER_DETAILS = gql`
+  query GetUserDetails  {
+    user(id: "6592a7f6b3d29da97f359cc3") {
+        _id
+        name
+        userName
+        email
+        contactNumber
+        city
+        country
+        dob
+        age
+        facebook
+        twitter
+        instagram
+        tiktok
+        linkedin
+        skills {
+          name
+        }
+        groups {
+          name
+          description
+        }
+      }
+  }`;
+
+   const {loading, error, data}= useQuery(GET_USER_DETAILS)
+  
+    
     return (
         <SingleColumnContainer>
             <div
@@ -27,7 +60,7 @@ const ProfilePage = () => {
                             className="h-32 w-32 flex-none rounded-full bg-white dark:bg-gray-800 object-cover"
                         />
                         <h2 className="mt-4 text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
-                            Tom Cook
+                            {data?.user?.Id}
                         </h2>
                         <p
                             className="text-gray-900 dark:text-gray-100">He/Him

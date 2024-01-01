@@ -36,8 +36,8 @@ export default function Home() {
             {/*        <div key={item.id}>{item.name}</div>*/}
             {/*    ))*/}
             {/*}*/}
-            <ComboBox multiple={false} items={people} selectedData={selectedPerson} setSelectedData={setSelectedPerson} label='Single Select'/>
-            <ComboBox multiple={true} items={people} selectedData={selectedPeople} setSelectedData={setSelectedPeople} label='Multi Select'/>
+            {/* <ComboBox multiple={false} items={people} selectedData={selectedPerson} setSelectedData={setSelectedPerson} label='Single Select'/>
+            <ComboBox multiple={true} items={people} selectedData={selectedPeople} setSelectedData={setSelectedPeople} label='Multi Select'/> */}
             <PostCard/>
             <div className="mt-6"></div>
             <PostCard/>
