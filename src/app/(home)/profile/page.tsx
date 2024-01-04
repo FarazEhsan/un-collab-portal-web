@@ -42,11 +42,13 @@ const ProfilePage = () => {
           description
         }
         projects {
+          _id
           name
           description
           startTime
           endTime
           relatedSDGs {
+            id
             name
           }
         }
@@ -54,13 +56,13 @@ const ProfilePage = () => {
     }
   `;
 
-  const { loading, error, data } = useQuery(GET_USER_DETAILS);
+  const { loading, error, data, startPolling } = useQuery(GET_USER_DETAILS, {pollInterval:500});
 
   const [profileData, setProfileData] = useState(data);
 
   const handleUpdateProfile = (updatedData: any) => {
     // Update the main profile data
-    setProfileData(updatedData);
+    //startPolling(500)
   };
 
   return (

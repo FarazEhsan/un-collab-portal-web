@@ -19,7 +19,7 @@ const ComboBox = ({multiple, items, label, selectedData, setSelectedData}:any) =
             })
 
     // @ts-ignore
-    return (
+        return (
         <Combobox as="div" value={selectedData} onChange={setSelectedData}
                   multiple={multiple}>
             <Combobox.Label
@@ -56,6 +56,7 @@ const ComboBox = ({multiple, items, label, selectedData, setSelectedData}:any) =
                             >
                                 {({ active, selected }) => (
                                     <>
+                                        {/* @ts-ignore */}
                                         <span className={classNames('block truncate', selected && 'font-semibold')}>{item.name}</span>
                                         {selected && (
                                             <span
