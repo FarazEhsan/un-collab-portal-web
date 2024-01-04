@@ -22,6 +22,8 @@ const ProfilePage = () => {
       user(id: "6592a7f6b3d29da97f359cc3") {
         _id
         name
+        firstName
+        lastName
         userName
         email
         contactNumber
@@ -468,6 +470,7 @@ const ProfilePage = () => {
           <EditPersonalInfoSlideOver
             open={openEditPersonalInfoSlideOver}
             setOpen={setOpenEditPersonalInfoSlideOver}
+            data= {data?.user}
           />
           <EditContactInfoSlideOver
             open={openEditContactInfoSlideOver}

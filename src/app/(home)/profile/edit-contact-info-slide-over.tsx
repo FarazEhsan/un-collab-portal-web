@@ -124,13 +124,13 @@ export default function EditContactInfoSlideOver({
       updateUser(
         id: $userid
         updateUserInput: {
-            email: $email,
-            contactNumber: $contactNumber,
-            facebook: $facebook,
-            twitter: $twitter,
-            instagram: $instagram,
-            tiktok: $tiktok,
-            linkedin: $linkedin,
+          email: $email
+          contactNumber: $contactNumber
+          facebook: $facebook
+          twitter: $twitter
+          instagram: $instagram
+          tiktok: $tiktok
+          linkedin: $linkedin
         }
       ) {
         _id
@@ -155,7 +155,8 @@ export default function EditContactInfoSlideOver({
           description
         }
       }
-    }`;
+    }
+  `;
 
   const [updateContact, { data: updatedData, loading, error }] =
     useMutation(UPDATE_CONTACT_INFO);
@@ -175,7 +176,7 @@ export default function EditContactInfoSlideOver({
       tiktok: contactInfo.tiktok,
       linkedin: contactInfo.linkedin,
     };
-    console.log('whats with the variables?', variables)
+    console.log("whats with the variables?", variables);
 
     await updateContact({ variables: variables });
     console.log("Update data adter contact update", data);
