@@ -12,6 +12,7 @@ import Joi from "joi-browser";
 interface SlideOverProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
+  onUpdateProfile: () => void;
 }
 
 const GET_ALL_SDG = gql`
@@ -33,7 +34,8 @@ const projectInfoSchema = {
 
 export default function AddProjectSlideOver({
   open,
-  setOpen
+  setOpen,
+  onUpdateProfile
 }: SlideOverProps) {
   const {
     loading: sdgLoading,
@@ -182,6 +184,7 @@ export default function AddProjectSlideOver({
     };
 
     await addNewProduct({ variables: variables })
+    onUpdateProfile()
     setOpen(false);
   };
 
@@ -271,7 +274,7 @@ export default function AddProjectSlideOver({
                             {!sdgLoading && (
                               <ComboBox
                                 multiple={true}
-                                items={sdgData.allsdgs}
+                                items={sdgData?.allsdgs}
                                 selectedData={relatedSDGs}
                                 setSelectedData={setRelatedSDGs}
                                 label="SDGs"

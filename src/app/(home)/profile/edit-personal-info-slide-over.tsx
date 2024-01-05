@@ -6,98 +6,43 @@ import Button from "@/components/button/Button";
 // @ts-ignore
 import Joi from "joi-browser";
 import { gql, useMutation } from "@apollo/client";
+import { useJoiForm } from "@/hooks/useJoiForm";
+import { Schema } from "joi";
 
 interface SlideOverProps {
   open: boolean;
   data: any;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
+  onUpdateProfile: (updatedContactInfo: any) => void;
 }
 
-const personalInfoSchema = {
-  firstName: Joi.string().required(),
-  lastName: Joi.string().required(),
-  dob: Joi.date().required(),
-  country: Joi.string().min(3),
-  city: Joi.string().min(3),
-};
+const personalInfoSchema: Schema = Joi.object({
+    firstName: Joi.string().required().label("First Name"),
+    lastName: Joi.string().required().label("Last Name"),
+    dob: Joi.date().required().label("Date of Birth"),
+    country: Joi.string().min(3).label("Country"),
+    city: Joi.string().min(3).label("City"),
+  });
 export default function EditPersonalInfoSlideOver({
   open,
   data,
   setOpen,
+  onUpdateProfile
 }: SlideOverProps) {
-  const [personalInfo, setPersonalInfo] = useState({
+  const personalInfo ={
     firstName: data?.firstName,
     lastName: data?.lastName,
     dob: data?.dob,
     country: data?.country,
     city: data?.city,
-  });
-  const [errors, setErrors] = useState({
-    firstName: null,
-    lastName: null,
-    dob: null,
-    country: null,
-    city: null,
-  });
-
-  const validateForm = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const result = Joi.validate(personalInfo, personalInfoSchema, {
-      abortEarly: false,
-    });
-    // console.log(result);
-
-    const { error } = result;
-
-    if (!error) {
-      postData();
-    } else {
-      const errorData = {
-        firstName: null,
-        lastName: null,
-        dob: null,
-        country: null,
-        city: null,
-      };
-      for (let item of error.details) {
-        const name = item.path[0];
-        // @ts-ignore
-        errorData[name] = item.message;
-      }
-      // console.log(errors);
-      setErrors(errorData);
-      return errorData;
-    }
   };
 
-  const handleElementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    let errorData = { ...errors };
-    const errorMessage = validateProperty(e);
-    if (errorMessage) {
-      // @ts-ignore
-      errorData[name] = errorMessage;
-    } else {
-      // @ts-ignore
-      delete errorData[name];
-    }
-    let personalData = { ...personalInfo };
-    // @ts-ignore
-    personalData[name] = value;
-    setPersonalInfo(personalData);
-    setErrors(errorData);
-  };
 
-  const validateProperty = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const obj = { [name]: value };
-    // @ts-ignore
-    const subSchema = { [name]: personalInfoSchema[name] };
-    const result = Joi.validate(obj, subSchema);
-    const { error } = result;
-    return error ? error.details[0].message : null;
-  };
+  const { data: formData, errors, handleChange, handleSubmit } = useJoiForm(
+    personalInfo,
+    personalInfoSchema
+  );
+  
 
   const UPDATE_PERSONAL_INFO = gql`
     mutation UpdateContactInfo(
@@ -148,8 +93,15 @@ export default function EditPersonalInfoSlideOver({
   const [updatePersonal, { data: updatedData, loading, error }] =
     useMutation(UPDATE_PERSONAL_INFO);
 
-    const dob = new Date(personalInfo?.dob);
+    const dob = personalInfo.dob?new Date(personalInfo?.dob): new Date();
     const formattedDob = dob.toISOString().split('T')[0];
+
+
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        handleSubmit(e, postData);
+
+      };
 
   const postData = async () => {
     console.log(personalInfo);
@@ -158,11 +110,11 @@ export default function EditPersonalInfoSlideOver({
 
     const variables = {
       userid: "6592a7f6b3d29da97f359cc3",
-      firstName: personalInfo.firstName,
-      lastName: personalInfo.lastName,
-      dob: personalInfo.dob,
-      country: personalInfo.country,
-      city: personalInfo.city,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      dob: formData.dob,
+      country: formData.country,
+      city: formData.city,
     };
     console.log("whats with the variables?", variables);
 
@@ -223,7 +175,7 @@ export default function EditPersonalInfoSlideOver({
                       </div>
                     </div>
                     {/* Main */}
-                    <form onSubmit={validateForm}>
+                    <form onSubmit={onSubmit}>
                       <div>
                         <div className="px-8">
                           <div>
@@ -231,8 +183,8 @@ export default function EditPersonalInfoSlideOver({
                               label="First Name"
                               name="firstName"
                               placeholder={personalInfo.firstName}
-                              value={personalInfo?.firstName}
-                              onChange={handleElementChange}
+                              value={formData?.firstName}
+                              onChange={handleChange}
                               error={errors?.firstName}
                             />
                           </div>
@@ -241,8 +193,8 @@ export default function EditPersonalInfoSlideOver({
                               label="Last Name"
                               name="lastName"
                               placeholder={personalInfo.lastName}
-                              value={personalInfo?.lastName}
-                              onChange={handleElementChange}
+                              value={formData?.lastName}
+                              onChange={handleChange}
                               error={errors?.lastName}
                             />
                           </div>
@@ -252,9 +204,9 @@ export default function EditPersonalInfoSlideOver({
                               label="Date of Birth"
                               name="dob"
                               type="date"
-                              onChange={handleElementChange}
+                              onChange={handleChange}
                               error={errors?.dob}
-                              value={formattedDob}
+                              value={formData?.dob}
                             />
                           </div>
                           <div className="mt-4">
@@ -262,8 +214,8 @@ export default function EditPersonalInfoSlideOver({
                               label="Country"
                               name="country"
                               placeholder={personalInfo.country}
-                              value={personalInfo?.country}
-                              onChange={handleElementChange}
+                              value={formData?.country}
+                              onChange={handleChange}
                               error={errors?.country}
                             />
                           </div>
@@ -272,8 +224,8 @@ export default function EditPersonalInfoSlideOver({
                               label="City"
                               name="city"
                               placeholder={personalInfo.city}
-                              value={personalInfo?.city}
-                              onChange={handleElementChange}
+                              value={formData?.city}
+                              onChange={handleChange}
                               error={errors?.city}
                             />
                           </div>

@@ -7,30 +7,32 @@ import Button from "@/components/button/Button";
 // @ts-ignore
 import Joi from "joi-browser";
 import { gql, useMutation } from "@apollo/client";
+import { Schema } from "joi";
+import { useJoiForm } from "@/hooks/useJoiForm";
 
 interface SlideOverProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
   data: any;
-  onUpdateProfile: (updatedContactInfo: any) => void; // Callback function to update the main profile
+  onUpdateProfile: () => void; // Callback function to update the main profile
 }
 
-const contactInfoSchema = {
-  email: Joi.string().email().required(),
-  contactNumber: Joi.string().length(10).required(),
-  facebook: Joi.string().min(3),
-  instagram: Joi.string().min(3),
-  linkedin: Joi.string().min(3),
-  tiktok: Joi.string().min(3),
-  twitter: Joi.string().min(3),
-};
+const contactInfoSchema: Schema = Joi.object({
+  email: Joi.string().email().required().label("Email"),
+  contactNumber: Joi.string().length(10).required().label("Contact Number"),
+  facebook: Joi.string().min(3).label("Facebook"),
+  instagram: Joi.string().min(3).label("Instagram"),
+  linkedin: Joi.string().min(3).label("Linkedin"),
+  tiktok: Joi.string().min(3).label("TikTok"),
+  twitter: Joi.string().min(3).label("Twitter"),
+});
 export default function EditContactInfoSlideOver({
   open,
   setOpen,
   data,
   onUpdateProfile,
 }: SlideOverProps) {
-  const [contactInfo, setContactInfo] = useState({
+  const contactInfo = {
     email: data?.email,
     contactNumber: data?.contactNumber,
     facebook: data?.facebook,
@@ -38,76 +40,17 @@ export default function EditContactInfoSlideOver({
     linkedin: data?.linkedin,
     tiktok: data?.tiktok,
     twitter: data?.twitter,
-  });
-  const [errors, setErrors] = useState({
-    email: null,
-    linkedin: null,
-    contactNumber: null,
-    facebook: null,
-    instagram: null,
-    twitter: null,
-    tiktok: null,
-  });
+  };
 
-  const validateForm = (e: React.FormEvent<HTMLFormElement>) => {
+  const { data: formData, errors, handleChange, handleSubmit } = useJoiForm(
+    contactInfo,
+    contactInfoSchema
+  );
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    handleSubmit(e, postData);
 
-    const result = Joi.validate(contactInfo, contactInfoSchema, {
-      abortEarly: false,
-    });
-    // console.log(result);
-
-    const { error } = result;
-
-    if (!error) {
-      postData();
-    } else {
-      const errorData = {
-        email: null,
-        linkedin: null,
-        contactNumber: null,
-        facebook: null,
-        instagram: null,
-        twitter: null,
-        tiktok: null,
-      };
-      for (let item of error.details) {
-        const name = item.path[0];
-        // @ts-ignore
-        errorData[name] = item.message;
-      }
-      // console.log(errors);
-      setErrors(errorData);
-      return errorData;
-    }
-  };
-
-  const handleSave = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    let errorData = { ...errors };
-    const errorMessage = validateProperty(e);
-    if (errorMessage) {
-      // @ts-ignore
-      errorData[name] = errorMessage;
-    } else {
-      // @ts-ignore
-      delete errorData[name];
-    }
-    let contactData = { ...contactInfo };
-    // @ts-ignore
-    contactData[name] = value;
-    setContactInfo(contactData);
-    setErrors(errorData);
-  };
-
-  const validateProperty = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    const obj = { [name]: value };
-    // @ts-ignore
-    const subSchema = { [name]: contactInfoSchema[name] };
-    const result = Joi.validate(obj, subSchema);
-    const { error } = result;
-    return error ? error.details[0].message : null;
   };
 
   const UPDATE_CONTACT_INFO = gql`
@@ -168,20 +111,20 @@ export default function EditContactInfoSlideOver({
 
     const variables = {
       userid: "6592a7f6b3d29da97f359cc3",
-      email: contactInfo.email,
-      contactNumber: contactInfo.contactNumber,
-      facebook: contactInfo.facebook,
-      twitter: contactInfo.twitter,
-      instagram: contactInfo.instagram,
-      tiktok: contactInfo.tiktok,
-      linkedin: contactInfo.linkedin,
+      email: formData.email,
+      contactNumber: formData.contactNumber,
+      facebook: formData.facebook,
+      twitter: formData.twitter,
+      instagram: formData.instagram,
+      tiktok: formData.tiktok,
+      linkedin: formData.linkedin,
     };
     console.log("whats with the variables?", variables);
 
     await updateContact({ variables: variables });
     console.log("Update data adter contact update", data);
 
-    onUpdateProfile(data);
+    onUpdateProfile();
     setOpen(false);
   };
 
@@ -236,7 +179,7 @@ export default function EditContactInfoSlideOver({
                       </div>
                     </div>
                     {/* Main */}
-                    <form onSubmit={validateForm}>
+                    <form onSubmit={onSubmit}>
                       <div>
                         <div className="px-8">
                           <div>
@@ -244,8 +187,8 @@ export default function EditContactInfoSlideOver({
                               label="Email"
                               name="email"
                               type="email"
-                              value={contactInfo?.email}
-                              onChange={handleSave}
+                              value={formData?.email}
+                              onChange={handleChange}
                               error={errors?.email}
                               placeholder="tomcook@example.com"
                             />
@@ -254,8 +197,8 @@ export default function EditContactInfoSlideOver({
                             <Input
                               label="Phone"
                               name="contactNumber"
-                              value={contactInfo?.contactNumber}
-                              onChange={handleSave}
+                              value={formData?.contactNumber}
+                              onChange={handleChange}
                               error={errors?.contactNumber}
                               placeholder="0123456789"
                             />
@@ -264,8 +207,8 @@ export default function EditContactInfoSlideOver({
                             <Input
                               label="Facebook"
                               name="facebook"
-                              value={contactInfo?.facebook}
-                              onChange={handleSave}
+                              value={formData?.facebook}
+                              onChange={handleChange}
                               error={errors?.facebook}
                               placeholder="www.facebook.com/tom-cook"
                             />
@@ -274,8 +217,8 @@ export default function EditContactInfoSlideOver({
                             <Input
                               label="Instagram"
                               name="instagram"
-                              value={contactInfo?.instagram}
-                              onChange={handleSave}
+                              value={formData?.instagram}
+                              onChange={handleChange}
                               error={errors?.instagram}
                               placeholder="www.instagram.com/tom-cook"
                             />
@@ -284,8 +227,8 @@ export default function EditContactInfoSlideOver({
                             <Input
                               label="Twitter"
                               name="twitter"
-                              value={contactInfo?.twitter}
-                              onChange={handleSave}
+                              value={formData?.twitter}
+                              onChange={handleChange}
                               error={errors?.twitter}
                               placeholder="www.twitter.com/tom-cook"
                             />
@@ -294,8 +237,8 @@ export default function EditContactInfoSlideOver({
                             <Input
                               label="TikTok"
                               name="tiktok"
-                              value={contactInfo?.tiktok}
-                              onChange={handleSave}
+                              value={formData?.tiktok}
+                              onChange={handleChange}
                               error={errors?.tiktok}
                               placeholder="www.tiktok.com/tom-cook"
                             />
@@ -304,8 +247,8 @@ export default function EditContactInfoSlideOver({
                             <Input
                               label="Linkedin"
                               name="linkedin"
-                              value={contactInfo?.linkedin}
-                              onChange={handleSave}
+                              value={formData?.linkedin}
+                              onChange={handleChange}
                               error={errors?.linkedin}
                               placeholder="www.linkedin.com/tom-cook"
                             />

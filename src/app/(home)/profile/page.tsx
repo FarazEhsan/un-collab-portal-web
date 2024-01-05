@@ -58,13 +58,13 @@ const ProfilePage = () => {
     }
   `;
 
-  const { loading, error, data, startPolling } = useQuery(GET_USER_DETAILS, {pollInterval:500});
+  const { loading, error, data, refetch } = useQuery(GET_USER_DETAILS);
 
-  const [profileData, setProfileData] = useState(data);
 
-  const handleUpdateProfile = (updatedData: any) => {
+  const handleUpdateProfile = () => {
     // Update the main profile data
-    //startPolling(500)
+    console.log("Updating profile through refetch");
+    refetch()
   };
 
   return (
@@ -387,6 +387,7 @@ const ProfilePage = () => {
               <AddProjectSlideOver
                 open={openAddProjectSlideOver}
                 setOpen={setOpenAddProjectSlideOver}
+                onUpdateProfile={handleUpdateProfile}
               />
             </div>
 
@@ -402,9 +403,6 @@ const ProfilePage = () => {
                   />
                 );
               })}
-              {/* <ProjectCard />
-              <ProjectCard />
-              <ProjectCard /> */}
             </div>
 
             {/*<dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">*/}
@@ -471,6 +469,7 @@ const ProfilePage = () => {
             open={openEditPersonalInfoSlideOver}
             setOpen={setOpenEditPersonalInfoSlideOver}
             data= {data?.user}
+            onUpdateProfile={handleUpdateProfile}
           />
           <EditContactInfoSlideOver
             open={openEditContactInfoSlideOver}
