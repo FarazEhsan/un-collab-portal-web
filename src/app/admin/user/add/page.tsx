@@ -9,7 +9,7 @@ let userNameError = ''
 export default function AddUser() {
 
  
-  async function submitForm(formData: FormData) {
+  async function submitFormToAuth0(formData: FormData) {
     "use server"
     console.log('Form Data before', formData)
     const userName = formData.get('username')
@@ -144,7 +144,7 @@ export default function AddUser() {
   //display error message when Input is empty
   return (
     <div className='w-3/5 p-8'>
-    <form action={submitForm}>
+    <form action={submitFormToAuth0}>
       <div className="space-y-12">
         <div className="border-b border-gray-900/10 pb-12">
           <h2 className="text-base font-semibold leading-7 text-gray-900">User Information</h2>

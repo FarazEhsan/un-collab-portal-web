@@ -45,6 +45,7 @@ export function useJoiForm(initialState: FormState, schema: Schema) {
     console.log('handle change called', input.name, input.value)
   
     const newData = { ...data, [input.name]: input.value };
+    //@ts-ignore
     const errorMessage = validateProperty({ name: input.name, value: newData[input.name] });
   
     setData(newData);

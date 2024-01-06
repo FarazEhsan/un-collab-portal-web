@@ -1,26 +1,29 @@
+import axios from 'axios';
 
-//rewrite the below using nextjs fetch
 async function getManagementApiToken() {
-    const res = await fetch('https://dev-huxjkvfkb5f36hh4.us.auth0.com/oauth/token', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        audience: process.env.AUTH0_AUDIENCE,
-        grant_type: process.env.AUTH0_GRANT_TYPE,
-        client_id: process.env.AUTH0_CLIENT_ID,
-        client_secret: process.env.AUTH0_CLIENT_SECRET
-      })
-    });
-  
-    if (!res.ok) {
-      throw new Error(`Failed to get token: ${res.statusText}`);
-    }
-  
-    const data = await res.json();
-  
-    return data.access_token;
-  }
+  const params = new URLSearchParams({
+    grant_type: "client_credentials",
+    client_id: "K4FpVUsE1toX4tDrwR7D5rwJFpMS0N4r",
+    client_secret:
+      "VjT36DGhHeuajgfGxEhafTah06NcwGZeMvLtm-gM-Fq0JxmuI8THcDlQmt-r00ni",
+    audience: "https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/",
+  });
 
-  export default getManagementApiToken
+  try {
+    const res = await axios.post(
+      "https://dev-huxjkvfkb5f36hh4.us.auth0.com/oauth/token",
+      params.toString(),
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    return res.data.access_token;
+  } catch (e) {
+    console.log("Token fetch error", e);
+  }
+}
+
+export default getManagementApiToken;

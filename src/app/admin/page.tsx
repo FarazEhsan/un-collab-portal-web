@@ -4,7 +4,10 @@ import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme
 import { AgGridReact } from "ag-grid-react";
 import Button from "@/components/button/Button";
+import AddUserSlideOver from "./add-user-slide-over";
 export default function AdminHome(){
+
+    const [openAddUserSlideOver, setOpenAddUserSlideOver] = useState(false);
     const [rowData, setRowData] = useState<any[]>([
         {
           mission: 'Voyager',
@@ -59,7 +62,20 @@ export default function AdminHome(){
             <h3>User Management</h3>
             <hr/>
             <br></br>
-            <Button classNames='mx-2' colorType='primary' type="button" action={openAddUserModal}> Add User</Button>
+            <Button
+                colorType="primary"
+                classNames="ml-auto"
+                onClick={() =>
+                  setOpenAddUserSlideOver(!openAddUserSlideOver)
+                }
+              >
+                  Add User
+            </Button>
+
+            <AddUserSlideOver
+                open={openAddUserSlideOver}
+                setOpen={setOpenAddUserSlideOver}
+              />
             <div className="ag-theme-quartz w-4/5 p-4"
             >
                 <AgGridReact rowData={rowData} columnDefs={colDefs} domLayout='autoHeight' onCellValueChanged={() =>{handleCellValueChanged} }/>
