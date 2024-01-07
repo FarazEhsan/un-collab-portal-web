@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full bg-white">
       <body className="dark:bg-gray-900">
-        <UserProvider>
+        <UserProvider  profileUrl="/api/auth/me">
           <ThemeProvider attribute="class" defaultTheme="system">
             {children}
           </ThemeProvider>

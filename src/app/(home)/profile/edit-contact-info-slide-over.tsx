@@ -110,7 +110,7 @@ export default function EditContactInfoSlideOver({
     //TODO: Implement
 
     const variables = {
-      userid: "6592a7f6b3d29da97f359cc3",
+      userid: data?._id,
       email: formData.email,
       contactNumber: formData.contactNumber,
       facebook: formData.facebook,

@@ -11,6 +11,7 @@ import Joi from "joi-browser";
 
 interface SlideOverProps {
   open: boolean;
+  data: any
   setOpen: React.Dispatch<SetStateAction<boolean>>;
   onUpdateProfile: () => void;
 }
@@ -34,6 +35,7 @@ const projectInfoSchema = {
 
 export default function AddProjectSlideOver({
   open,
+  data,
   setOpen,
   onUpdateProfile
 }: SlideOverProps) {
@@ -175,7 +177,7 @@ export default function AddProjectSlideOver({
     //TODO: Implement
 
     const variables = {
-      user: "6592a7f6b3d29da97f359cc3",
+      user: data._id,
       name: projectInfo.name,
       startTime: projectInfo.startTime,
       endTime: projectInfo.endTime,

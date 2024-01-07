@@ -10,26 +10,27 @@ import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
 import Joi from "joi-browser";
 import { useJoiForm } from "@/hooks/useJoiForm";
 import getManagementApiToken from "@/utils/auth0token";
+import { Schema } from "joi";
 
 interface SlideOverProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
 }
 
-const userInfoSchema = {
-  firstName: Joi.string().required().max(55),
-  lastName: Joi.date().iso().required(),
-  email: Joi.string(),
-};
+const userInfoSchema: Schema = Joi.object({
+  firstName: Joi.string().required().max(55).label("First Name"),
+  lastName: Joi.string().required().label("Last Name"),
+  email: Joi.string().email().label("Email"),
+});
 
 export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
-  const [userInfo, setUserInfo] = useState({
+  const userInfo = {
     firstName: "",
     lastName: "",
     email: "",
-  });
+  };
 
-  const [userAuth0Info, setUserAuth0Info] = useState(null)
+  const [userAuth0Info, setUserAuth0Info] = useState<any>(null);
   const {
     data: formData,
     errors,
@@ -37,44 +38,40 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
     handleSubmit,
   } = useJoiForm(userInfo, userInfoSchema);
 
-  
+  const ADD_NEW_USER = gql`
+    mutation AddNewUser(
+      $_id: ID!
+      $name: String!
+      $firstName: String!
+      $lastName: String!
+      $userName: String!
+      $email: String!
+    ) {
+      createUser(
+        createUserInput: {
+          _id: $_id
+          name: $name
+          firstName: $firstName
+          lastName: $lastName
+          userName: $userName
+          email: $email
+        }
+      ) {
+        _id
+        name
+        firstName
+        lastName
+        userName
+        email
+      }
+    }`;
 
-  //   const ADD_NEW_PROJECT = gql`
-  //     mutation AddNewProduct(
-  //       $user: ID!
-  //       $name: String!
-  //       $startTime: String!
-  //       $endTime: String
-  //       $relatedSDGs: [String!]
-  //       $description: String!
-  //     ) {
-  //       createProject(
-  //         createProjectInput: {
-  //           user: $user
-  //           name: $name
-  //           startTime: $startTime
-  //           endTime: $endTime
-  //           description: $description
-  //           relatedSDGs: $relatedSDGs
-  //         }
-  //       ) {
-  //         _id
-  //         name
-  //         description
-  //         startTime
-  //         endTime
-  //         relatedSDGs {
-  //           id
-  //           name
-  //         }
-  //       }
-  //     }
-  //   `;
+  const [addNewUser, { data: newUser, loading, error }] =
+    useMutation(ADD_NEW_USER);
 
-  //   const [addNewProduct, { data: newProject, loading, error }] =
-  //     useMutation(ADD_NEW_PROJECT);
   async function submitFormToAuth0() {
-  
+    let userJson = null;
+
     //1- Get the token
     const token = await getManagementApiToken();
     console.log("Token", token);
@@ -84,14 +81,13 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
       "https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/users",
       {
         method: "POST",
-
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
           authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          email: userInfo.email,
+          email: formData.email,
           connection: "Username-Password-Authentication",
           password: "Falcon_303303",
         }),
@@ -105,7 +101,7 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
       // 1- Get the roles and Assign role to the userI
       // 2- Send email to the user to reset password
 
-      const userJson = await userRes.json();
+      userJson = await userRes.json();
       console.log("User Json", userJson);
       const userId = userJson.user_id;
       console.log("User Id", userId);
@@ -131,7 +127,6 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
           `https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/users/${userId}/roles`,
           {
             method: "POST",
-
             headers: {
               "Content-Type": "application/json",
               authorization: `Bearer ${token}`,
@@ -158,7 +153,7 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
           },
           body: JSON.stringify({
             client_id: process.env.AUTH0_CLIENT_ID,
-            email: userInfo.email,
+            email: formData.email,
             connection: "Username-Password-Authentication",
           }),
         }
@@ -166,35 +161,40 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
 
       console.log("User Password Reset Response", userPasswordResetRes.status);
       if (userPasswordResetRes.status === 200) {
-        const userPasswordResetJson = await userPasswordResetRes.json()
-        setUserAuth0Info(userPasswordResetJson)
+        //const userPasswordResetJson = await userPasswordResetRes.json()
+
         console.log("Password reset link sent", userPasswordResetRes);
+        return userJson;
       }
     }
-
   }
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await submitFormToAuth0()
-    if(userAuth0Info){
-       // handleSubmit(e, postData);
+    const auth0Response = await submitFormToAuth0();
+    setUserAuth0Info(auth0Response);
+    console.log("Auth0 Response", userAuth0Info);
+    if (userAuth0Info) {
+      console.log("calling handle submin");
+      handleSubmit(e, postData);
     }
-    
   };
 
   const postData = async () => {
-    console.log(userInfo);
+    console.log(" User info for mongo submission", userInfo);
 
     //TODO: Implement
 
     const variables = {
-      firstName: userInfo.firstName,
-      lastName: userInfo.lastName,
-      email: userInfo.email,
+      _id: userAuth0Info?.user_id,
+      name: formData.firstName + " " + formData.lastName,
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      userName: userAuth0Info?.nickname,
+      email: formData.email,
     };
 
-    //await addNewProduct({ variables: variables })
+    await addNewUser({ variables: variables })
     setOpen(false);
   };
 
@@ -257,7 +257,7 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
                               label="First Name"
                               name="firstName"
                               type="text"
-                              value={userInfo?.firstName}
+                              value={formData?.firstName}
                               onChange={handleChange}
                               error={errors?.firstName}
                               placeholder="First Name"
@@ -268,7 +268,7 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
                               label="Last Name"
                               name="lastName"
                               type="text"
-                              value={userInfo?.lastName}
+                              value={formData?.lastName}
                               onChange={handleChange}
                               error={errors?.lastName}
                               placeholder="Last Name"
@@ -279,7 +279,7 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
                               label="Email"
                               name="email"
                               type="text"
-                              value={userInfo?.email}
+                              value={formData?.email}
                               onChange={handleChange}
                               error={errors?.email}
                               placeholder="user@email.com"

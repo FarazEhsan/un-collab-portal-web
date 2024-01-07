@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { use, useEffect, useLayoutEffect, useState } from "react";
 import SingleColumnContainer from "@/components/navigation/singleColumnContainer";
 import RoundButton from "@/components/button/round-button";
 import ProjectCard, { Project } from "@/components/cards/project-card";
@@ -9,6 +9,7 @@ import EditContactInfoSlideOver from "@/app/(home)/profile/edit-contact-info-sli
 import AddProjectSlideOver from "@/app/(home)/profile/add-project-slide-over";
 import { gql, useQuery } from "@apollo/client";
 import CardSkeleton from "@/components/skeletons/card-skeleton";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 const ProfilePage = () => {
   const [openEditPersonalInfoSlideOver, setOpenEditPersonalInfoSlideOver] =
@@ -17,20 +18,26 @@ const ProfilePage = () => {
     useState(false);
   const [openAddProjectSlideOver, setOpenAddProjectSlideOver] = useState(false);
 
+  const {
+    user: auth0User,
+    error: auth0UserError,
+    isLoading: auth0Loading,
+  } = useUser();
+
   const GET_USER_DETAILS = gql`
-    query GetUserDetails {
-      user(id: "6592a7f6b3d29da97f359cc3") {
+    query GetUserDetails($id: String!) {
+      user(id: $id) {
         _id
         name
         firstName
         lastName
         userName
         email
+        dob
+        age
         contactNumber
         city
         country
-        dob
-        age
         facebook
         twitter
         instagram
@@ -58,13 +65,21 @@ const ProfilePage = () => {
     }
   `;
 
-  const { loading, error, data, refetch } = useQuery(GET_USER_DETAILS);
+  const { loading, error, data, refetch } = useQuery(GET_USER_DETAILS, {
+    variables: { id: auth0User?.sub?.toString() },
+  });
 
+  useLayoutEffect(() => {
+    if (!auth0Loading) {
+      console.log('calling refecth')
+      refetch();
+    }
 
+  }, [auth0User, auth0Loading]);
   const handleUpdateProfile = () => {
     // Update the main profile data
     console.log("Updating profile through refetch");
-    refetch()
+    refetch();
   };
 
   return (
@@ -388,6 +403,7 @@ const ProfilePage = () => {
                 open={openAddProjectSlideOver}
                 setOpen={setOpenAddProjectSlideOver}
                 onUpdateProfile={handleUpdateProfile}
+                data={data?.user}
               />
             </div>
 
@@ -468,7 +484,7 @@ const ProfilePage = () => {
           <EditPersonalInfoSlideOver
             open={openEditPersonalInfoSlideOver}
             setOpen={setOpenEditPersonalInfoSlideOver}
-            data= {data?.user}
+            data={data?.user}
             onUpdateProfile={handleUpdateProfile}
           />
           <EditContactInfoSlideOver

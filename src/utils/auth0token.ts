@@ -1,17 +1,20 @@
 import axios from 'axios';
 
+
+
+
+
 async function getManagementApiToken() {
   const params = new URLSearchParams({
-    grant_type: "client_credentials",
-    client_id: "K4FpVUsE1toX4tDrwR7D5rwJFpMS0N4r",
-    client_secret:
-      "VjT36DGhHeuajgfGxEhafTah06NcwGZeMvLtm-gM-Fq0JxmuI8THcDlQmt-r00ni",
-    audience: "https://dev-huxjkvfkb5f36hh4.us.auth0.com/api/v2/",
+    grant_type: `${process.env.NEXT_PUBLIC_AUTH0_GRANT_TYPE}`,
+    client_id: `${process.env.NEXT_PUBLIC_AUTH0_CLIENT_ID}`,
+    client_secret: `${process.env.NEXT_PUBLIC_AUTH0_CLIENT_SECRET}`,
+    audience:   `${process.env.NEXT_PUBLIC_AUTH0_AUDIENCE}`,
   });
 
   try {
     const res = await axios.post(
-      "https://dev-huxjkvfkb5f36hh4.us.auth0.com/oauth/token",
+      `${process.env.NEXT_PUBLIC_AUTH0_TOKEN_URL}`,
       params.toString(),
       {
         headers: {

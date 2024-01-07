@@ -13,7 +13,7 @@ interface SlideOverProps {
   open: boolean;
   data: any;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
-  onUpdateProfile: (updatedContactInfo: any) => void;
+  onUpdateProfile: () => void;
 }
 
 const personalInfoSchema: Schema = Joi.object({
@@ -72,8 +72,6 @@ export default function EditPersonalInfoSlideOver({
         contactNumber
         city
         country
-        dob
-        age
         facebook
         twitter
         instagram
@@ -85,6 +83,17 @@ export default function EditPersonalInfoSlideOver({
         groups {
           name
           description
+        }
+        projects {
+          _id
+          name
+          description
+          startTime
+          endTime
+          relatedSDGs {
+            id
+            name
+          }
         }
       }
     }
@@ -109,7 +118,7 @@ export default function EditPersonalInfoSlideOver({
     //TODO: Implement
 
     const variables = {
-      userid: "6592a7f6b3d29da97f359cc3",
+      userid: data._id,
       firstName: formData.firstName,
       lastName: formData.lastName,
       dob: formData.dob,
@@ -120,7 +129,7 @@ export default function EditPersonalInfoSlideOver({
 
     await updatePersonal({ variables: variables });
     console.log("Update data adter personal update", data);
-
+    onUpdateProfile()
     setOpen(false);
   };
 

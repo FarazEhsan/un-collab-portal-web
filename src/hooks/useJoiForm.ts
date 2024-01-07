@@ -42,7 +42,7 @@ export function useJoiForm(initialState: FormState, schema: Schema) {
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
-    console.log('handle change called', input.name, input.value)
+    //console.log('handle change called', input.name, input.value)
   
     const newData = { ...data, [input.name]: input.value };
     //@ts-ignore

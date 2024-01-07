@@ -12,11 +12,17 @@ import {
 } from '@heroicons/react/24/outline'
 import { FlagIcon } from "@heroicons/react/20/solid";
 import { AcademicCapIcon } from "@heroicons/react/24/solid";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 interface AdminLayoutProps {
     children: ReactNode
 }
+export const client = new ApolloClient({
+    uri: "http://localhost:8080/graphql", // replace with your server's URI
+    cache: new InMemoryCache(),
+  });
 
+  
 const AdminLayout = ({children}:AdminLayoutProps)=>{
     const navData:NavItem[]= [
         {name: 'User Management', href: '/home', icon: HomeIcon, current: true},
@@ -27,11 +33,11 @@ const AdminLayout = ({children}:AdminLayoutProps)=>{
         // {name: 'Reports', href: '#', icon: ChartPieIcon, current: false},
     ]
     return(
-        <>
+        <ApolloProvider client={client}>
         <SideNav navData={navData}>
             {children}
         </SideNav>
-        </>
+        </ApolloProvider>
         
     )
 }
