@@ -25,7 +25,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navData: NavItem[] = [
     { name: "User Management", href: "/admin", icon: HomeIcon, current: true },
     { name: "SDG", href: "/admin/sdg", icon: FlagIcon, current: false },
-    { name: "Teams", href: "#", icon: AcademicCapIcon, current: false },
+    { name: "Group", href: "/admin/group", icon: AcademicCapIcon, current: false },
 
     // {name: 'Calendar', href: '#', icon: CalendarIcon, current: false},
     // {name: 'Documents', href: '#', icon: DocumentDuplicateIcon, current: false},

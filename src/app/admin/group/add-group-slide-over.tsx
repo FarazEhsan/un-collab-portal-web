@@ -12,52 +12,46 @@ import { Schema } from "joi";
 interface SlideOverProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
-  handleSDGAdded: () => void;
+  handleGroupAdded: () => void;
 }
 
-const sdgSchema: Schema = Joi.object({
-  name: Joi.string().required().max(55).label("SDG Title"),
-  code: Joi.string().required().label("Code"),
-  shortDescription: Joi.string().required().label("Short Description"),
+const groupSchema: Schema = Joi.object({
+  name: Joi.string().required().max(55).label("Group Title"),
+  description: Joi.string().required().label("Description"),
 });
 
-export default function AddUserSlideOver({ open, setOpen, handleSDGAdded }: SlideOverProps) {
-  const sdgInfo = {
+export default function AddGroupSlideOver({ open, setOpen, handleGroupAdded }: SlideOverProps) {
+  const groupInfo = {
     name: "",
-    code: "",
-    shortDescription: "",
+    description: ""
   };
 
-  const userAuth0Info = useRef<any>(null);
+
   const {
     data: formData,
     errors,
     handleChange,
     handleSubmit,
-  } = useJoiForm(sdgInfo, sdgSchema);
+  } = useJoiForm(groupInfo, groupSchema);
 
-  const ADD_NEW_SDG = gql`
-    mutation AddNewSDG(
+  const ADD_NEW_Group = gql`
+    mutation AddNewGroup(
       $name: String!
-      $code: String!
-      $shortDescription: String!
+      $description: String!
     ) {
-        create(
-        createSDGInput: {
+        createGroup(
+        createGroupInput: {
           name: $name
-          code: $code
-          shortDescription: $shortDescription
-
+          description: $description
         }
       ) {
          name
-         code
-         shortDescription
+         description
       }
     }`;
 
-  const [addNewSDG, { data: newSDG, loading, error }] =
-    useMutation(ADD_NEW_SDG);
+  const [addNewGroup, { data: newGroup, loading, error }] =
+    useMutation(ADD_NEW_Group);
 
 
 
@@ -69,16 +63,13 @@ export default function AddUserSlideOver({ open, setOpen, handleSDGAdded }: Slid
   };
 
   const postData = async () => {
-
     const variables = {
       name: formData.name,
-      code: formData.code,
-      shortDescription: formData.shortDescription,
-
+      description: formData.description,
     };
 
-    await addNewSDG({ variables: variables })
-    handleSDGAdded();
+    await addNewGroup({ variables: variables })
+    handleGroupAdded();
     setOpen(false);
   };
 
@@ -117,7 +108,7 @@ export default function AddUserSlideOver({ open, setOpen, handleSDGAdded }: Slid
                           id="slide-over-heading"
                           className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                         >
-                          Add New SDG
+                          Add New Group
                         </h2>
                         <div className="ml-3 flex h-7 items-center">
                           <button
@@ -138,35 +129,24 @@ export default function AddUserSlideOver({ open, setOpen, handleSDGAdded }: Slid
                         <div className="px-8">
                           <div>
                             <Input
-                              label="SDG Title"
+                              label="Group Title"
                               name="name"
                               type="text"
                               value={formData?.name}
                               onChange={handleChange}
                               error={errors?.name}
-                              placeholder="SDG Title"
+                              placeholder="Group Title"
                             />
                           </div>
                           <div className="mt-4">
                             <Input
-                              label="Code"
-                              name="code"
+                              label="Description"
+                              name="description"
                               type="text"
-                              value={formData?.code}
+                              value={formData?.description}
                               onChange={handleChange}
                               error={errors?.code}
-                              placeholder="Code"
-                            />
-                          </div>
-                          <div className="mt-4">
-                            <Input
-                              label="Short Description"
-                              name="shortDescription"
-                              type="text"
-                              value={formData?.shortDescription}
-                              onChange={handleChange}
-                              error={errors?.shortDescription}
-                              placeholder="Short Description"
+                              placeholder="Description"
                             />
                           </div>
                         </div>

@@ -4,47 +4,45 @@ import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import { AgGridReact } from "ag-grid-react";
 import Button from "@/components/button/Button";
-import AddSDGSlideOver from "./add-sdg-slide-over";
+import AddGroupSlideOver from "./add-group-slide-over";
 import { gql } from "@apollo/client/core";
 import { useQuery } from "@apollo/client";
 import { all } from "axios";
-export default function SDFManagement() {
-  const [openAddSDGSlideOver, setOpenAddSDGSlideOver] = useState(false);
+export default function GroupManagement() {
+  const [openAddGroupSlideOver, setOpenAddGroupSlideOver] = useState(false);
   //1- Get all users gql
 
-  const GET_ALL_SDGs = gql`
-    query GetAllSDGs {
-      allsdgs {
-        id
+  const GET_ALL_GROUPS = gql`
+    query GetAllGroups {
+      allgroups {
+        _id
         name
-        code
-        shortDescription
+        description
       }
     }
   `;
 
   const {
-    data: allSDGs,
-    loading: allSDGsLoading,
-    error: allSDGsError,
+    data: allGroups,
+    loading: allGroupsLoading,
+    error: allGroupsError,
     refetch,
-  } = useQuery(GET_ALL_SDGs);
+  } = useQuery(GET_ALL_GROUPS);
 
   useEffect(() => {
-    if (!allSDGsLoading) {
-      console.log("All SDGs", allSDGs);
-      setRowData(allSDGs?.allsdgs);
+    if (!allGroupsLoading) {
+      console.log("All Groups", allGroups);
+      setRowData(allGroups?.allgroups);
     }
-  }, [allSDGsLoading]);
+  }, [allGroupsLoading]);
 
-  const [rowData, setRowData] = useState<any[]>(allSDGs?.allsdgs);
+  const [rowData, setRowData] = useState<any[]>(allGroups?.allgroups);
 
   // Column Definitions: Defines & controls grid columns.
   const [colDefs, setColDefs] = useState([
-    { field: "id", hide: true },
+    { field: "_id", hide: true },
     { field: "name" },
-    { field: "code" },
-    { field: "shortDescription" },
+    { field: "description" }
   ]);
 
   const handleCellValueChanged = (params: any) => {
@@ -55,29 +53,29 @@ export default function SDFManagement() {
     console.log("Open Add User Modal");
   };
 
-  const handleSDGAdded = () => {
+  const handleGroupAdded = () => {
     refetch();
   };
   return (
     <div className="h-dvh p-4">
-      <h3>SDG Management</h3>
+      <h3>Group Management</h3>
       <hr />
       <br></br>
       <Button
         colorType="primary"
         classNames="ml-auto"
-        onClick={() => setOpenAddSDGSlideOver(!openAddSDGSlideOver)}
+        onClick={() => setOpenAddGroupSlideOver(!openAddGroupSlideOver)}
       >
-        Add SDG
+        Add Group
       </Button>
 
-      <AddSDGSlideOver
-        open={openAddSDGSlideOver}
-        setOpen={setOpenAddSDGSlideOver}
-        handleSDGAdded={handleSDGAdded}
+      <AddGroupSlideOver
+        open={openAddGroupSlideOver}
+        setOpen={setOpenAddGroupSlideOver}
+        handleGroupAdded={handleGroupAdded}
       />
       <div className="ag-theme-quartz w-5/12 p-4">
-        {!allSDGsLoading && (
+        {!allGroupsLoading && (
           <AgGridReact
             rowData={rowData}
             columnDefs={colDefs}
