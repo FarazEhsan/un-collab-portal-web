@@ -1,52 +1,45 @@
 "use client"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme
 import { AgGridReact } from "ag-grid-react";
 import Button from "@/components/button/Button";
 import AddUserSlideOver from "./add-user-slide-over";
+import { gql } from "@apollo/client/core";
+import { useQuery } from "@apollo/client";
+import { all } from "axios";
 export default function AdminHome(){
 
     const [openAddUserSlideOver, setOpenAddUserSlideOver] = useState(false);
-    const [rowData, setRowData] = useState<any[]>([
-        {
-          mission: 'Voyager',
-          company: 'NASA',
-          location: 'Cape Canaveral',
-          date: '1977-09-05',
-          rocket: 'Titan-Centaur ',
-          price: 86580000,
-          successful: true,
-        },
-        {
-          mission: 'Apollo 13',
-          company: 'NASA',
-          location: 'Kennedy Space Center',
-          date: '1970-04-11',
-          rocket: 'Saturn V',
-          price: 3750000,
-          successful: false,
-        },
-        {
-          mission: 'Falcon 9',
-          company: 'SpaceX',
-          location: 'Cape Canaveral',
-          date: '2015-12-22',
-          rocket: 'Falcon 9',
-          price: 9750000,
-          successful: true,
-        },
-      ]);
+    //1- Get all users gql
+
+    const GET_ALL_USERS = gql `query GetAllUsers {
+      allusers{
+        _id
+        name
+        userName
+        email
+      }
+    }`
+
+    const {data: allUsers, loading: allUsersLoading, error: allUsersError, refetch} = useQuery(GET_ALL_USERS)
+
+    useEffect(()=>{ 
+      if(!allUsersLoading){
+        console.log('All users', allUsers)
+        setRowData(allUsers?.allusers)
+      }
+
+    },[allUsersLoading])
+
+    const [rowData, setRowData] = useState<any[]>(allUsers?.allusers);
 
       // Column Definitions: Defines & controls grid columns.
       const [colDefs, setColDefs] = useState([
-        { field: 'mission', editable: true },
-        {field: 'company' },
-        {field: 'location' },
-        {field: 'date' },
-        { field: 'price' },
-        { field: 'successful', editable: true },
-        { field: 'rocket' },
+        {field: '_id', hide: true },
+        {field: 'name' },
+        {field: 'userName' },
+        {field: 'email' },
       ]);
 
 
@@ -56,6 +49,10 @@ export default function AdminHome(){
 
       const openAddUserModal = () =>{
         console.log('Open Add User Modal')
+      }
+
+      const handleUserAdded = () =>{
+        refetch()
       }
     return(
         <div className="h-dvh p-4">
@@ -75,10 +72,11 @@ export default function AdminHome(){
             <AddUserSlideOver
                 open={openAddUserSlideOver}
                 setOpen={setOpenAddUserSlideOver}
+                handleUserAdded={handleUserAdded}
               />
-            <div className="ag-theme-quartz w-4/5 p-4"
+            <div className="ag-theme-quartz w-5/12 p-4"
             >
-                <AgGridReact rowData={rowData} columnDefs={colDefs} domLayout='autoHeight' onCellValueChanged={() =>{handleCellValueChanged} }/>
+               {!allUsersLoading && <AgGridReact rowData={rowData} columnDefs={colDefs} domLayout='autoHeight' onCellValueChanged={() =>{handleCellValueChanged} }/>}
             </div>
         </div>
     )

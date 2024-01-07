@@ -5,7 +5,7 @@ import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
 import TextArea from "@/components/form/TextArea";
 import ComboBox from "@/components/form/combo-box";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation, useQuery } from "@apollo/client";
 // @ts-ignore
 import Joi from "joi-browser";
 

@@ -24,6 +24,7 @@ import TwoColumnContainer from "@/components/navigation/twoColumnContainer";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import UN_Habitat_Logo from "../../../public/UN-Habitat_logo_English.png";
+import { useUser } from '@auth0/nextjs-auth0/client';
 
 export type NavItem = {
   name: string;
@@ -58,6 +59,7 @@ interface SideNavProps {
 export default function SideNav({ children, navData }: SideNavProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { theme, setTheme } = useTheme();
+  const { user, error, isLoading } = useUser();
   return (
     <>
       <div>
@@ -354,7 +356,7 @@ export default function SideNav({ children, navData }: SideNavProps) {
                         className="ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100"
                         aria-hidden="true"
                       >
-                        Tom Cook
+                        {user?.name}
                       </span>
                       <ChevronDownIcon
                         className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-600"

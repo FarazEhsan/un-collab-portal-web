@@ -1,11 +1,9 @@
-import React, { Fragment, SetStateAction, useEffect, useState } from "react";
+import React, { Fragment, SetStateAction, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
-import TextArea from "@/components/form/TextArea";
-import ComboBox from "@/components/form/combo-box";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 // @ts-ignore
 import Joi from "joi-browser";
 import { useJoiForm } from "@/hooks/useJoiForm";
@@ -15,6 +13,7 @@ import { Schema } from "joi";
 interface SlideOverProps {
   open: boolean;
   setOpen: React.Dispatch<SetStateAction<boolean>>;
+  handleUserAdded: () => void;
 }
 
 const userInfoSchema: Schema = Joi.object({
@@ -23,14 +22,14 @@ const userInfoSchema: Schema = Joi.object({
   email: Joi.string().email().label("Email"),
 });
 
-export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
+export default function AddUserSlideOver({ open, setOpen, handleUserAdded }: SlideOverProps) {
   const userInfo = {
     firstName: "",
     lastName: "",
     email: "",
   };
 
-  const [userAuth0Info, setUserAuth0Info] = useState<any>(null);
+  const userAuth0Info = useRef<any>(null);
   const {
     data: formData,
     errors,
@@ -172,9 +171,9 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const auth0Response = await submitFormToAuth0();
-    setUserAuth0Info(auth0Response);
-    console.log("Auth0 Response", userAuth0Info);
-    if (userAuth0Info) {
+    userAuth0Info.current= auth0Response;
+    console.log("Auth0 Response", userAuth0Info.current);
+    if (userAuth0Info.current) {
       console.log("calling handle submin");
       handleSubmit(e, postData);
     }
@@ -186,15 +185,16 @@ export default function AddUserSlideOver({ open, setOpen }: SlideOverProps) {
     //TODO: Implement
 
     const variables = {
-      _id: userAuth0Info?.user_id,
+      _id: userAuth0Info?.current.user_id,
       name: formData.firstName + " " + formData.lastName,
       firstName: formData.firstName,
       lastName: formData.lastName,
-      userName: userAuth0Info?.nickname,
+      userName: userAuth0Info?.current.nickname,
       email: formData.email,
     };
 
     await addNewUser({ variables: variables })
+    handleUserAdded();
     setOpen(false);
   };
 
