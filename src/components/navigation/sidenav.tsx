@@ -348,7 +348,7 @@ export default function SideNav({ children, navData }: SideNavProps) {
                     <span className="sr-only">Open user menu</span>
                     <img
                       className="h-8 w-8 rounded-full bg-gray-50 dark:bg-gray-800"
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src="https://unhabitatstaticfiles.blob.core.windows.net/webfiles/olga-profilepic.jpeg"
                       alt=""
                     />
                     <span className="hidden lg:flex lg:items-center">
@@ -356,7 +356,7 @@ export default function SideNav({ children, navData }: SideNavProps) {
                         className="ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-100"
                         aria-hidden="true"
                       >
-                        {user?.name}
+                        {user?.nickname}
                       </span>
                       <ChevronDownIcon
                         className="ml-2 h-5 w-5 text-gray-400 dark:text-gray-600"

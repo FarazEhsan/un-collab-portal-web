@@ -10,15 +10,13 @@ import {
     HomeIcon,
     UsersIcon,
 } from '@heroicons/react/24/outline'
-import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
+import { client } from '../../utils/apolloclient'
 
 interface HomeLayoutProps {
     children: ReactNode
 }
-export const client = new ApolloClient({
-    uri: "http://localhost:8080/graphql", // replace with your server's URI
-    cache: new InMemoryCache(),
-  });
+
 const HomeLayout = ({children}:HomeLayoutProps) => {
     const navData:NavItem[]= [
         {name: 'Dashboard', href: '/home', icon: HomeIcon, current: true},

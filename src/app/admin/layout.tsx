@@ -11,15 +11,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { FlagIcon } from "@heroicons/react/20/solid";
 import { AcademicCapIcon } from "@heroicons/react/24/solid";
-import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
+import { ApolloProvider } from "@apollo/client";
+import { client } from '../../utils/apolloclient'
 
 interface AdminLayoutProps {
   children: ReactNode;
 }
-export const client = new ApolloClient({
-  uri: "http://localhost:8080/graphql", // replace with your server's URI
-  cache: new InMemoryCache(),
-});
+
 
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const navData: NavItem[] = [

@@ -19,12 +19,12 @@ interface SlideOverProps {
 
 const contactInfoSchema: Schema = Joi.object({
   email: Joi.string().email().required().label("Email"),
-  contactNumber: Joi.string().length(10).required().label("Contact Number"),
-  facebook: Joi.string().min(3).label("Facebook"),
-  instagram: Joi.string().min(3).label("Instagram"),
-  linkedin: Joi.string().min(3).label("Linkedin"),
-  tiktok: Joi.string().min(3).label("TikTok"),
-  twitter: Joi.string().min(3).label("Twitter"),
+  contactNumber: Joi.string().required().label("Contact Number"),
+  facebook: Joi.string().label("Facebook").allow(""),
+  instagram: Joi.string().label("Instagram").allow(""),
+  linkedin: Joi.string().label("Linkedin").allow(""),
+  tiktok: Joi.string().label("TikTok").allow(""),
+  twitter: Joi.string().label("Twitter").allow(""),
 });
 export default function EditContactInfoSlideOver({
   open,
