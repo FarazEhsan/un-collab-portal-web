@@ -44,7 +44,7 @@ const ProjectCard = (project:Project) => {
       <div className="m-4" onClick={() => setOpen(!open)}>
         <div className="h-56">
           <img
-            src="https://source.unsplash.com/random/300x500"
+            src="https://unhabitatstaticfiles.blob.core.windows.net/webfiles/tirana_school_street_programme.jpg"
             className="h-full w-full object-cover"
           />
           <CarouselModal
