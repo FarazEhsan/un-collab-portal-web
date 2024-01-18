@@ -1,36 +1,23 @@
 'use client'
 import TwoColumnContainer from "@/components/navigation/twoColumnContainer";
 import PostCard from "@/components/cards/post-card";
-import MultiSelectCombobox from "@/components/form/combo-box";
 import {useState} from "react";
-import Combobox from "@/components/form/combo-box";
-import ComboBox from "@/components/form/combo-box";
+import CreatePostSlideOver from "@/components/overlays/create-post-slide-over";
 
 export default function Home() {
-    const RadioData = [
-        {id: 'email', title: 'Email'},
-        {id: 'sms', title: 'Phone (SMS)'},
-        {id: 'push', title: 'Push notification'},
-    ]
-    const CheckData = [
-        {id: 'email1', title: 'Email', checked: true},
-        {id: 'sms1', title: 'Phone (SMS)', checked: false},
-        {id: 'push1', title: 'Push notification', checked: true},
-    ]
-    const people = [
-        {id: 1, name: 'Durward Reynolds'},
-        {id: 2, name: 'Kenton Towne'},
-        {id: 3, name: 'Therese Wunsch'},
-        {id: 4, name: 'Benedict Kessler'},
-        {id: 5, name: 'Katelyn Rohan'},
-    ]
-    const images = ['https://source.unsplash.com/random', 'https://source.unsplash.com/random'];
-    const [selectedPeople, setSelectedPeople] = useState([1,2])
-    const [selectedPerson, setSelectedPerson] = useState(null);
-    console.log('selected ppl', selectedPeople);
-    console.log('selected person', selectedPerson);
+    const [openCreatePostSlideOver, setOpenCreatePostSlideOver] = useState(false);
+    const secondaryColumnContent =
+        <div>
+            <button
+                onClick={() => setOpenCreatePostSlideOver(!openCreatePostSlideOver)}
+                className="bg-custom-orange hover:bg-amber-500 dark:bg-amber-500 dark:hover:bg-custom-orange text-gray-900 rounded-md font-semibold py-2 px-3 w-full">
+                Create New Post
+            </button>
+            <CreatePostSlideOver open={openCreatePostSlideOver} setOpen={setOpenCreatePostSlideOver}/>
+        </div>
+
     return (
-        <TwoColumnContainer secondaryContent={<div>hello</div>}>
+        <TwoColumnContainer secondaryContent={secondaryColumnContent}>
             {/*{*/}
             {/*    selectedData?.map(item => (*/}
             {/*        <div key={item.id}>{item.name}</div>*/}
