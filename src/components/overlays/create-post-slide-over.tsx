@@ -150,8 +150,8 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                                     />
                                                 </div>
                                                 <div className="mx-6 my-4">
-                                                    <TextEditor
-                                                        onChange={handleProcedureContentChange}/>
+                                                    {/* <TextEditor
+                                                        onChange={handleProcedureContentChange}/> */}
 
                                                 </div>
 
