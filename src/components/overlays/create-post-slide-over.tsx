@@ -24,7 +24,7 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     const {user, error, isLoading} = useUser();
 
     useEffect(() => {
-        const socket = new io('http://localhost:8080');
+        const socket =  io('http://localhost:8080');
         console.log(socket)
 
     }, []);
