@@ -1,5 +1,5 @@
 'use client'
-import React, {ChangeEvent, Fragment, SetStateAction, useState} from 'react'
+import React, {ChangeEvent, Fragment, SetStateAction, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
 import Input from "@/components/form/Input";
@@ -8,33 +8,22 @@ import {useUser} from "@auth0/nextjs-auth0/client";
 import Button from "@/components/button/Button";
 import TextArea from "@/components/form/TextArea";
 import {FileInput} from "flowbite-react";
-
+import { io } from 'socket.io-client';
+import useSocket from "@/hooks/useSocketClient";
 interface SlideOverProps {
     open: boolean,
     setOpen: React.Dispatch<SetStateAction<boolean>>
 }
 
-const WS_URL = 'http://localhost:8080'
+
 export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     const {user, error, isLoading} = useUser();
-    // const socket =  io('http://localhost:8080');
-    // useEffect(() => {
-    //
-    //     console.log(socket)
-    //
-    // }, []);
+    const socket = useSocket();
+    useEffect(()=>{
+        if(socket)
+        socket.emit('findAllForumEvents');
+    })
 
-
-    // const {
-    //     sendJsonMessage,
-    //     lastJsonMessage,
-    //     readyState
-    // } = useWebSocket(WS_URL, {
-    //     onOpen: () => {
-    //         console.log('WebSocket connection established.');
-    //     },
-    //     shouldReconnect: () => true,
-    // });
     const [postDetails, setPostDetails] = useState({
         title: '',
         description: '',
@@ -43,20 +32,7 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(postDetails)
-        // if (socket?.readyState) {
-        //     console.log('Socket connected');
-
-        // }
-        // if (readyState === ReadyState.OPEN && user) {
-        //     console.log('sending')
-        //     sendJsonMessage({
-        //         event: "postTopic",
-        //         data: {
-        //             ...postDetails,
-        //             author: user?.sub
-        //         }
-        //     })
-        // }
+        socket?.emit('postTopic', {"title": postDetails.title, "description": postDetails.description, "author": user?.sub});
     }
 
     const handleFileChange = (e: any) => {
