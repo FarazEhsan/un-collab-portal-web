@@ -22,9 +22,9 @@ interface SlideOverProps {
 const WS_URL = 'http://localhost:8080'
 export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     const {user, error, isLoading} = useUser();
-
+    const socket =  io('http://localhost:8080');
     useEffect(() => {
-        const socket =  io('http://localhost:8080');
+        
         console.log(socket)
 
     }, []);
@@ -47,10 +47,10 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(postDetails)
-        if (socket?.readyState) {
-            console.log('Socket connected');
+        // if (socket?.readyState) {
+        //     console.log('Socket connected');
 
-        }
+        // }
         // if (readyState === ReadyState.OPEN && user) {
         //     console.log('sending')
         //     sendJsonMessage({
