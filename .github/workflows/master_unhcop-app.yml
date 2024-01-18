@@ -54,12 +54,6 @@ jobs:
       - name: Unzip artifact for deployment
         run: unzip release.zip
       
-      - name: Login to Azure
-        uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_DBB66A8AE35D44B3BD3226C81C4C60DA }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1B545EF38A1C46A1A69E2D4E3CE67A51 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_E386A6500DB94754BFD12783C75C7FE6 }}
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
@@ -67,5 +61,6 @@ jobs:
         with:
           app-name: 'unhcop-app'
           slot-name: 'Production'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE_UNHCOP_APP }}
           package: .
           
