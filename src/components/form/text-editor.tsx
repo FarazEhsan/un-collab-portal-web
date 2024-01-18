@@ -1,6 +1,14 @@
+'use client'
 import 'quill/dist/quill.snow.css'
-import ReactQuill from 'react-quill'
 import {ChangeEventHandler} from "react";
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(
+    () => {
+        return import('react-quill');
+    },
+    { ssr: false }
+);
 
 interface TextEditorProps {
     onChange: any
@@ -9,7 +17,7 @@ const TextEditor = ({onChange}:TextEditorProps) => {
 
     var modules = {
         toolbar: [
-            [{ size: ["small", false, "large", "huge"] }],
+            [],
             ["bold", "italic", "underline", "strike", "blockquote"],
             [{ list: "ordered" }, { list: "bullet" }],
             ["link", "image"],

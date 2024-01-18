@@ -1,18 +1,13 @@
-import React, {
-    ChangeEvent,
-    Fragment,
-    SetStateAction,
-    useEffect,
-    useState
-} from 'react'
+'use client'
+import React, {ChangeEvent, Fragment, SetStateAction, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
 import Input from "@/components/form/Input";
 import 'react-quill/dist/quill.snow.css';
-import TextEditor from "@/components/form/text-editor";
 import {useUser} from "@auth0/nextjs-auth0/client";
-import {io} from "socket.io-client";
 import Button from "@/components/button/Button";
+import TextArea from "@/components/form/TextArea";
+import {FileInput} from "flowbite-react";
 
 interface SlideOverProps {
     open: boolean,
@@ -22,12 +17,12 @@ interface SlideOverProps {
 const WS_URL = 'http://localhost:8080'
 export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     const {user, error, isLoading} = useUser();
-    const socket =  io('http://localhost:8080');
-    useEffect(() => {
-        
-        console.log(socket)
-
-    }, []);
+    // const socket =  io('http://localhost:8080');
+    // useEffect(() => {
+    //
+    //     console.log(socket)
+    //
+    // }, []);
 
 
     // const {
@@ -42,7 +37,8 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     // });
     const [postDetails, setPostDetails] = useState({
         title: '',
-        description: ''
+        description: '',
+        attachments: null
     });
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -62,11 +58,20 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
         //     })
         // }
     }
-    const handleProcedureContentChange = (content: any) => {
-        setPostDetails(prevState => ({...prevState, description: content}));
-    };
-    const handleTitleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPostDetails(prevState => ({...prevState, title: e.target.value}));
+
+    const handleFileChange = (e: any) => {
+        setPostDetails(prevState => ({
+            ...prevState,
+            attachments: e.target.files
+        }));
+
+    }
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setPostDetails(prevState => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }));
     };
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -146,13 +151,30 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                                     <Input label="Title"
                                                            name="title"
                                                            required={true}
-                                                           onChange={handleTitleChange}
+                                                           onChange={handleChange}
                                                     />
                                                 </div>
                                                 <div className="mx-6 my-4">
-                                                    {/* <TextEditor
-                                                        onChange={handleProcedureContentChange}/> */}
-
+                                                    <TextArea
+                                                        label="Description"
+                                                        name="description"
+                                                        onChange={handleChange}
+                                                    />
+                                                </div>
+                                                <div id="fileUpload"
+                                                     className="mx-6 my-4">
+                                                    <div className="mb-2 block">
+                                                        <label
+                                                            htmlFor='attachments'
+                                                            className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
+                                                            Attachments
+                                                        </label>
+                                                    </div>
+                                                    <FileInput id="attachments"
+                                                               multiple
+                                                               accept='image/*'
+                                                               onChange={handleFileChange}
+                                                    />
                                                 </div>
 
                                             </div>
@@ -163,8 +185,11 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                             className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
                                             <div
                                                 className="flex justify-end space-x-3">
-                                                <Button type="button" colorType="secondary" onClick={() => setOpen(false)}>Cancel</Button>
-                                                <Button type="submit">Create</Button>
+                                                <Button type="button"
+                                                        colorType="secondary"
+                                                        onClick={() => setOpen(false)}>Cancel</Button>
+                                                <Button
+                                                    type="submit">Create</Button>
                                             </div>
                                         </div>
                                     </form>
