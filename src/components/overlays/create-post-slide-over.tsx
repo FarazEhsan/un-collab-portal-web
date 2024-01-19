@@ -8,12 +8,20 @@ import {useUser} from "@auth0/nextjs-auth0/client";
 import Button from "@/components/button/Button";
 import TextArea from "@/components/form/TextArea";
 import {FileInput} from "flowbite-react";
-import { io } from 'socket.io-client';
 import useSocket from "@/hooks/useSocketClient";
+// @ts-ignore
+import Joi from 'joi-browser'
+import  {Schema} from "joi";
+import {useJoiForm} from "@/hooks/useJoiForm";
 interface SlideOverProps {
     open: boolean,
     setOpen: React.Dispatch<SetStateAction<boolean>>
 }
+
+const postSchema: Schema = Joi.object({
+    title: Joi.string().required().label('Title'),
+    description: Joi.string().required().label('Description')
+});
 
 
 export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
@@ -24,31 +32,38 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
         socket.emit('findAllForumEvents');
     })
 
-    const [postDetails, setPostDetails] = useState({
+    const postData = {
         title: '',
         description: '',
-        attachments: null
-    });
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    }
+
+    const [files, setFiles] = useState(null);
+
+    const { data: formData, errors, handleChange, handleSubmit } = useJoiForm(
+        postData,
+        postSchema
+    );
+
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(postDetails)
-        socket?.emit('postTopic', {"title": postDetails.title, "description": postDetails.description, "author": user?.sub});
+        handleSubmit(e, sendData)
+    }
+
+    const sendData = () => {
+        console.log(files)
+        socket?.emit('postTopic', {"title": formData.title, "description": formData.description, "author": user?.sub});
     }
 
     const handleFileChange = (e: any) => {
-        setPostDetails(prevState => ({
-            ...prevState,
-            attachments: e.target.files
-        }));
-
+        setFiles(e.target.files);
     }
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setPostDetails(prevState => ({
-            ...prevState,
-            [e.target.name]: e.target.value
-        }));
-    };
+    // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    //     setPostDetails(prevState => ({
+    //         ...prevState,
+    //         [e.target.name]: e.target.value
+    //     }));
+    // };
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={setOpen}>
@@ -81,7 +96,7 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                 <Dialog.Panel
                                     className="pointer-events-auto w-screen max-w-2xl">
                                     <form
-                                        onSubmit={handleSubmit}
+                                        onSubmit={onSubmit}
                                         className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                                         <div className="flex-1">
                                             {/* Header */}
@@ -128,6 +143,8 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                                            name="title"
                                                            required={true}
                                                            onChange={handleChange}
+                                                           value={formData?.title}
+                                                           error={errors?.title}
                                                     />
                                                 </div>
                                                 <div className="mx-6 my-4">
@@ -135,6 +152,8 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                                         label="Description"
                                                         name="description"
                                                         onChange={handleChange}
+                                                        value={formData?.description}
+                                                        error={errors?.description}
                                                     />
                                                 </div>
                                                 <div id="fileUpload"
