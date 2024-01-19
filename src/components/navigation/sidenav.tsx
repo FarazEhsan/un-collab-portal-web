@@ -348,7 +348,7 @@ export default function SideNav({ children, navData }: SideNavProps) {
                     <span className="sr-only">Open user menu</span>
                     <img
                       className="h-8 w-8 rounded-full bg-gray-50 dark:bg-gray-800"
-                      src="https://unhabitatstaticfiles.blob.core.windows.net/webfiles/olga-profilepic.jpeg"
+                      src="https://unhabitatfiles.blob.core.windows.net/staticfiles/olga-profilepic.jpeg"
                       alt=""
                     />
                     <span className="hidden lg:flex lg:items-center">

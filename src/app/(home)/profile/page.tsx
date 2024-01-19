@@ -91,7 +91,7 @@ const ProfilePage = () => {
           <div>
             <div className="flex flex-col items-center">
               <img
-                src="https://unhabitatstaticfiles.blob.core.windows.net/webfiles/olga-profilepic.jpeg"
+                src="https://unhabitatfiles.blob.core.windows.net/staticfiles/olga-profilepic.jpeg"
                 alt=""
                 className="h-32 w-32 flex-none rounded-full bg-white dark:bg-gray-800 object-cover"
               />
