@@ -42,7 +42,7 @@ export default function EditPersonalInfoSlideOver({
     personalInfo,
     personalInfoSchema
   );
-  
+
 
   const UPDATE_PERSONAL_INFO = gql`
     mutation UpdateContactInfo(
@@ -161,7 +161,7 @@ export default function EditPersonalInfoSlideOver({
                 leaveTo="translate-x-full"
               >
                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                  <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-800 shadow-xl">
+                  <div className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-900 shadow-xl">
                     <div className="px-4 py-6 sm:px-6">
                       <div className="flex items-start justify-between">
                         <h2
@@ -208,7 +208,7 @@ export default function EditPersonalInfoSlideOver({
                             />
                           </div>
                           <div className="mt-4">
-                         
+
                             <Input
                               label="Date of Birth"
                               name="dob"
@@ -240,7 +240,7 @@ export default function EditPersonalInfoSlideOver({
                           </div>
                         </div>
                       </div>
-                      <div className="mt-4 flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
+                      <div className="mt-4 flex-shrink-0 border-t border-gray-200 dark:border-gray-700 px-4 py-5 sm:px-6">
                         <div className="flex justify-end space-x-3">
                           <Button
                             onClick={() => setOpen(false)}

@@ -17,7 +17,7 @@ const Comment = ({comment, replies}: any) => {
                     <p className="ml-1 text-xs text-gray-500 dark:text-gray-400">2
                         hours ago</p>
                     </div>
-                    <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{comment.comment}</p>
+                    <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{comment.text}</p>
                 </div>
             </div>
             {replies && (

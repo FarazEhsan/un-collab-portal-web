@@ -50,8 +50,13 @@ const data = {
     ]
 }
 
+interface PostCardProps {
+    title: string,
+    description: string,
+}
 
-const PostCard = () => {
+
+const PostCard = ({postDetails}:any) => {
     const [openCarouselModal, setOpenCarouselModal] = useState(false)
     return (
         <div
@@ -74,7 +79,7 @@ const PostCard = () => {
                     </div>
 
                 </div>
-                    <h2 className="mt-4 text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">Title...</h2>
+                    <h2 className="mt-4 text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">{postDetails?.title}</h2>
 
             </div>
 
@@ -89,7 +94,7 @@ const PostCard = () => {
             </div>
 
             <div className="mt-6">
-                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(data.description.substring(0, 225) + '...')}</p>
+                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(postDetails?.description.substring(0, 225) + '...')}</p>
             </div>
 
             {/*Reactions*/}
@@ -98,9 +103,9 @@ const PostCard = () => {
             </div>
 
             {/*Comments*/}
-            {/*<div className="mt-6">*/}
-            {/*    <CommentSection comments={data.comments}/>*/}
-            {/*</div>*/}
+            <div className="mt-6">
+                <CommentSection comments={postDetails?.comments}/>
+            </div>
         </div>
     );
 };

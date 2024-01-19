@@ -15,7 +15,8 @@ import  {Schema} from "joi";
 import {useJoiForm} from "@/hooks/useJoiForm";
 interface SlideOverProps {
     open: boolean,
-    setOpen: React.Dispatch<SetStateAction<boolean>>
+    setOpen: React.Dispatch<SetStateAction<boolean>>,
+    onNewPostCreated: () => void;
 }
 
 const postSchema: Schema = Joi.object({
@@ -24,7 +25,7 @@ const postSchema: Schema = Joi.object({
 });
 
 
-export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
+export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: SlideOverProps) {
     const {user, error, isLoading} = useUser();
     const socket = useSocket();
     useEffect(()=>{
@@ -47,6 +48,9 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleSubmit(e, sendData)
+        onNewPostCreated();
+
+        setOpen(false);
     }
 
     const sendData = () => {
@@ -83,7 +87,7 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                 <div className="fixed inset-0 overflow-hidden">
                     <div className="absolute inset-0 overflow-hidden">
                         <div
-                            className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
+                            className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16 ">
                             <Transition.Child
                                 as={Fragment}
                                 enter="transform transition ease-in-out duration-500 sm:duration-700"
@@ -94,22 +98,22 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                 leaveTo="translate-x-full"
                             >
                                 <Dialog.Panel
-                                    className="pointer-events-auto w-screen max-w-2xl">
+                                    className="pointer-events-auto w-screen max-w-2xl ">
                                     <form
                                         onSubmit={onSubmit}
-                                        className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+                                        className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-900 shadow-xl">
                                         <div className="flex-1">
                                             {/* Header */}
                                             <div
-                                                className="bg-gray-50 px-4 py-6 sm:px-6">
+                                                className="bg-gray-50 dark:bg-gray-800 px-4 py-6 sm:px-6">
                                                 <div
                                                     className="flex items-start justify-between space-x-3">
                                                     <div className="space-y-1">
                                                         <Dialog.Title
-                                                            className="text-base font-semibold leading-6 text-gray-900">
+                                                            className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">
                                                             New post
                                                         </Dialog.Title>
-                                                        <p className="text-sm text-gray-500">
+                                                        <p className="text-sm text-gray-500 dark:text-gray-400">
                                                             Get started by
                                                             filling in the
                                                             information below to
@@ -166,6 +170,7 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
                                                         </label>
                                                     </div>
                                                     <FileInput id="attachments"
+                                                               className='ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-custom-teal dark:focus:ring-custom-teal'
                                                                multiple
                                                                accept='image/*'
                                                                onChange={handleFileChange}
@@ -177,7 +182,7 @@ export default function CreatePostSlideOver({open, setOpen}: SlideOverProps) {
 
                                         {/* Action buttons */}
                                         <div
-                                            className="flex-shrink-0 border-t border-gray-200 px-4 py-5 sm:px-6">
+                                            className="flex-shrink-0 border-t border-gray-200 dark:border-gray-700 px-4 py-5 sm:px-6">
                                             <div
                                                 className="flex justify-end space-x-3">
                                                 <Button type="button"
