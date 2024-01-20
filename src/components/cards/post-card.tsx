@@ -2,6 +2,8 @@
 import React, {useState} from 'react';
 import CarouselModal from "@/components/modals/carousel-modal";
 import CommentSection from "@/components/cards/comment-section";
+import CommentTextArea from "@/components/form/CommentTextArea";
+import ReactionButtons from "@/components/form/reaction-buttons";
 
 
 const data = {
@@ -98,11 +100,15 @@ const PostCard = ({postDetails}:any) => {
             </div>
 
             {/*Reactions*/}
-            <div>
-
+            <div className="mt-6">
+                <ReactionButtons/>
             </div>
 
             {/*Comments*/}
+            <div className="mt-6">
+                <CommentTextArea label="Add a Comment" name="comment"/>
+            </div>
+
             <div className="mt-6">
                 <CommentSection comments={postDetails?.comments}/>
             </div>
