@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import CarouselModal from "@/components/modals/carousel-modal";
 import CommentSection from "@/components/cards/comment-section";
 import CommentTextArea from "@/components/form/CommentTextArea";
@@ -60,6 +60,21 @@ interface PostCardProps {
 
 const PostCard = ({postDetails}:any) => {
     const [openCarouselModal, setOpenCarouselModal] = useState(false)
+    const [selectedReaction, setSelectedReaction] = useState('')
+    const [comment, setComment] = useState('');
+
+    const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setComment(e.target.value);
+    }
+
+    const postComment = () => {
+
+    }
+
+    const postReaction = () => {
+
+    }
+
     return (
         <div
             className="dark:bg-gray-900 dark:hover:bg-gray-800 hover:bg-gray-200 bg-gray-100 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4">
@@ -101,12 +116,12 @@ const PostCard = ({postDetails}:any) => {
 
             {/*Reactions*/}
             <div className="mt-6">
-                <ReactionButtons/>
+                <ReactionButtons selectedReaction={selectedReaction} setSelectedReaction={setSelectedReaction}/>
             </div>
 
             {/*Comments*/}
             <div className="mt-6">
-                <CommentTextArea label="Add a Comment" name="comment"/>
+                <CommentTextArea onChange={handleCommentChange} value={comment} label="Add a Comment" name="comment"/>
             </div>
 
             <div className="mt-6">
