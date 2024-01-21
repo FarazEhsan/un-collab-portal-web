@@ -13,6 +13,7 @@ import useSocket from "@/hooks/useSocketClient";
 import Joi from 'joi-browser'
 import  {Schema} from "joi";
 import {useJoiForm} from "@/hooks/useJoiForm";
+import uploadImage from '@/utils/azureblobupload';
 interface SlideOverProps {
     open: boolean,
     setOpen: React.Dispatch<SetStateAction<boolean>>,
@@ -38,7 +39,7 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
         description: '',
     }
 
-    const [files, setFiles] = useState(null);
+    const [files, setFiles] = useState<Array<File>>([]);
 
     const { data: formData, errors, handleChange, handleSubmit } = useJoiForm(
         postData,
@@ -53,21 +54,23 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
         setOpen(false);
     }
 
-    const sendData = () => {
-        console.log(files)
-        socket?.emit('postTopic', {"title": formData.title, "description": formData.description, "author": user?.sub});
+    const sendData = async () => {
+        let uploadedFiles: String[]= []
+        if(files){
+            uploadedFiles= await Promise.all(files.map((file:any)=>{
+                return uploadImage('dynamicfile', file)
+            }))
+        }
+    
+        socket?.emit('postTopic', {"title": formData.title, "description": formData.description, "author": user?.sub, "images":uploadedFiles});
     }
 
     const handleFileChange = (e: any) => {
-        setFiles(e.target.files);
+        if (e.target.files) {
+            setFiles(Array.from(e.target.files));
+        }
     }
 
-    // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    //     setPostDetails(prevState => ({
-    //         ...prevState,
-    //         [e.target.name]: e.target.value
-    //     }));
-    // };
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={setOpen}>
