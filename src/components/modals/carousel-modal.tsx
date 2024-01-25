@@ -5,10 +5,15 @@ import {Carousel} from "flowbite-react";
 
 interface CarouselModalProps {
     open: boolean,
-    setOpen: React.Dispatch<SetStateAction<boolean>>
+    setOpen: React.Dispatch<SetStateAction<boolean>>,
+    images: any[]
 }
 
-export default function CarouselModal({open, setOpen}: CarouselModalProps) {
+export default function CarouselModal({
+                                          open,
+                                          setOpen,
+                                          images
+                                      }: CarouselModalProps) {
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -52,21 +57,28 @@ export default function CarouselModal({open, setOpen}: CarouselModalProps) {
                                                    aria-hidden="true"/>
                                     </button>
                                 </div>
-                                <div className="h-screen w-full flex items-center justify-center">
-                                <div className="h-5/6 w-5/6 mx-auto">
-                                    <Carousel slide={false}>
-                                            <img
-                                                src="https://source.unsplash.com/random/1300x1300"
-                                                className="h-full w-full object-contain"
-                                                /><img
-                                                src="https://source.unsplash.com/random/300x500"
-                                                className="h-full w-full object-contain"
-                                                /><img
-                                                src="https://source.unsplash.com/random/500x300"
-                                                className="h-full w-full object-contain"
-                                                />
-                                    </Carousel>
-                                </div>
+                                <div
+                                    className="h-screen w-full flex items-center justify-center">
+                                    <div className="h-5/6 w-5/6 mx-auto">
+
+
+                                        {
+                                            images?.length && (
+                                                <Carousel slide={false}>
+                                                    {
+                                                        images.map((image: string) => (
+                                                            <img
+                                                                src={image}
+                                                                className="h-full w-full object-contain"
+                                                            />
+                                                        ))
+                                                    }
+                                                </Carousel>
+                                            )
+                                        }
+
+
+                                    </div>
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

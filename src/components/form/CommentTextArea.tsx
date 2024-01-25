@@ -70,7 +70,6 @@ export default function CommentTextArea({
                             className="block w-full resize-none dark:text-gray-100 border-0 bg-transparent py-1.5 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                             placeholder={placeholder}
                             value={value}
-                            defaultValue={''}
                             onChange={onChange}
                             onFocus={onFocus}
                         />

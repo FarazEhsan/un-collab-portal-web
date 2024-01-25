@@ -4,6 +4,7 @@ import CarouselModal from "@/components/modals/carousel-modal";
 import CommentSection from "@/components/cards/comment-section";
 import CommentTextArea from "@/components/form/CommentTextArea";
 import ReactionButtons from "@/components/form/reaction-buttons";
+import TimeAgo from "@/components/form/time-ago";
 
 
 const data = {
@@ -43,7 +44,7 @@ const data = {
             parentId: 5,
             comment: 'comment 6: child comment of 5',
             user: 'user6',
-        },{
+        }, {
             id: 7,
             parentId: 6,
             comment: 'comment 7: child comment of 6',
@@ -58,7 +59,7 @@ interface PostCardProps {
 }
 
 
-const PostCard = ({postDetails}:any) => {
+const PostCard = ({postDetails}: any) => {
     const [openCarouselModal, setOpenCarouselModal] = useState(false)
     const [selectedReaction, setSelectedReaction] = useState('')
     const [comment, setComment] = useState('');
@@ -90,38 +91,52 @@ const PostCard = ({postDetails}:any) => {
                         alt=""
                     />
                     <div className="ml-2">
-                        <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-gray-100">Username</h2>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">2
-                            hours ago</p>
+                        <h2 className="text-base font-semibold leading-7 text-gray-900 dark:text-gray-100">{postDetails?.author?.userName}</h2>
+                        {/*<p className="text-xs text-gray-500 dark:text-gray-400">2*/}
+                        {/*    hours ago</p>*/}
+                        <TimeAgo timestamp={postDetails?.createdAt}/>
                     </div>
 
                 </div>
-                    <h2 className="mt-4 text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">{postDetails?.title}</h2>
+                <h2 className="mt-4 text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">{postDetails?.title}</h2>
 
             </div>
 
-            <div onClick={() => setOpenCarouselModal(!openCarouselModal)}
-                 className="h-96 rounded-md">
-                <img
-                    src="https://source.unsplash.com/random/300x500"
-                    className="h-full w-full object-contain rounded-md"
-                />
-                <CarouselModal open={openCarouselModal}
-                               setOpen={setOpenCarouselModal}/>
-            </div>
+            {
+                postDetails?.images?.length ? (
+                        <div
+                            onClick={() => setOpenCarouselModal(!openCarouselModal)}
+                            className="h-96 mb-6 rounded-md">
 
-            <div className="mt-6">
+                            <img
+                                src={postDetails.images[0]}
+                                className="h-full w-full object-contain rounded-md"
+                            />
+                            <CarouselModal open={openCarouselModal}
+                                           setOpen={setOpenCarouselModal}
+                                           images={postDetails.images}
+                            />
+                        </div>
+                    )
+                    :
+                    ''
+            }
+
+
+            <div>
                 <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(postDetails?.description.substring(0, 225) + '...')}</p>
             </div>
 
             {/*Reactions*/}
             <div className="mt-6">
-                <ReactionButtons selectedReaction={selectedReaction} setSelectedReaction={setSelectedReaction}/>
+                <ReactionButtons selectedReaction={selectedReaction}
+                                 setSelectedReaction={setSelectedReaction}/>
             </div>
 
             {/*Comments*/}
             <div className="mt-6">
-                <CommentTextArea onChange={handleCommentChange} value={comment} label="Add a Comment" name="comment"/>
+                <CommentTextArea onChange={handleCommentChange} value={comment}
+                                 label="Add a Comment" name="comment"/>
             </div>
 
             <div className="mt-6">

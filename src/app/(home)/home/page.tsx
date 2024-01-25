@@ -13,6 +13,11 @@ export default function Home() {
     query GetAllTopics{
   alltopics{
     title
+    images
+    createdAt
+    author{
+      userName
+    }
     description
     comments{
         text
