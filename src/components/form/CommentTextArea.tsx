@@ -1,5 +1,11 @@
 'use client'
-import {ChangeEventHandler, FocusEventHandler, Fragment, useState} from 'react'
+import {
+    ChangeEventHandler,
+    FocusEventHandler,
+    FormEventHandler,
+    Fragment,
+    useState
+} from 'react'
 import {
     FaceFrownIcon,
     FaceSmileIcon,
@@ -32,6 +38,7 @@ interface CommentTextAreaProps {
     error?: string | null | undefined,
     onChange?: ChangeEventHandler,
     onFocus?: FocusEventHandler,
+    onSubmit: FormEventHandler
 }
 
 export default function CommentTextArea({
@@ -44,9 +51,10 @@ export default function CommentTextArea({
                                             error,
                                             onChange,
                                             onFocus,
+    onSubmit
 
                                         }: CommentTextAreaProps) {
-    const [selected, setSelected] = useState(moods[5])
+    // const [selected, setSelected] = useState(moods[5])
 
     return (
         <div className={`flex items-start space-x-4 ${className}`}>
@@ -58,7 +66,7 @@ export default function CommentTextArea({
                 />
             </div>
             <div className="min-w-0 flex-1">
-                <form action="#" className="relative">
+                <form className="relative" onSubmit={onSubmit}>
                     <div className="overflow-hidden dark:bg-gray-700 rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 dark:ring-gray-500 focus-within:ring-2 focus-within:ring-custom-teal dark:focus-within:ring-custom-teal">
                         <label htmlFor={name} className="sr-only">
                             {label}

@@ -5,6 +5,7 @@ import {useEffect, useState} from "react";
 import CreatePostSlideOver from "@/components/overlays/create-post-slide-over";
 import {gql, useQuery} from "@apollo/client";
 import CardSkeleton from "@/components/skeletons/card-skeleton";
+import useSocket from "@/hooks/useSocketClient";
 
 export default function Home() {
     const [openCreatePostSlideOver, setOpenCreatePostSlideOver] = useState(false);
@@ -12,6 +13,7 @@ export default function Home() {
     const GET_ALL_TOPICS = gql`
     query GetAllTopics{
   alltopics{
+  _id
     title
     images
     createdAt
@@ -21,6 +23,9 @@ export default function Home() {
     description
     comments{
         text
+        author{
+          userName
+        }
     }
   }
 }
@@ -30,13 +35,15 @@ export default function Home() {
 
     const {loading, error, data, refetch} = useQuery(GET_ALL_TOPICS);
 
+    const socket = useSocket();
+
     console.log(data)
 
 
-    const handleNewPostCreated = () => {
+    const refetchPosts = () => {
         setTimeout(() => {
-        console.log("Updating feed through refetch");
-        refetch();
+            console.log("Updating feed through refetch");
+            refetch();
         }, 1000);
     }
 
@@ -55,7 +62,7 @@ export default function Home() {
             </button>
             <CreatePostSlideOver open={openCreatePostSlideOver}
                                  setOpen={setOpenCreatePostSlideOver}
-                                 onNewPostCreated={handleNewPostCreated}
+                                 onNewPostCreated={refetchPosts}
             />
         </div>
 
@@ -69,7 +76,7 @@ export default function Home() {
                         {
                             topics?.map((topic: any, index: number) => (
                                 <div key={index} className="mb-6">
-                                    <PostCard postDetails={topic} />
+                                    <PostCard refetchPosts={refetchPosts} socket={socket} postDetails={topic}/>
                                 </div>
                             ))
                         }

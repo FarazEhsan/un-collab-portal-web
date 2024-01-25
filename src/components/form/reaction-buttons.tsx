@@ -2,10 +2,11 @@ import React, {SetStateAction, useState} from 'react'
 import { RadioGroup } from '@headlessui/react'
 import classNames from "classnames";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import {ReactionType} from "@/utils/extraFunctions";
 
 const reactions = [
-    { name: 'up', bgColor: 'text-gray-400', selectedColor: 'text-green-500', icon: FaCaretUp, hoverColor: 'hover:text-green-300' },
-    { name: 'down', bgColor: 'text-gray-400', selectedColor: 'text-red-500', icon: FaCaretDown, hoverColor: 'hover:text-red-300' },
+    { name: ReactionType.Up, bgColor: 'text-gray-400', selectedColor: 'text-green-500', icon: FaCaretUp, hoverColor: 'hover:text-green-300' },
+    { name: ReactionType.Down, bgColor: 'text-gray-400', selectedColor: 'text-red-500', icon: FaCaretDown, hoverColor: 'hover:text-red-300' },
 ]
 
 interface ReactionButtonProps {

@@ -88,6 +88,7 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                                             className="h-full w-full object-cover"
                                                         />
                                                         <CarouselModal open={openCarouselModal}
+                                                                       images={[]}
                                                                        setOpen={setOpenCarouselModal}/>
                                                     </div>
                                                     <div

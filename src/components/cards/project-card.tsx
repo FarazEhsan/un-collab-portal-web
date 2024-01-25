@@ -49,6 +49,7 @@ const ProjectCard = (project:Project) => {
           />
           <CarouselModal
             open={openCarouselModal}
+            images={[]}
             setOpen={setOpenCarouselModal}
           />
         </div>

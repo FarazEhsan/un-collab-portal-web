@@ -5,6 +5,7 @@ import CommentSection from "@/components/cards/comment-section";
 import CommentTextArea from "@/components/form/CommentTextArea";
 import ReactionButtons from "@/components/form/reaction-buttons";
 import TimeAgo from "@/components/form/time-ago";
+import {useUser} from "@auth0/nextjs-auth0/client";
 
 
 const data = {
@@ -53,13 +54,13 @@ const data = {
     ]
 }
 
-interface PostCardProps {
-    title: string,
-    description: string,
-}
 
-
-const PostCard = ({postDetails}: any) => {
+const PostCard = ({postDetails, socket, refetchPosts}: any) => {
+    const {
+        user: auth0User,
+        error: auth0UserError,
+        isLoading: auth0Loading,
+    } = useUser();
     const [openCarouselModal, setOpenCarouselModal] = useState(false)
     const [selectedReaction, setSelectedReaction] = useState('')
     const [comment, setComment] = useState('');
@@ -68,8 +69,22 @@ const PostCard = ({postDetails}: any) => {
         setComment(e.target.value);
     }
 
-    const postComment = () => {
+    const postComment = (e: React.FormEvent) => {
+        e.preventDefault();
 
+        const commentData = {
+            text: comment,
+            author: auth0User?.sub?.toString(),
+            topic: postDetails._id,
+            parentComment: null,
+            reactions: null
+        }
+
+        if (socket) {
+            console.log(commentData)
+            socket?.emit('postComment', commentData);
+            refetchPosts();
+        }
     }
 
     const postReaction = () => {
@@ -135,7 +150,8 @@ const PostCard = ({postDetails}: any) => {
 
             {/*Comments*/}
             <div className="mt-6">
-                <CommentTextArea onChange={handleCommentChange} value={comment}
+                <CommentTextArea onSubmit={postComment}
+                                 onChange={handleCommentChange} value={comment}
                                  label="Add a Comment" name="comment"/>
             </div>
 
