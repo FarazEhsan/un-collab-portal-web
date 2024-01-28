@@ -4,17 +4,18 @@ import classNames from "classnames";
 import { FaCaretDown, FaCaretUp } from "react-icons/fa";
 import {ReactionType} from "@/utils/extraFunctions";
 
-const reactions = [
-    { name: ReactionType.Up, bgColor: 'text-gray-400', selectedColor: 'text-green-500', icon: FaCaretUp, hoverColor: 'hover:text-green-300' },
-    { name: ReactionType.Down, bgColor: 'text-gray-400', selectedColor: 'text-red-500', icon: FaCaretDown, hoverColor: 'hover:text-red-300' },
-]
+
 
 interface ReactionButtonProps {
     selectedReaction: string | null,
-    setSelectedReaction: React.Dispatch<SetStateAction<string>>,
+    setSelectedReaction: any,
+    reactionCount: {up: number, down:number}
 }
-export default function ReactionButtons({selectedReaction, setSelectedReaction}:ReactionButtonProps) {
-
+export default function ReactionButtons({selectedReaction, setSelectedReaction, reactionCount}:ReactionButtonProps) {
+    const reactions = [
+        { name: ReactionType.Up, count:reactionCount.up, bgColor: 'text-gray-400', selectedColor: 'text-green-500', icon: FaCaretUp, hoverColor: 'hover:text-green-300' },
+        { name: ReactionType.Down, count:reactionCount.down, bgColor: 'text-gray-400', selectedColor: 'text-red-500', icon: FaCaretDown, hoverColor: 'hover:text-red-300' },
+    ]
     return (
         <RadioGroup value={selectedReaction} onChange={setSelectedReaction}>
             <RadioGroup.Label className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
@@ -44,6 +45,7 @@ export default function ReactionButtons({selectedReaction, setSelectedReaction}:
                         <div className={`h-8 w-8`}>
                             <reaction.icon className="h-8 w-8"/>
                         </div>
+                        <p>{reaction.count}</p>
                     </RadioGroup.Option>
                 ))}
             </div>

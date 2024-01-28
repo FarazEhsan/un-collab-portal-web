@@ -21,11 +21,22 @@ export default function Home() {
       userName
     }
     description
+    reactions{
+    type
+    user{
+      _id
+    }
+  }
     comments{
+    _id
         text
+        createdAt
         author{
           userName
         }
+        parentComment{
+        _id
+      }
     }
   }
 }
@@ -44,7 +55,7 @@ export default function Home() {
         setTimeout(() => {
             console.log("Updating feed through refetch");
             refetch();
-        }, 1000);
+        }, 2500);
     }
 
     useEffect(() => {
@@ -76,7 +87,9 @@ export default function Home() {
                         {
                             topics?.map((topic: any, index: number) => (
                                 <div key={index} className="mb-6">
-                                    <PostCard refetchPosts={refetchPosts} socket={socket} postDetails={topic}/>
+                                    <PostCard refetchPosts={refetchPosts}
+                                              socket={socket}
+                                              postDetails={topic}/>
                                 </div>
                             ))
                         }

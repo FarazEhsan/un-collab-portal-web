@@ -1,11 +1,12 @@
 'use client'
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent, useEffect, useState} from 'react';
 import CarouselModal from "@/components/modals/carousel-modal";
 import CommentSection from "@/components/cards/comment-section";
 import CommentTextArea from "@/components/form/CommentTextArea";
 import ReactionButtons from "@/components/form/reaction-buttons";
 import TimeAgo from "@/components/form/time-ago";
 import {useUser} from "@auth0/nextjs-auth0/client";
+import {ReactionType} from "@/utils/extraFunctions";
 
 
 const data = {
@@ -63,6 +64,7 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
     } = useUser();
     const [openCarouselModal, setOpenCarouselModal] = useState(false)
     const [selectedReaction, setSelectedReaction] = useState('')
+    const [reactionsCount, setReactionsCount] = useState({up: 0, down: 0})
     const [comment, setComment] = useState('');
 
     const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -87,9 +89,49 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
         }
     }
 
-    const postReaction = () => {
-
+    const onReactionChange = (reaction: string) => {
+        setSelectedReaction(reaction);
+        postReaction(reaction)
     }
+
+    const postReaction = (reaction: string) => {
+            console.log('posting reaction:', reaction)
+            const reactionData = {
+                type: reaction,
+                user: auth0User?.sub?.toString(),
+                comment: null,
+                topic: postDetails._id
+            }
+            socket?.emit('postTopicReaction', reactionData);
+    }
+
+    useEffect(() => {
+        socket.on('topicReactionPosted', ()=>{
+            console.log('reaction posted...');
+            refetchPosts()
+            setTimeout(() => {
+                renderReactions();
+            }, 500)
+        });
+    }, []);
+
+
+
+    const renderReactions = () => {
+        console.log('rendering reactions')
+        let up = 0;
+        let down = 0;
+        postDetails.reactions?.map((r: any) => {
+            if (r.type === ReactionType.Up) up++;
+            if (r.type === ReactionType.Down) down++;
+            if (r.author === auth0User?._id) setSelectedReaction(r.type)
+        })
+        setReactionsCount({up, down})
+    }
+
+    useEffect(() => {
+        renderReactions()
+    }, []);
 
     return (
         <div
@@ -145,7 +187,9 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
             {/*Reactions*/}
             <div className="mt-6">
                 <ReactionButtons selectedReaction={selectedReaction}
-                                 setSelectedReaction={setSelectedReaction}/>
+                                 setSelectedReaction={onReactionChange}
+                                 reactionCount={reactionsCount}
+                />
             </div>
 
             {/*Comments*/}
