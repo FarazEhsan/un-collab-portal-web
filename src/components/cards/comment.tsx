@@ -14,7 +14,6 @@ const Comment = ({comment, replies}: any) => {
                 <div className="ml-2">
                     <div className="flex flex-row items-center">
                     <h2 className="mr-1 text-base font-semibold leading-7 text-gray-900 dark:text-gray-100">{comment.author?.userName}</h2>
-                        -
                     {/*<p className="ml-1 text-xs text-gray-500 dark:text-gray-400">2*/}
                     {/*    hours ago</p>*/}
                         <TimeAgo timestamp={comment.createdAt}/>

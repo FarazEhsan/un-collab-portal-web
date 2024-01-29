@@ -49,10 +49,12 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleSubmit(e, sendData)
-        onNewPostCreated();
+
 
         setOpen(false);
     }
+
+
 
     const sendData = async () => {
         let uploadedFiles: String[]= []
@@ -61,7 +63,7 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
                 return uploadImage('dynamicfile', file)
             }))
         }
-    
+
         socket?.emit('postTopic', {"title": formData.title, "description": formData.description, "author": user?.sub, "images":uploadedFiles});
     }
 

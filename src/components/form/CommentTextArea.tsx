@@ -44,7 +44,7 @@ interface CommentTextAreaProps {
 export default function CommentTextArea({
                                             label = 'Label',
                                             name = 'Name',
-                                            rows = 3,
+                                            rows = 1,
                                             className,
                                             placeholder = 'Add a Comment...',
                                             value,

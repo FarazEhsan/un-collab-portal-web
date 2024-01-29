@@ -7,6 +7,7 @@ import ReactionButtons from "@/components/form/reaction-buttons";
 import TimeAgo from "@/components/form/time-ago";
 import {useUser} from "@auth0/nextjs-auth0/client";
 import {ReactionType} from "@/utils/extraFunctions";
+import {gql, useQuery} from "@apollo/client";
 
 
 const data = {
@@ -67,6 +68,57 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
     const [reactionsCount, setReactionsCount] = useState({up: 0, down: 0})
     const [comment, setComment] = useState('');
 
+    const GET_REACTIONS = gql`
+    query TopicDetails($id: String!) {
+  topic(id: $id){
+   
+    reactions{
+    type
+    user{
+      _id
+    }
+  }
+  }
+}
+  `;
+    const GET_COMMENTS = gql`
+    query TopicDetails($id: String!) {
+  topic(id: $id){
+  commentsCount
+    comments{
+    _id
+        text
+        createdAt
+        author{
+          userName
+        }
+        parentComment{
+        _id
+      }
+    }
+  }
+}
+  `;
+
+    const {
+        loading: loadingReactions,
+        error: reactionsDataError,
+        data: reactionsData,
+        refetch: refetchReactionData
+    } = useQuery(GET_REACTIONS, {
+        variables: {id: postDetails._id},
+    });
+    const {
+        loading: loadingComments,
+        error: commentsDataError,
+        data: commentsData,
+        refetch: refetchCommentData
+    } = useQuery(GET_COMMENTS, {
+        variables: {id: postDetails._id},
+    });
+
+    // console.log('comments data', reactionsData)
+
     const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
         setComment(e.target.value);
     }
@@ -85,7 +137,7 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
         if (socket) {
             console.log(commentData)
             socket?.emit('postComment', commentData);
-            refetchPosts();
+            setComment('');
         }
     }
 
@@ -95,47 +147,60 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
     }
 
     const postReaction = (reaction: string) => {
-            console.log('posting reaction:', reaction)
-            const reactionData = {
-                type: reaction,
-                user: auth0User?.sub?.toString(),
-                comment: null,
-                topic: postDetails._id
-            }
-            socket?.emit('postTopicReaction', reactionData);
+        console.log('posting reaction:', reaction)
+        const reactionData = {
+            type: reaction,
+            user: auth0User?.sub?.toString(),
+            comment: null,
+            topic: postDetails._id
+        }
+        socket?.emit('postTopicReaction', reactionData);
     }
 
     useEffect(() => {
-        socket.on('topicReactionPosted', ()=>{
+        const handleTopicReactionPosted = () => {
             console.log('reaction posted...');
-            refetchPosts()
-            setTimeout(() => {
-                renderReactions();
-            }, 500)
-        });
+            refetchReactionData();
+        };
+        const handleTopicCommentPosted = () => {
+            console.log('comment posted...');
+            refetchCommentData();
+        };
+
+        socket.on('topicReactionPosted', handleTopicReactionPosted);
+        socket.on('commentPosted', handleTopicCommentPosted);
+
+        return () => {
+            // Clean up the listener when the component is unmounted
+            socket.off('topicReactionPosted', handleTopicReactionPosted);
+            socket.off('commentPosted', handleTopicCommentPosted);
+        };
     }, []);
 
 
-
     const renderReactions = () => {
-        console.log('rendering reactions')
         let up = 0;
         let down = 0;
-        postDetails.reactions?.map((r: any) => {
-            if (r.type === ReactionType.Up) up++;
-            if (r.type === ReactionType.Down) down++;
-            if (r.author === auth0User?._id) setSelectedReaction(r.type)
-        })
+        console.log('rendering reactions')
+        if (!loadingReactions && !reactionsDataError) {
+            // up = 0
+            // down = 0
+            reactionsData?.topic?.reactions?.map((r: any) => {
+                if (r.type === ReactionType.Up) up++;
+                if (r.type === ReactionType.Down) down++;
+                if (r.author === auth0User?._id) setSelectedReaction(r.type)
+            })
+        }
         setReactionsCount({up, down})
     }
 
     useEffect(() => {
         renderReactions()
-    }, []);
+    }, [reactionsData]);
 
     return (
         <div
-            className="dark:bg-gray-900 dark:hover:bg-gray-800 hover:bg-gray-200 bg-gray-100 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4">
+            className="dark:bg-gray-900 dark:hover:bg-gray-800 hover:bg-gray-200 bg-white border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4">
             {/*Image*/}
 
 
@@ -181,7 +246,7 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
 
 
             <div>
-                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(postDetails?.description.substring(0, 225) + '...')}</p>
+                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(postDetails?.description.substring(0, 225))}{postDetails?.description?.length > 255 ? '...' : ''}</p>
             </div>
 
             {/*Reactions*/}
@@ -200,7 +265,7 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
             </div>
 
             <div className="mt-6">
-                <CommentSection comments={postDetails?.comments}/>
+                <CommentSection comments={commentsData?.topic?.comments} commentsCount={commentsData?.topic?.commentsCount}/>
             </div>
         </div>
     );

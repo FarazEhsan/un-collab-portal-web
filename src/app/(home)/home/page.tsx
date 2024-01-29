@@ -21,23 +21,6 @@ export default function Home() {
       userName
     }
     description
-    reactions{
-    type
-    user{
-      _id
-    }
-  }
-    comments{
-    _id
-        text
-        createdAt
-        author{
-          userName
-        }
-        parentComment{
-        _id
-      }
-    }
   }
 }
   `;
@@ -48,20 +31,25 @@ export default function Home() {
 
     const socket = useSocket();
 
-    console.log(data)
-
 
     const refetchPosts = () => {
-        setTimeout(() => {
-            console.log("Updating feed through refetch");
-            refetch();
-        }, 2500);
+        console.log("Updating feed through refetch");
+        refetch();
     }
 
     useEffect(() => {
         setTopics(data?.alltopics);
-        console.log('updating topics')
+        console.log('updating topics', data)
     }, [data]);
+
+    useEffect(() => {
+        const handleTopicPosted = () => {
+            console.log('topic posted...');
+            refetch();
+        };
+
+        socket?.on('topicPosted', handleTopicPosted);
+    }, []);
 
 
     const secondaryColumnContent =
