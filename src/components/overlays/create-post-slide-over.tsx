@@ -57,7 +57,7 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
 
 
     const sendData = async () => {
-        let uploadedFiles: String[]= []
+        let uploadedFiles: String[] = []
         if(files){
             uploadedFiles= await Promise.all(files.map((file:any)=>{
                 return uploadImage('dynamicfile', file)

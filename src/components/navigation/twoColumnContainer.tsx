@@ -9,7 +9,7 @@ const TwoColumnContainer = ({children, secondaryContent}:TwoColumnContainerProps
         <>
             <main className="dark:bg-gray-950 bg-gray-50">
                 <div className="xl:pr-96">
-                    <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6 xl:mx-[20%]">
+                    <div className="px-4 py-10 sm:px-6 lg:px-8 lg:py-6">
                         {/* Main area */}
                         {children}
                     </div>

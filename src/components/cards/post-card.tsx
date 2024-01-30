@@ -8,6 +8,7 @@ import TimeAgo from "@/components/form/time-ago";
 import {useUser} from "@auth0/nextjs-auth0/client";
 import {ReactionType} from "@/utils/extraFunctions";
 import {gql, useQuery} from "@apollo/client";
+import Link from "next/link";
 
 
 const data = {
@@ -57,7 +58,7 @@ const data = {
 }
 
 
-const PostCard = ({postDetails, socket, refetchPosts}: any) => {
+const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitComments = false}: any) => {
     const {
         user: auth0User,
         error: auth0UserError,
@@ -167,13 +168,13 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
             refetchCommentData();
         };
 
-        socket.on('topicReactionPosted', handleTopicReactionPosted);
-        socket.on('commentPosted', handleTopicCommentPosted);
+        socket?.on('topicReactionPosted', handleTopicReactionPosted);
+        socket?.on('commentPosted', handleTopicCommentPosted);
 
         return () => {
             // Clean up the listener when the component is unmounted
-            socket.off('topicReactionPosted', handleTopicReactionPosted);
-            socket.off('commentPosted', handleTopicCommentPosted);
+            socket?.off('topicReactionPosted', handleTopicReactionPosted);
+            socket?.off('commentPosted', handleTopicCommentPosted);
         };
     }, []);
 
@@ -198,9 +199,13 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
         renderReactions()
     }, [reactionsData]);
 
+    let hoverClasses = ''
+    if (clickable) hoverClasses = 'dark:hover:bg-gray-800 hover:bg-gray-100'
+
+
     return (
         <div
-            className="dark:bg-gray-900 dark:hover:bg-gray-800 hover:bg-gray-200 bg-white border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4">
+            className={`dark:bg-gray-900  bg-white border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4 ${hoverClasses}`}>
             {/*Image*/}
 
 
@@ -220,7 +225,24 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
                     </div>
 
                 </div>
-                <h2 className="mt-4 text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">{postDetails?.title}</h2>
+                <div className="mt-4">
+                    {
+                        clickable ? (
+                            <Link
+                                className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100 hover:underline cursor-pointer"
+                                href={`topic/${postDetails._id}`}
+                            >
+                                {postDetails?.title}
+                            </Link>
+                        ) : (
+                            <h2
+                                className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100"
+                            >
+                                {postDetails?.title}
+                            </h2>
+                        )
+                    }
+                </div>
 
             </div>
 
@@ -228,7 +250,7 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
                 postDetails?.images?.length ? (
                         <div
                             onClick={() => setOpenCarouselModal(!openCarouselModal)}
-                            className="h-96 mb-6 rounded-md">
+                            className="h-96 my-4 rounded-md">
 
                             <img
                                 src={postDetails.images[0]}
@@ -246,7 +268,7 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
 
 
             <div>
-                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(postDetails?.description.substring(0, 225))}{postDetails?.description?.length > 255 ? '...' : ''}</p>
+                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">{(postDetails?.description?.substring(0, 225))}{postDetails?.description?.length > 255 ? '...' : ''}</p>
             </div>
 
             {/*Reactions*/}
@@ -265,7 +287,10 @@ const PostCard = ({postDetails, socket, refetchPosts}: any) => {
             </div>
 
             <div className="mt-6">
-                <CommentSection comments={commentsData?.topic?.comments} commentsCount={commentsData?.topic?.commentsCount}/>
+                <CommentSection comments={commentsData?.topic?.comments}
+                                commentsCount={commentsData?.topic?.commentsCount}
+                                limitComments={limitComments}
+                />
             </div>
         </div>
     );

@@ -71,13 +71,16 @@ export default function Home() {
                 loading ? (
                     <CardSkeleton/>
                 ) : (
-                    <div>
+                    <div className=" xl:mx-[20%]">
                         {
                             topics?.map((topic: any, index: number) => (
                                 <div key={index} className="mb-6">
                                     <PostCard refetchPosts={refetchPosts}
                                               socket={socket}
-                                              postDetails={topic}/>
+                                              postDetails={topic}
+                                              clickable={true}
+                                              limitComments={true}
+                                    />
                                 </div>
                             ))
                         }
