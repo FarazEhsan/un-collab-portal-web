@@ -9,54 +9,20 @@ import {useUser} from "@auth0/nextjs-auth0/client";
 import {ReactionType} from "@/utils/extraFunctions";
 import {gql, useQuery} from "@apollo/client";
 import Link from "next/link";
+import { set } from 'date-fns';
 
 
-const data = {
-    heroImage: 'https://source.unsplash.com/random',
-    username: 'Username',
-    time: '2 hours ago',
-    title: 'Post Title...',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent consectetur faucibus tortor, id finibus lectus auctor in. Vivamus luctus iaculis dui, id posuere eros congue aliquam. In lobortis gravida iaculis. Vestibulum at ultricies arcu, eu scelerisque sem. Praesent in massa bibendum, egestas libero a, dignissim urna. Duis in mollis est. Nunc feugiat ipsum cursus urna vestibulum, sed fermentum eros mollis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    comments: [
-        {
-            id: 1,
-            parentId: null,
-            comment: 'comment 1',
-            user: 'user1',
-        }, {
-            id: 2,
-            parentId: 1,
-            comment: 'comment 2: child comment of 1',
-            user: 'user2',
-        }, {
-            id: 3,
-            parentId: 2,
-            comment: 'comment 3: child comment of 2',
-            user: 'user3',
-        }, {
-            id: 4,
-            parentId: null,
-            comment: 'comment 4',
-            user: 'user4',
-        }, {
-            id: 5,
-            parentId: 2,
-            comment: 'comment 5: child comment of 2',
-            user: 'user5',
-        }, {
-            id: 6,
-            parentId: 5,
-            comment: 'comment 6: child comment of 5',
-            user: 'user6',
-        }, {
-            id: 7,
-            parentId: 6,
-            comment: 'comment 7: child comment of 6',
-            user: 'user7',
-        },
-    ]
-}
-
+type Comment = {
+    _id: string;
+    text: string;
+    createdAt: string;
+    author: {
+        userName: string;
+    };
+    parentComment: {
+        _id: string;
+    };
+};
 
 const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitComments = false}: any) => {
     const {
@@ -68,6 +34,7 @@ const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitCo
     const [selectedReaction, setSelectedReaction] = useState('')
     const [reactionsCount, setReactionsCount] = useState({up: 0, down: 0})
     const [comment, setComment] = useState('');
+    const [allComments, setAllComments]= useState<Comment[]>([])
 
     const GET_REACTIONS = gql`
     query TopicDetails($id: String!) {
@@ -158,14 +125,27 @@ const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitCo
         socket?.emit('postTopicReaction', reactionData);
     }
 
+    useEffect(()=>{
+
+        if(!loadingComments && !commentsDataError && commentsData){
+            console.log('setting comments', commentsData?.topic?.comments)
+            setAllComments(commentsData?.topic?.comments)
+        }
+    }, [loadingComments,commentsDataError, commentsData])
     useEffect(() => {
+        socket?.emit('joinForum', postDetails._id)
         const handleTopicReactionPosted = () => {
             console.log('reaction posted...');
             refetchReactionData();
         };
-        const handleTopicCommentPosted = () => {
+        const handleTopicCommentPosted = (newComment: any) => {
             console.log('comment posted...');
-            refetchCommentData();
+            console.log('new comment from commentPosted', newComment)
+            console.log('all comments', allComments)
+            if (allComments) {
+                setAllComments([...allComments, newComment])
+            }
+            //refetchCommentData();
         };
 
         socket?.on('topicReactionPosted', handleTopicReactionPosted);
@@ -176,7 +156,7 @@ const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitCo
             socket?.off('topicReactionPosted', handleTopicReactionPosted);
             socket?.off('commentPosted', handleTopicCommentPosted);
         };
-    }, []);
+    }, [allComments]);
 
 
     const renderReactions = () => {
@@ -287,7 +267,7 @@ const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitCo
             </div>
 
             <div className="mt-6">
-                <CommentSection comments={commentsData?.topic?.comments}
+                <CommentSection comments={allComments}
                                 commentsCount={commentsData?.topic?.commentsCount}
                                 limitComments={limitComments}
                 />
