@@ -1,80 +1,62 @@
-import React, {Fragment, SetStateAction} from "react";
+import React, {Fragment, SetStateAction, useEffect, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
-import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
-import {gql, useMutation} from "@apollo/client";
 // @ts-ignore
 import Joi from "joi-browser";
-import {useJoiForm} from "@/hooks/useJoiForm";
-import {Schema} from "joi";
+import {gql, useQuery} from "@apollo/client";
+import ComboBox from "@/components/form/combo-box";
 
 interface SlideOverProps {
     open: boolean;
+    data: any;
     setOpen: React.Dispatch<SetStateAction<boolean>>;
-    handleGroupAdded: () => void;
+    onUpdateProfile: () => void;
 }
 
-const groupSchema: Schema = Joi.object({
-    name: Joi.string().required().max(55).label("Group Title"),
-    description: Joi.string().required().label("Description"),
-});
+export default function UpdateGroupsSlideOver({
+                                                  open,
+                                                  data,
+                                                  setOpen,
+                                                  onUpdateProfile
+                                              }: SlideOverProps) {
 
-export default function AddGroupSlideOver({
-                                              open,
-                                              setOpen,
-                                              handleGroupAdded
-                                          }: SlideOverProps) {
-    const groupInfo = {
-        name: "",
-        description: ""
-    };
-
+    const GET_ALL_GROUPS = gql`
+    query GetAllGroups{
+    allgroups{
+    _id
+    name
+    description
+    
+  }
+}
+  `;
 
     const {
-        data: formData,
-        errors,
-        handleChange,
-        handleSubmit,
-    } = useJoiForm(groupInfo, groupSchema);
+        loading,
+        error,
+        data: groupsData,
+        refetch
+    } = useQuery(GET_ALL_GROUPS);
 
-    const ADD_NEW_Group = gql`
-    mutation AddNewGroup(
-      $name: String!
-      $description: String!
-    ) {
-        createGroup(
-        createGroupInput: {
-          name: $name
-          description: $description
-        }
-      ) {
-         name
-         description
-      }
-    }`;
+    const [comboBoxData, setComboBoxData] = useState<Array<any>>([])
+    const [selectedGroups, setSelectedGroups] = useState<Array<any>>([])
 
-    const [addNewGroup, {data: newGroup, loading, error}] =
-        useMutation(ADD_NEW_Group);
+    useEffect(() => {
+        const g = groupsData?.allgroups?.map((item: any) => (
+            {
+                id: item._id,
+                name: item.name
+            }
+        ))
+        console.log('filtered groups data', g)
+        if (g) setComboBoxData([...g])
+    }, [groupsData]);
 
-
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log("calling handle submin");
-        handleSubmit(e, postData);
-
-    };
-
-    const postData = async () => {
-        const variables = {
-            name: formData.name,
-            description: formData.description,
-        };
-
-        await addNewGroup({variables: variables})
-        handleGroupAdded();
-        setOpen(false);
-    };
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault()
+        console.log(selectedGroups)
+    }
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -108,7 +90,7 @@ export default function AddGroupSlideOver({
                                 <Dialog.Panel
                                     className="pointer-events-auto w-screen max-w-md">
                                     <div
-                                        className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-800 shadow-xl">
+                                        className="flex h-full flex-col overflow-y-scroll bg-white dark:bg-gray-900 shadow-xl">
                                         <div className="px-4 py-6 sm:px-6">
                                             <div
                                                 className="flex items-start justify-between">
@@ -116,7 +98,7 @@ export default function AddGroupSlideOver({
                                                     id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Add New Group
+                                                    Update groups
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -140,28 +122,13 @@ export default function AddGroupSlideOver({
                                         <form onSubmit={onSubmit}>
                                             <div>
                                                 <div className="px-8">
-                                                    <div>
-                                                        <Input
-                                                            label="Group Title"
-                                                            name="name"
-                                                            type="text"
-                                                            value={formData?.name}
-                                                            onChange={handleChange}
-                                                            error={errors?.name}
-                                                            placeholder="Group Title"
-                                                        />
-                                                    </div>
-                                                    <div className="mt-4">
-                                                        <Input
-                                                            label="Description"
-                                                            name="description"
-                                                            type="text"
-                                                            value={formData?.description}
-                                                            onChange={handleChange}
-                                                            error={errors?.code}
-                                                            placeholder="Description"
-                                                        />
-                                                    </div>
+                                                    <ComboBox
+                                                        label='Groups'
+                                                        multiple
+                                                        items={comboBoxData}
+                                                        selectedData={selectedGroups}
+                                                        setSelectedData={setSelectedGroups}
+                                                    />
                                                 </div>
                                             </div>
                                             <div
@@ -175,7 +142,7 @@ export default function AddGroupSlideOver({
                                                         Cancel
                                                     </Button>
                                                     <Button
-                                                        type="submit">Create</Button>
+                                                        type="submit">Update</Button>
                                                 </div>
                                             </div>
                                         </form>

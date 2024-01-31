@@ -9,7 +9,6 @@ import {useUser} from "@auth0/nextjs-auth0/client";
 import {ReactionType} from "@/utils/extraFunctions";
 import {gql, useQuery} from "@apollo/client";
 import Link from "next/link";
-import { set } from 'date-fns';
 
 
 type Comment = {
@@ -24,7 +23,13 @@ type Comment = {
     };
 };
 
-const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitComments = false}: any) => {
+const PostCard = ({
+                      postDetails,
+                      socket,
+                      refetchPosts,
+                      clickable = false,
+                      limitComments = false
+                  }: any) => {
     const {
         user: auth0User,
         error: auth0UserError,
@@ -34,7 +39,7 @@ const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitCo
     const [selectedReaction, setSelectedReaction] = useState('')
     const [reactionsCount, setReactionsCount] = useState({up: 0, down: 0})
     const [comment, setComment] = useState('');
-    const [allComments, setAllComments]= useState<Comment[]>([])
+    const [allComments, setAllComments] = useState<Comment[]>([])
 
     const GET_REACTIONS = gql`
     query TopicDetails($id: String!) {
@@ -125,13 +130,13 @@ const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitCo
         socket?.emit('postTopicReaction', reactionData);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
 
-        if(!loadingComments && !commentsDataError && commentsData){
+        if (!loadingComments && !commentsDataError && commentsData) {
             console.log('setting comments', commentsData?.topic?.comments)
             setAllComments(commentsData?.topic?.comments)
         }
-    }, [loadingComments,commentsDataError, commentsData])
+    }, [loadingComments, commentsDataError, commentsData])
     useEffect(() => {
         socket?.emit('joinForum', postDetails._id)
         const handleTopicReactionPosted = () => {
@@ -193,7 +198,7 @@ const PostCard = ({postDetails, socket, refetchPosts, clickable = false, limitCo
             <div className="">
                 <div className="flex flex-row items-center">
                     <img
-                        className="inline-block h-10 w-10 rounded-full"
+                        className="inline-block h-10 w-10 rounded-full object-cover"
                         src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                         alt=""
                     />

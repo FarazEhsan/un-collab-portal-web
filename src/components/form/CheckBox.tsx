@@ -7,7 +7,14 @@ interface CheckBoxProps {
     data: any,
     onChange?: ChangeEventHandler
 }
-export default function CheckBox({name, label, subtitle, data:elements, onChange}: CheckBoxProps) {
+
+export default function CheckBox({
+                                     name,
+                                     label,
+                                     subtitle,
+                                     data: elements,
+                                     onChange
+                                 }: CheckBoxProps) {
     return (
         <div>
             <label
@@ -17,7 +24,8 @@ export default function CheckBox({name, label, subtitle, data:elements, onChange
                 <legend className="sr-only">{name}</legend>
                 <div className="space-y-5">
                     {elements?.map((element: any) => (
-                        <div className="relative flex items-start" key={element.id}>
+                        <div className="relative flex items-start"
+                             key={element.id}>
                             <div className="flex h-6 items-center">
                                 <input
                                     id={element.id}

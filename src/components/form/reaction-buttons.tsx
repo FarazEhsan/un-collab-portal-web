@@ -1,24 +1,43 @@
-import React, {SetStateAction, useState} from 'react'
-import { RadioGroup } from '@headlessui/react'
+import React from 'react'
+import {RadioGroup} from '@headlessui/react'
 import classNames from "classnames";
-import { FaCaretDown, FaCaretUp } from "react-icons/fa";
+import {FaCaretDown, FaCaretUp} from "react-icons/fa";
 import {ReactionType} from "@/utils/extraFunctions";
-
 
 
 interface ReactionButtonProps {
     selectedReaction: string | null,
     setSelectedReaction: any,
-    reactionCount: {up: number, down:number}
+    reactionCount: { up: number, down: number }
 }
-export default function ReactionButtons({selectedReaction, setSelectedReaction, reactionCount}:ReactionButtonProps) {
+
+export default function ReactionButtons({
+                                            selectedReaction,
+                                            setSelectedReaction,
+                                            reactionCount
+                                        }: ReactionButtonProps) {
     const reactions = [
-        { name: ReactionType.Up, count:reactionCount.up, bgColor: 'text-gray-400', selectedColor: 'text-green-500', icon: FaCaretUp, hoverColor: 'hover:text-green-300' },
-        { name: ReactionType.Down, count:reactionCount.down, bgColor: 'text-gray-400', selectedColor: 'text-red-500', icon: FaCaretDown, hoverColor: 'hover:text-red-300' },
+        {
+            name: ReactionType.Up,
+            count: reactionCount.up,
+            bgColor: 'text-gray-400',
+            selectedColor: 'text-green-500',
+            icon: FaCaretUp,
+            hoverColor: 'hover:text-green-300'
+        },
+        {
+            name: ReactionType.Down,
+            count: reactionCount.down,
+            bgColor: 'text-gray-400',
+            selectedColor: 'text-red-500',
+            icon: FaCaretDown,
+            hoverColor: 'hover:text-red-300'
+        },
     ]
     return (
         <RadioGroup value={selectedReaction} onChange={setSelectedReaction}>
-            <RadioGroup.Label className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
+            <RadioGroup.Label
+                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
                 Reaction
             </RadioGroup.Label>
             <div className="mt-2 flex items-center space-x-3">
@@ -26,7 +45,7 @@ export default function ReactionButtons({selectedReaction, setSelectedReaction, 
                     <RadioGroup.Option
                         key={reaction.name}
                         value={reaction.name}
-                        className={({ active, checked }) =>
+                        className={({active, checked}) =>
                             classNames(
                                 reaction.hoverColor,
                                 active && checked ? reaction.selectedColor : reaction.bgColor,

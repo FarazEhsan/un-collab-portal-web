@@ -4,7 +4,7 @@ interface SingleColumnContainerProps {
     children: ReactNode
 }
 
-const SingleColumnContainer = ({children}:SingleColumnContainerProps) => {
+const SingleColumnContainer = ({children}: SingleColumnContainerProps) => {
     return (
         <main className='dark:bg-gray-950 bg-gray-50'>
             <div>

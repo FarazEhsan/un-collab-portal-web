@@ -1,4 +1,4 @@
-import { ExclamationCircleIcon } from '@heroicons/react/20/solid';
+import {ExclamationCircleIcon} from '@heroicons/react/20/solid';
 import {ChangeEventHandler, FocusEventHandler} from "react";
 import {classNames} from "@/utils/extraFunctions";
 
@@ -16,7 +16,7 @@ interface InputProps {
     required?: boolean,
 }
 
-export default function Input (
+export default function Input(
     {
         label = 'Label',
         type = 'text',
@@ -33,7 +33,8 @@ export default function Input (
 ) {
     return (
         <div className={className}>
-            <label htmlFor={name} className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
+            <label htmlFor={name}
+                   className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
                 {label}
             </label>
             <div className="relative mt-2 rounded-md shadow-sm">
@@ -54,15 +55,19 @@ export default function Input (
                 />
                 {
                     error && (
-                        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
-                            <ExclamationCircleIcon className="h-5 w-5 text-red-500 dark:text-red-800" aria-hidden="true"/>
+                        <div
+                            className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3">
+                            <ExclamationCircleIcon
+                                className="h-5 w-5 text-red-500 dark:text-red-800"
+                                aria-hidden="true"/>
                         </div>
                     )
                 }
             </div>
             {
                 error && (
-                    <p className="mt-2 text-sm text-red-600 dark:text-red-700" id={`${name}-error`}>
+                    <p className="mt-2 text-sm text-red-600 dark:text-red-700"
+                       id={`${name}-error`}>
                         {error}
                     </p>
                 )

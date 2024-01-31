@@ -66,7 +66,7 @@ export default function CarouselModal({
                                             images?.length && (
                                                 <Carousel slide={false}>
                                                     {
-                                                        images.map((image: string, index:number) => (
+                                                        images.map((image: string, index: number) => (
                                                             <img
                                                                 key={index}
                                                                 src={image}

@@ -4,7 +4,11 @@ interface TwoColumnContainerProps {
     children: ReactNode,
     secondaryContent: ReactNode,
 }
-const TwoColumnContainer = ({children, secondaryContent}:TwoColumnContainerProps) => {
+
+const TwoColumnContainer = ({
+                                children,
+                                secondaryContent
+                            }: TwoColumnContainerProps) => {
     return (
         <>
             <main className="dark:bg-gray-950 bg-gray-50">
@@ -16,7 +20,8 @@ const TwoColumnContainer = ({children, secondaryContent}:TwoColumnContainerProps
                 </div>
             </main>
 
-            <aside className="fixed inset-y-12 right-0 top-16 bottom-0 hidden w-96 overflow-y-auto border-l border-gray-200 dark:border-gray-700 px-4 py-6  sm:px-6 lg:px-8 xl:block">
+            <aside
+                className="fixed inset-y-12 right-0 top-16 bottom-0 hidden w-96 overflow-y-auto border-l border-gray-200 dark:border-gray-700 px-4 py-6  sm:px-6 lg:px-8 xl:block">
                 {/* Secondary column (hidden on smaller screens) */}
                 {secondaryContent}
             </aside>

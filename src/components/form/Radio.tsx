@@ -9,11 +9,19 @@ interface RadioProps {
     onChange?: ChangeEventHandler
 }
 
-export default function Radio({name, label, subtitle, defaultChecked, data:elements, onChange}: RadioProps) {
+export default function Radio({
+                                  name,
+                                  label,
+                                  subtitle,
+                                  defaultChecked,
+                                  data: elements,
+                                  onChange
+                              }: RadioProps) {
     // Data Format: {id: string, title: string}
     return (
         <div>
-            <label className="text-base font-semibold text-gray-900">{label}</label>
+            <label
+                className="text-base font-semibold text-gray-900">{label}</label>
             <p className="text-sm text-gray-500">{subtitle}</p>
             <fieldset className="mt-4">
                 <legend className="sr-only">{label}</legend>
@@ -28,7 +36,8 @@ export default function Radio({name, label, subtitle, defaultChecked, data:eleme
                                 onChange={onChange}
                                 className="h-4 w-4 border-gray-300 text-custom-teal focus:ring-custom-teal"
                             />
-                            <label htmlFor={element?.id} className="ml-3 block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor={element?.id}
+                                   className="ml-3 block text-sm font-medium leading-6 text-gray-900">
                                 {element?.title ? element?.title : element?.name}
                             </label>
                         </div>

@@ -6,13 +6,20 @@ interface ButtonProps {
     classNames?: string,
     onClick?: MouseEventHandler,
     type?: 'button' | 'submit' | 'reset';
-    action?: (event:any) => void
+    action?: (event: any) => void
 }
 
 let colorConfig = 'bg-custom-blue text-white hover:bg-custom-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-custom-teal';
 
 
-const Button = ({children, colorType = 'primary', classNames, onClick, type, action}: ButtonProps) => {
+const Button = ({
+                    children,
+                    colorType = 'primary',
+                    classNames,
+                    onClick,
+                    type,
+                    action
+                }: ButtonProps) => {
     switch (colorType) {
         case 'primary':
             colorConfig = 'bg-custom-blue text-white hover:bg-custom-teal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-custom-teal';

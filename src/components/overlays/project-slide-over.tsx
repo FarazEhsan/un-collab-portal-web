@@ -1,8 +1,9 @@
 import React, {Fragment, SetStateAction, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
-import Badge from "@/components/badge";
 import CarouselModal from "@/components/modals/carousel-modal";
+import Button from "@/components/button/Button";
+import EditProjectSlideOver from "@/app/(home)/profile/edit-project-slide-over";
 
 interface SlideOverProps {
     open: boolean,
@@ -19,6 +20,7 @@ const data = {
 
 export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
     const [openCarouselModal, setOpenCarouselModal] = useState(false);
+    const [openEditProjectSlideOver, setOpenEditProjectSlideOver] = useState(false);
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={setOpen}>
@@ -81,15 +83,22 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                         <div>
                                             <div className="pb-1 sm:pb-6">
                                                 <div>
-                                                    <div onClick={() => setOpenCarouselModal(!openCarouselModal)}
+                                                    <div
+                                                        className="flex justify-end mb-2">
+                                                        <Button colorType="link"
+                                                                onClick={() => setOpenEditProjectSlideOver(!openEditProjectSlideOver)}>Edit</Button>
+                                                    </div>
+                                                    <div
+                                                        onClick={() => setOpenCarouselModal(!openCarouselModal)}
                                                         className="relative h-40 sm:h-56 cursor-pointer">
                                                         <img
                                                             src="https://source.unsplash.com/random/300x500"
                                                             className="h-full w-full object-cover"
                                                         />
-                                                        <CarouselModal open={openCarouselModal}
-                                                                       images={[]}
-                                                                       setOpen={setOpenCarouselModal}/>
+                                                        <CarouselModal
+                                                            open={openCarouselModal}
+                                                            images={[]}
+                                                            setOpen={setOpenCarouselModal}/>
                                                     </div>
                                                     <div
                                                         className="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6">
@@ -151,13 +160,15 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                                         </dd>
                                                     </div>
                                                     <div>
-                                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">Key Achievements</dt>
+                                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">Key
+                                                            Achievements
+                                                        </dt>
                                                         <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 dark:text-gray-100">None</dd>
                                                     </div>
                                                     <div>
                                                         <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">Partners</dt>
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
-                                                           Tom Chef
+                                                            Tom Chef
                                                         </dd>
                                                     </div>
                                                 </dl>
@@ -168,6 +179,9 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                             </Transition.Child>
                         </div>
                     </div>
+                    <EditProjectSlideOver open={openEditProjectSlideOver}
+                                          data={[]}
+                                          setOpen={setOpenEditProjectSlideOver}/>
                 </div>
             </Dialog>
         </Transition.Root>

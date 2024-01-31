@@ -1,6 +1,5 @@
-import { UserProfile } from '@auth0/nextjs-auth0/client';
-import { Session, getSession, withMiddlewareAuthRequired } from '@auth0/nextjs-auth0/edge';
-import { NextResponse } from 'next/server';
+import {UserProfile} from '@auth0/nextjs-auth0/client';
+import {withMiddlewareAuthRequired} from '@auth0/nextjs-auth0/edge';
 
 
 //Commented the role based access control for now as it was messing up the useUser hook
@@ -9,14 +8,14 @@ type Role = 'admin' | 'user';
 
 // Define a mapping of roles to paths
 const rolePaths: Record<Role, string[]> = {
-  admin: ['/register', '/admin', '/profile', '/admin/user/add', '/home', '/'],
-  user: ['/dashboard', '/profile', '/'],
-  // Add more roles and paths as needed
+    admin: ['/register', '/admin', '/profile', '/admin/user/add', '/home', '/'],
+    user: ['/dashboard', '/profile', '/'],
+    // Add more roles and paths as needed
 };
 
 // Define a type for the user object that includes the roles property
 type UserWithRoles = UserProfile & {
-  'https://unhabitat-cop.com/roles': Role[];
+    'https://unhabitat-cop.com/roles': Role[];
 };
 
 export default withMiddlewareAuthRequired();

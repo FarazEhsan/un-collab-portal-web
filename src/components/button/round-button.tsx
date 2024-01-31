@@ -6,7 +6,7 @@ interface RoundButtonProps {
     profileURL?: string,
 }
 
-const RoundButton = ({children, classNames,profileURL}: RoundButtonProps) => {
+const RoundButton = ({children, classNames, profileURL}: RoundButtonProps) => {
     return (
         <a
             type="button"

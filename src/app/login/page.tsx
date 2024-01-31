@@ -21,7 +21,7 @@ export default function LoginPage() {
                             <p className="mt-2 text-sm leading-6 text-gray-500">
                                 Not a member?{' '}
                                 <Link href='/register'
-                                   className="font-semibold text-custom-blue hover:text-custom-teal">
+                                      className="font-semibold text-custom-blue hover:text-custom-teal">
                                     Register Now
                                 </Link>
                             </p>

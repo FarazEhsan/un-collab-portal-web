@@ -1,6 +1,6 @@
-import { BlobServiceClient } from "@azure/storage-blob";
+import {BlobServiceClient} from "@azure/storage-blob";
 
-async function uploadImage(containerName:string, file:any) {
+async function uploadImage(containerName: string, file: any) {
     const sasToken = "?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D";
     const account = "unhabitatfiles";
     const blobServiceClient = new BlobServiceClient(`https://${account}.blob.core.windows.net/${sasToken}`);

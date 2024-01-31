@@ -11,7 +11,10 @@ const LoginForm = () => {
     })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setCredentials(prevState => ({...prevState, [e.target.name]: e.target.value}));
+        setCredentials(prevState => ({
+            ...prevState,
+            [e.target.name]: e.target.value
+        }));
     }
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,5 +1,5 @@
 'use client'
-import React, {ChangeEvent, Fragment, SetStateAction, useEffect, useState} from 'react'
+import React, {Fragment, SetStateAction, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
 import Input from "@/components/form/Input";
@@ -11,9 +11,10 @@ import {FileInput} from "flowbite-react";
 import useSocket from "@/hooks/useSocketClient";
 // @ts-ignore
 import Joi from 'joi-browser'
-import  {Schema} from "joi";
+import {Schema} from "joi";
 import {useJoiForm} from "@/hooks/useJoiForm";
 import uploadImage from '@/utils/azureblobupload';
+
 interface SlideOverProps {
     open: boolean,
     setOpen: React.Dispatch<SetStateAction<boolean>>,
@@ -26,12 +27,16 @@ const postSchema: Schema = Joi.object({
 });
 
 
-export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: SlideOverProps) {
+export default function CreatePostSlideOver({
+                                                open,
+                                                setOpen,
+                                                onNewPostCreated
+                                            }: SlideOverProps) {
     const {user, error, isLoading} = useUser();
     const socket = useSocket();
-    useEffect(()=>{
-        if(socket)
-        socket.emit('findAllForumEvents');
+    useEffect(() => {
+        if (socket)
+            socket.emit('findAllForumEvents');
     })
 
     const postData = {
@@ -41,7 +46,7 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
 
     const [files, setFiles] = useState<Array<File>>([]);
 
-    const { data: formData, errors, handleChange, handleSubmit } = useJoiForm(
+    const {data: formData, errors, handleChange, handleSubmit} = useJoiForm(
         postData,
         postSchema
     );
@@ -55,16 +60,20 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
     }
 
 
-
     const sendData = async () => {
         let uploadedFiles: String[] = []
-        if(files){
-            uploadedFiles= await Promise.all(files.map((file:any)=>{
+        if (files) {
+            uploadedFiles = await Promise.all(files.map((file: any) => {
                 return uploadImage('dynamicfile', file)
             }))
         }
 
-        socket?.emit('postTopic', {"title": formData.title, "description": formData.description, "author": user?.sub, "images":uploadedFiles});
+        socket?.emit('postTopic', {
+            "title": formData.title,
+            "description": formData.description,
+            "author": user?.sub,
+            "images": uploadedFiles
+        });
     }
 
     const handleFileChange = (e: any) => {
@@ -175,7 +184,6 @@ export default function CreatePostSlideOver({open, setOpen, onNewPostCreated}: S
                                                         </label>
                                                     </div>
                                                     <FileInput id="attachments"
-                                                               className='ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-custom-teal dark:focus:ring-custom-teal'
                                                                multiple
                                                                accept='image/*'
                                                                onChange={handleFileChange}

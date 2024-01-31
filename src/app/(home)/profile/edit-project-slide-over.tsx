@@ -13,7 +13,7 @@ interface SlideOverProps {
     open: boolean;
     data: any
     setOpen: React.Dispatch<SetStateAction<boolean>>;
-    onUpdateProfile: () => void;
+    // onUpdateProfile: () => void;
 }
 
 const GET_ALL_SDG = gql`
@@ -33,12 +33,10 @@ const projectInfoSchema = {
     relatedSDGs: Joi.array().min(1).required(),
 };
 
-export default function AddProjectSlideOver({
-                                                open,
-                                                data,
-                                                setOpen,
-                                                onUpdateProfile
-                                            }: SlideOverProps) {
+export default function EditProjectSlideOver({
+                                                 open,
+                                                 setOpen,
+                                             }: SlideOverProps) {
     const {
         loading: sdgLoading,
         error: sdgError,
@@ -172,22 +170,22 @@ export default function AddProjectSlideOver({
 
 
     const postData = async () => {
-        console.log(projectInfo);
-
-        //TODO: Implement
-
-        const variables = {
-            user: data._id,
-            name: projectInfo.name,
-            startTime: projectInfo.startTime,
-            endTime: projectInfo.endTime,
-            description: projectInfo.description,
-            relatedSDGs: relatedSDGs,
-        };
-
-        await addNewProduct({variables: variables})
-        onUpdateProfile()
-        setOpen(false);
+        // console.log(projectInfo);
+        //
+        // //TODO: Implement
+        //
+        // const variables = {
+        //     user: data._id,
+        //     name: projectInfo.name,
+        //     startTime: projectInfo.startTime,
+        //     endTime: projectInfo.endTime,
+        //     description: projectInfo.description,
+        //     relatedSDGs: relatedSDGs,
+        // };
+        //
+        // await addNewProduct({ variables: variables })
+        // onUpdateProfile()
+        // setOpen(false);
     };
 
     return (
@@ -230,7 +228,7 @@ export default function AddProjectSlideOver({
                                                     id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Add Project
+                                                    Edit Project
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -315,7 +313,7 @@ export default function AddProjectSlideOver({
                                                         Cancel
                                                     </Button>
                                                     <Button
-                                                        type="submit">Create</Button>
+                                                        type="submit">Update</Button>
                                                 </div>
                                             </div>
                                         </form>
