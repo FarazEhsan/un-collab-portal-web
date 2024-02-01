@@ -39,31 +39,7 @@ const PostCard = ({
   const [reactionsCount, setReactionsCount] = useState({ up: 0, down: 0 });
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState<Comment[]>([]);
-
-  const GET_REACTIONS = gql`
-    query TopicDetails($id: String!) {
-      topic(id: $id) {
-        reactions {
-          type
-          user {
-            _id
-          }
-        }
-      }
-    }
-  `;
-
-  const {
-    loading: loadingReactions,
-    error: reactionsDataError,
-    data: reactionsData,
-    refetch: refetchReactionData,
-  } = useQuery(GET_REACTIONS, {
-    variables: { id: postDetails._id },
-  });
-
-
-  // console.log('comments data', reactionsData)
+  const [reactionData, setReactionData] = useState<any>([]);
 
   const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -104,17 +80,26 @@ const PostCard = ({
   };
 
   useEffect(() => {
-    console.log('postDetails.comments in post-card', postDetails.comments)
+    console.log("postDetails.comments in post-card", postDetails.comments);
+    socket?.emit("joinForum", postDetails._id);
     if (postDetails.comments) {
       console.log("setting comments", postDetails.comments);
       setAllComments(postDetails.comments);
     }
+    if (postDetails.reactions) {
+      setReactionData(postDetails.reactions);
+      renderReactions(postDetails.reactions);
+    }
   }, []);
   useEffect(() => {
-    socket?.emit("joinForum", postDetails._id);
-    const handleTopicReactionPosted = () => {
-      console.log("reaction posted...");
-      refetchReactionData();
+    
+    const handleTopicReactionPosted = (newReaction: any) => {
+      console.log("reaction posted...", newReaction);
+      
+      if (reactionData) {
+        setReactionData([...reactionData, newReaction]);
+        renderReactions([...reactionData, newReaction])  
+      }
     };
     const handleTopicCommentPosted = (newComment: any) => {
       console.log("comment posted...");
@@ -134,16 +119,16 @@ const PostCard = ({
       socket?.off("topicReactionPosted", handleTopicReactionPosted);
       socket?.off("commentPosted", handleTopicCommentPosted);
     };
-  }, [allComments]);
+  }, [allComments, reactionData]);
 
-  const renderReactions = () => {
+  const renderReactions = (reactionsData: any) => {
     let up = 0;
     let down = 0;
     console.log("rendering reactions");
-    if (!loadingReactions && !reactionsDataError) {
+    if (reactionsData) {
       // up = 0
       // down = 0
-      reactionsData?.topic?.reactions?.map((r: any) => {
+      reactionsData?.map((r: any) => {
         if (r.type === ReactionType.Up) up++;
         if (r.type === ReactionType.Down) down++;
         if (r.author === auth0User?._id) setSelectedReaction(r.type);
@@ -151,10 +136,6 @@ const PostCard = ({
     }
     setReactionsCount({ up, down });
   };
-
-  useEffect(() => {
-    renderReactions();
-  }, [reactionsData]);
 
   let hoverClasses = "";
   if (clickable) hoverClasses = "dark:hover:bg-gray-800 hover:bg-gray-100";
