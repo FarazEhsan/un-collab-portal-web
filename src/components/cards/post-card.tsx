@@ -91,14 +91,15 @@ const PostCard = ({
       renderReactions(postDetails.reactions);
     }
   }, []);
+
   useEffect(() => {
-    
+
     const handleTopicReactionPosted = (newReaction: any) => {
       console.log("reaction posted...", newReaction);
-      
+
       if (reactionData) {
         setReactionData([...reactionData, newReaction]);
-        renderReactions([...reactionData, newReaction])  
+        renderReactions([...reactionData, newReaction])
       }
     };
     const handleTopicCommentPosted = (newComment: any) => {
@@ -215,23 +216,28 @@ const PostCard = ({
       </div>
 
       {/*Comments*/}
-      <div className="mt-6">
-        <CommentTextArea
-          onSubmit={postComment}
-          onChange={handleCommentChange}
-          value={comment}
-          label="Add a Comment"
-          name="comment"
-        />
-      </div>
+      {!limitComments && (
+          <>
+            <div className="mt-6">
+              <CommentTextArea
+                  onSubmit={postComment}
+                  onChange={handleCommentChange}
+                  value={comment}
+                  label="Add a Comment"
+                  name="comment"
+              />
+            </div>
+            <div className="mt-6">
+              <CommentSection
+                  comments={allComments}
+                  topicId={postDetails?._id}
+                  commentsCount={postDetails?.commentsCount}
+                  limitComments={limitComments}
+              />
+            </div>
+          </>
 
-      <div className="mt-6">
-        <CommentSection
-          comments={allComments}
-          commentsCount={postDetails?.commentsCount}
-          limitComments={limitComments}
-        />
-      </div>
+      )}
     </div>
   );
 };

@@ -17,6 +17,12 @@ export default function Home() {
     title
     images
     createdAt
+    reactions{
+    type
+    user{
+      _id
+    }
+  }
     author{
       userName
     }

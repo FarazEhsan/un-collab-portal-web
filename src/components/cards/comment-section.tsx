@@ -1,24 +1,41 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Comment from "@/components/cards/comment";
 
 const CommentSection = ({
                             comments,
+    topicId,
                             commentsCount = 0,
                             limitComments = false
                         }: any) => {
-    const renderComments = (parentId = null) => {
-        let filteredComments = comments?.filter(
-            (comment: any) => comment?.parentComment === parentId
+    const renderComments = () => {
+        const topLevelComments = comments?.filter(
+            (comment: any) => comment?.parentComment === null
         );
 
-        if (commentsCount > 3 && limitComments) {
-            filteredComments = filteredComments?.slice(0, 3)
-        }
-        // console.log('filteredComments', filteredComments)
-        return filteredComments?.map((comment: any) => ({
-            ...comment,
-            replies: renderComments(comment._id),
-        }));
+        const childComments = comments?.filter(
+            (comment: any) => comment?.parentComment !== null
+        );
+
+        return topLevelComments?.map((parent:any) => (
+            {
+                ...parent,
+                replies: childComments?.filter(
+                    (child:any) => (child.parentComment?._id ? child.parentComment?._id : child.parentComment) === parent._id
+                )
+            }
+        ))
+
+
+        // let filteredComments = comments?.filter(
+        //     (comment: any) => comment?.parentComment?._id === parentId
+        // );
+        //
+        //
+        // // console.log('filteredComments', filteredComments)
+        // return filteredComments?.map((comment: any) => ({
+        //     ...comment,
+        //     replies: renderComments(comment._id),
+        // }));
     };
 
     const commentTree = renderComments();
@@ -34,17 +51,9 @@ const CommentSection = ({
                 ) : (
                     <div>
                         {commentTree?.map((comment: any) => (
-                            <Comment key={comment._id} comment={comment}
+                            <Comment topicId={topicId} key={comment._id} comment={comment}
                                      replies={comment.replies}/>
                         ))}
-                        {
-                            commentsCount > 3 && limitComments ? (
-                                <p className="text-base leading-6 text-gray-500 dark:text-gray-200">Open
-                                    topic to view all comments</p>
-                            ) : (
-                                ''
-                            )
-                        }
                     </div>
                 )
             }

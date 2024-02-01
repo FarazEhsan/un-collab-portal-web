@@ -36,10 +36,10 @@ export default function ReactionButtons({
     ]
     return (
         <RadioGroup value={selectedReaction} onChange={setSelectedReaction}>
-            <RadioGroup.Label
-                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
-                Reaction
-            </RadioGroup.Label>
+            {/*<RadioGroup.Label*/}
+            {/*    className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">*/}
+            {/*    Reaction*/}
+            {/*</RadioGroup.Label>*/}
             <div className="mt-2 flex items-center space-x-3">
                 {reactions.map((reaction) => (
                     <RadioGroup.Option

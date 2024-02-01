@@ -42,6 +42,12 @@ const TopicDetails = ({params}: { params: { id: string } }) => {
     _id
         text
         createdAt
+       reactions{
+        type
+        user{
+          _id
+        }
+      }
         author{
           userName
         }
