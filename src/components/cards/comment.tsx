@@ -74,8 +74,9 @@ const Comment = ({comment, replies, topicId}: any) => {
             type: reaction,
             user: auth0User?.sub?.toString(),
             comment: comment?._id,
-            topic: null,
+            topic: topicId,
         };
+        console.log('reactin data being posted',reactionData)
         socket?.emit("postCommentReaction", reactionData);
     };
 
