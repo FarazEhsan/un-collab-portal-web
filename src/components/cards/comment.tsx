@@ -16,6 +16,7 @@ const Comment = ({comment, replies, topicId}: any) => {
     } = useUser();
     const [selectedReaction, setSelectedReaction] = useState('')
     const [reactionsCount, setReactionsCount] = useState({up: 0, down: 0});
+    const [reactionData, setReactionData] = useState<any>([]);
     const [displayCommentBox, setDisplayCommentBox] = useState(false);
     const [reply, setReply] = useState('')
     const socket = useSocketClient();
@@ -58,7 +59,8 @@ const Comment = ({comment, replies, topicId}: any) => {
     };
 
     useEffect(() => {
-        renderReactions(comment?.reactions)
+        renderReactions(comment?.reactions);
+        setReactionData(comment?.reactions);
     }, []);
 
     const onReactionChange = (reaction: string) => {
@@ -76,6 +78,26 @@ const Comment = ({comment, replies, topicId}: any) => {
         };
         socket?.emit("postCommentReaction", reactionData);
     };
+
+
+    useEffect(() => {
+
+        const handleCommentReactionPosted = (newReaction: any) => {
+            console.log("reaction posted...", newReaction);
+
+            if (reactionData) {
+                setReactionData([...reactionData, newReaction]);
+                renderReactions([...reactionData, newReaction])
+            }
+        };
+
+        socket?.on("commentReactionPosted", handleCommentReactionPosted);
+
+        return () => {
+            // Clean up the listener when the component is unmounted
+            socket?.off("commentReactionPosted", handleCommentReactionPosted);
+        };
+    }, [reactionData]);
 
     return (
         <div key={comment._id} className="my-4">
