@@ -233,6 +233,7 @@ const PostCard = ({
                   topicId={postDetails?._id}
                   commentsCount={postDetails?.commentsCount}
                   limitComments={limitComments}
+                  socket={socket}
               />
             </div>
           </>

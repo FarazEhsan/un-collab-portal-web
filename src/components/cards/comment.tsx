@@ -8,7 +8,7 @@ import useSocketClient from "@/hooks/useSocketClient";
 import {useUser} from "@auth0/nextjs-auth0/client";
 import {ReactionType} from "@/utils/extraFunctions";
 
-const Comment = ({comment, replies, topicId}: any) => {
+const Comment = ({comment, replies, topicId, socket}: any) => {
     const {
         user: auth0User,
         error: auth0UserError,
@@ -19,7 +19,6 @@ const Comment = ({comment, replies, topicId}: any) => {
     const [reactionData, setReactionData] = useState<any>([]);
     const [displayCommentBox, setDisplayCommentBox] = useState(false);
     const [reply, setReply] = useState('')
-    const socket = useSocketClient();
 
     const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
         setReply(e.target.value);

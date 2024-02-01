@@ -6,6 +6,7 @@ const CommentSection = ({
   topicId,
   commentsCount = 0,
   limitComments = false,
+  socket
 }: any) => {
   const renderComments = () => {
     const topLevelComments = comments?.filter(
@@ -57,6 +58,7 @@ const CommentSection = ({
               key={comment._id}
               comment={comment}
               replies={comment.replies}
+              socket={socket}
             />
           ))}
         </div>
