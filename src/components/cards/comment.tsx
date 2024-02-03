@@ -66,7 +66,6 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
         setSelectedReaction(reaction);
         postReaction(reaction);
     };
-
     const postReaction = (reaction: string) => {
         console.log("posting reaction:", reaction);
         const reactionData = {
@@ -86,8 +85,10 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
             console.log("reaction posted...", newReaction);
 
             if (reactionData) {
-                setReactionData([...reactionData, newReaction]);
-                renderReactions([...reactionData, newReaction])
+                if (newReaction.comment === comment._id) {
+                    setReactionData([...reactionData, newReaction]);
+                    renderReactions([...reactionData, newReaction])
+                }
             }
         };
 
@@ -156,6 +157,8 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
                 <div className="ml-8">
                     {replies.map((reply: any) => (
                         <Comment key={reply._id} comment={reply}
+                                 topicId={topicId}
+                                 socket={socket}
                                  replies={reply.replies}/>
                     ))}
                 </div>
