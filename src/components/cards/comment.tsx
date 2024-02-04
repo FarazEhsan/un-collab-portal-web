@@ -104,8 +104,8 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
         <div key={comment._id} className="my-4">
             <div className="flex flex-row">
                 <img
-                    className="inline-block h-6 w-6 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    className="inline-block h-6 w-6 rounded-full object-cover"
+                    src="https://unhabitatfiles.blob.core.windows.net/dynamicfile/WhatsApp%20Image%202024-01-18%20at%2018.56.31_0c09e556.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D"
                     alt=""
                 />
                 <div className="ml-2">

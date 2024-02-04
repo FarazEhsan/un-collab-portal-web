@@ -337,7 +337,8 @@ export default function SideNav({children, navData}: SideNavProps) {
                                             className="sr-only">Open user menu</span>
                                         <img
                                             className="h-8 w-8 rounded-full bg-gray-50 dark:bg-gray-800 object-cover"
-                                            src={user?.picture ? user?.picture : noProfilePictureImage.src}
+                                            // src={user?.picture ? user?.picture : noProfilePictureImage.src}
+                                            src="https://unhabitatfiles.blob.core.windows.net/dynamicfile/WhatsApp%20Image%202024-01-18%20at%2018.56.31_0c09e556.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D"
                                             alt=""
                                         />
                                         <span
