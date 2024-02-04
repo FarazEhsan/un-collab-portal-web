@@ -426,7 +426,7 @@ const ProfilePage = () => {
                             />
                         </div>
 
-                        <div className="grid grid-cols-3 gap-4 mt-4">
+                        <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-4 mt-4">
                             {data?.user?.projects?.map((project: any) => {
                                 return (
                                     <ProjectCard

@@ -154,7 +154,7 @@ const TopicDetails = ({params}: { params: { id: string } }) => {
                 loadingTopic ? (
                     <CardSkeleton/>
                 ) : (
-                    <div className="mx-28">
+                    <div className="xl:mx-28">
                         <PostCard postDetails={topicData?.topic}
                                   socket={socket}/>
                     </div>

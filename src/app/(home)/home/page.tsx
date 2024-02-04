@@ -77,7 +77,7 @@ export default function Home() {
                 loading ? (
                     <CardSkeleton/>
                 ) : (
-                    <div className=" xl:mx-[20%]">
+                    <div className=" xl:mx-[15%]">
                         {
                             topics?.map((topic: any, index: number) => (
                                 <div key={index} className="mb-6">
