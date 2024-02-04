@@ -25,6 +25,7 @@ const personalInfoSchema: Schema = Joi.object({
     dob: Joi.date().required().label("Date of Birth"),
     country: Joi.string().min(3).label("Country"),
     city: Joi.string().min(3).label("City"),
+    picture: Joi.string().label("Picture").allow(null)  
 });
 export default function EditPersonalInfoSlideOver({
                                                       open,
@@ -38,6 +39,7 @@ export default function EditPersonalInfoSlideOver({
         dob: data?.dob,
         country: data?.country,
         city: data?.city,
+        picture: data?.picture
     };
 
 
@@ -55,6 +57,7 @@ export default function EditPersonalInfoSlideOver({
       $dob: String
       $country: String
       $city: String
+      $picture: String
     ) {
       updateUser(
         id: $userid
@@ -64,6 +67,7 @@ export default function EditPersonalInfoSlideOver({
           dob: $dob
           country: $country
           city: $city
+          picture: $picture
         }
       ) {
         _id
@@ -131,17 +135,22 @@ export default function EditPersonalInfoSlideOver({
             dob: formData.dob,
             country: formData.country,
             city: formData.city,
+            picture: ""
         };
 
         if (photo) {
             //TODO: fix this error
-            //@ts-ignore
+            console.log('uploading photo', photo)
             variables.picture = await uploadImage('dynamicfile', photo);
+            await updatePersonal({ variables: variables });
+        }
+        else{
+            await updatePersonal({ variables: variables });
         }
         console.log("whats with the variables?", variables);
 
         // TODO: Edit mutation to upload picture
-        // await updatePersonal({ variables: variables });
+       
         console.log("Update data adter personal update", data);
         onUpdateProfile()
         setOpen(false);
@@ -236,9 +245,11 @@ export default function EditPersonalInfoSlideOver({
                                                             {/*<Button colorType="link">Update</Button>*/}
                                                         </div>
                                                         <FileInput
-                                                            id="attachments"
+                                                            id="picture"
                                                             accept='image/*'
                                                             onChange={handleFileChange}
+                                                            name="picture"
+                                                            
                                                         />
                                                     </div>
                                                     <div className="mt-4">

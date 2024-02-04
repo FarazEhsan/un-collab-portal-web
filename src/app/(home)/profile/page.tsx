@@ -42,6 +42,7 @@ const ProfilePage = () => {
         lastName
         userName
         email
+        picture
         dob
         age
         contactNumber
