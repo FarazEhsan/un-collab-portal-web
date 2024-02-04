@@ -6,6 +6,7 @@ const CommentSection = ({
   topicId,
   commentsCount = 0,
   limitComments = false,
+    image,
   socket
 }: any) => {
   const renderComments = () => {
@@ -59,6 +60,7 @@ const CommentSection = ({
               comment={comment}
               replies={comment.replies}
               socket={socket}
+              image={image}
             />
           ))}
         </div>

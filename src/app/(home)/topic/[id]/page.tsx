@@ -29,6 +29,8 @@ const TopicDetails = ({params}: { params: { id: string } }) => {
     createdAt
     author{
       userName
+      name
+      picture
     }
     description
     reactions{
@@ -50,6 +52,8 @@ const TopicDetails = ({params}: { params: { id: string } }) => {
       }
         author{
           userName
+          name
+          picture
         }
         parentComment{
         _id

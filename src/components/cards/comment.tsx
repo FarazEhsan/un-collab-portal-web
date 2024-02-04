@@ -6,9 +6,9 @@ import CommentTextArea from "@/components/form/CommentTextArea";
 import {Transition} from "@headlessui/react";
 import useSocketClient from "@/hooks/useSocketClient";
 import {useUser} from "@auth0/nextjs-auth0/client";
-import {ReactionType} from "@/utils/extraFunctions";
+import {getNameString, ReactionType} from "@/utils/extraFunctions";
 
-const Comment = ({comment, replies, topicId, socket}: any) => {
+const Comment = ({comment, replies, topicId, socket, image}: any) => {
     const {
         user: auth0User,
         error: auth0UserError,
@@ -18,7 +18,8 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
     const [reactionsCount, setReactionsCount] = useState({up: 0, down: 0});
     const [reactionData, setReactionData] = useState<any>([]);
     const [displayCommentBox, setDisplayCommentBox] = useState(false);
-    const [reply, setReply] = useState('')
+    const [reply, setReply] = useState('');
+    const [nameString, setNameString] = useState('');
 
     const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
         setReply(e.target.value);
@@ -100,12 +101,18 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
         };
     }, [reactionData]);
 
+    useEffect(() => {
+        console.log(comment?.author?.name)
+        setNameString(getNameString(comment?.author?.name));
+    }, [comment]);
+
     return (
         <div key={comment._id} className="my-4">
             <div className="flex flex-row">
                 <img
                     className="inline-block h-6 w-6 rounded-full object-cover"
-                    src="https://unhabitatfiles.blob.core.windows.net/dynamicfile/WhatsApp%20Image%202024-01-18%20at%2018.56.31_0c09e556.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D"
+                    src={comment?.author?.picture ? comment?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
+
                     alt=""
                 />
                 <div className="ml-2">
@@ -150,6 +157,7 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
                         value={reply}
                         label="Add a Comment"
                         name="comment"
+                        image={image}
                     />
                 </div>
             </Transition>
@@ -159,6 +167,7 @@ const Comment = ({comment, replies, topicId, socket}: any) => {
                         <Comment key={reply._id} comment={reply}
                                  topicId={topicId}
                                  socket={socket}
+                                 image={image}
                                  replies={reply.replies}/>
                     ))}
                 </div>

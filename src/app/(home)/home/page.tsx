@@ -25,6 +25,7 @@ export default function Home() {
   }
     author{
       userName
+      picture
     }
     description
   }

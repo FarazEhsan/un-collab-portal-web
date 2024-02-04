@@ -10,7 +10,6 @@ import {
 } from '@heroicons/react/20/solid'
 import {PaperAirplaneIcon} from "@heroicons/react/24/outline";
 import {useUser} from "@auth0/nextjs-auth0/client";
-import noProfilePictureImage from "../../../public/no-profile-picture.jpg";
 
 const moods = [
     {
@@ -67,7 +66,8 @@ interface CommentTextAreaProps {
     error?: string | null | undefined,
     onChange?: ChangeEventHandler,
     onFocus?: FocusEventHandler,
-    onSubmit: FormEventHandler
+    onSubmit: FormEventHandler,
+    image: string
 }
 
 export default function CommentTextArea({
@@ -80,11 +80,12 @@ export default function CommentTextArea({
                                             error,
                                             onChange,
                                             onFocus,
-                                            onSubmit
+                                            onSubmit,
+                                            image
 
                                         }: CommentTextAreaProps) {
     // const [selected, setSelected] = useState(moods[5])
-    const {user, error:dataError, isLoading} = useUser();
+    const {user, error: dataError, isLoading} = useUser();
 
     return (
         <div className={`flex items-start space-x-4 ${className}`}>
@@ -92,7 +93,7 @@ export default function CommentTextArea({
                 <img
                     className="inline-block h-8 w-8 rounded-full object-cover"
                     // src={user?.picture ? user?.picture : noProfilePictureImage.src}
-                    src="https://unhabitatfiles.blob.core.windows.net/dynamicfile/WhatsApp%20Image%202024-01-18%20at%2018.56.31_0c09e556.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D"
+                    src={image}
                     alt=""
                 />
             </div>

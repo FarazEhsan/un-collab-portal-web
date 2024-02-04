@@ -6,3 +6,6 @@ export enum ReactionType {
     Up = "UPVOTE",
     Down = "DOWNVOTE",
 }
+export const getNameString = (name:string) => {
+    return name?.replace(' ', '+')
+}

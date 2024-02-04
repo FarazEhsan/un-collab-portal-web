@@ -6,7 +6,7 @@ import CommentTextArea from "@/components/form/CommentTextArea";
 import ReactionButtons from "@/components/form/reaction-buttons";
 import TimeAgo from "@/components/form/time-ago";
 import { useUser } from "@auth0/nextjs-auth0/client";
-import { ReactionType } from "@/utils/extraFunctions";
+import {getNameString, ReactionType} from "@/utils/extraFunctions";
 import { gql, useQuery } from "@apollo/client";
 import Link from "next/link";
 
@@ -40,6 +40,8 @@ const PostCard = ({
   const [comment, setComment] = useState("");
   const [allComments, setAllComments] = useState<Comment[]>([]);
   const [reactionData, setReactionData] = useState<any>([]);
+  const [nameString, setNameString] = useState('')
+
 
   const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
@@ -138,6 +140,10 @@ const PostCard = ({
     setReactionsCount({ up, down });
   };
 
+  useEffect(() => {
+    setNameString(getNameString(postDetails?.author?.name));
+  }, [postDetails]);
+
   let hoverClasses = "";
   if (clickable) hoverClasses = "dark:hover:bg-gray-800 hover:bg-gray-100";
 
@@ -152,7 +158,7 @@ const PostCard = ({
         <div className="flex flex-row items-center">
           <img
             className="inline-block h-10 w-10 rounded-full object-cover"
-            src="https://unhabitatfiles.blob.core.windows.net/dynamicfile/WhatsApp%20Image%202024-01-18%20at%2018.56.31_0c09e556.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D"
+            src={postDetails?.author?.picture ? postDetails?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
             alt=""
           />
           <div className="ml-2">
@@ -225,6 +231,7 @@ const PostCard = ({
                   value={comment}
                   label="Add a Comment"
                   name="comment"
+                  image={postDetails?.author?.picture ? postDetails?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
               />
             </div>
             <div className="mt-6">
@@ -234,6 +241,7 @@ const PostCard = ({
                   commentsCount={postDetails?.commentsCount}
                   limitComments={limitComments}
                   socket={socket}
+                  image={postDetails?.author?.picture ? postDetails?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
               />
             </div>
           </>

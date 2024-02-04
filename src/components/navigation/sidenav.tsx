@@ -1,5 +1,5 @@
 "use client";
-import React, {Fragment, ReactNode, useState} from "react";
+import React, {Fragment, ReactNode, useEffect, useState} from "react";
 import {Dialog, Menu, Transition} from "@headlessui/react";
 import {
   Bars3Icon,
@@ -8,13 +8,14 @@ import {
   SunIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import {classNames} from "@/utils/extraFunctions";
+import {classNames, getNameString} from "@/utils/extraFunctions";
 import {ChevronDownIcon, MagnifyingGlassIcon,} from "@heroicons/react/20/solid";
 import {useTheme} from "next-themes";
 import Link from "next/link";
 import UN_Habitat_Logo from "../../../public/UN-Habitat_logo_English.png";
 import {useUser} from '@auth0/nextjs-auth0/client';
 import noProfilePictureImage from "../../../public/no-profile-picture.jpg";
+import {gql, useQuery} from "@apollo/client";
 
 export type NavItem = {
     name: string;
@@ -36,6 +37,24 @@ export default function SideNav({children, navData}: SideNavProps) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const {theme, setTheme} = useTheme();
     const {user, error, isLoading} = useUser();
+    const [nameString, setNameString] = useState('')
+
+    const GET_USER_DETAILS = gql`
+    query GetUserDetails($id: String!) {
+      user(id: $id) {
+        _id
+        name
+        picture
+      }
+    }
+  `;
+
+    const {loading, error:dataError, data, refetch} = useQuery(GET_USER_DETAILS, {
+        variables: {id: user?.sub?.toString()},
+    });
+    useEffect(() => {
+        setNameString(getNameString(data?.user?.name));
+    }, [data]);
     return (
         <>
             <div>
@@ -278,7 +297,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                         <img
                                             className="h-8 w-8 rounded-full bg-gray-50 dark:bg-gray-800 object-cover"
                                             // src={user?.picture ? user?.picture : noProfilePictureImage.src}
-                                            src="https://unhabitatfiles.blob.core.windows.net/dynamicfile/WhatsApp%20Image%202024-01-18%20at%2018.56.31_0c09e556.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D"
+                                            src={data?.user?.picture ? data?.user?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
                                             alt=""
                                         />
                                         <span

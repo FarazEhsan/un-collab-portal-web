@@ -1,5 +1,5 @@
 "use client";
-import React, {useLayoutEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import SingleColumnContainer
     from "@/components/navigation/singleColumnContainer";
 import RoundButton from "@/components/button/round-button";
@@ -13,9 +13,9 @@ import AddProjectSlideOver from "@/app/(home)/profile/add-project-slide-over";
 import {gql, useQuery} from "@apollo/client";
 import CardSkeleton from "@/components/skeletons/card-skeleton";
 import {useUser} from "@auth0/nextjs-auth0/client";
-import noProfilePictureImage from "../../../../public/no-profile-picture.jpg";
 import UpdateGroupsSlideOver
     from "@/app/(home)/profile/update-groups-slide-over";
+import {getNameString} from "@/utils/extraFunctions";
 
 const ProfilePage = () => {
     const [openEditPersonalInfoSlideOver, setOpenEditPersonalInfoSlideOver] =
@@ -24,6 +24,8 @@ const ProfilePage = () => {
         useState(false);
     const [openAddProjectSlideOver, setOpenAddProjectSlideOver] = useState(false);
     const [openUpdateGroupsSlideOver, setOpenUpdateGroupsSlideOver] = useState(false)
+    const [nameString, setNameString] = useState('')
+
 
     const {
         user: auth0User,
@@ -89,6 +91,13 @@ const ProfilePage = () => {
         refetch();
     };
 
+
+
+    // console.log(nameString)
+    useEffect(() => {
+        setNameString(getNameString(data?.user?.name));
+    }, [data]);
+
     return (
         <SingleColumnContainer>
             {loading ? (
@@ -98,12 +107,15 @@ const ProfilePage = () => {
                     className="mx-auto max-w-2xl space-y-16 sm:space-y-20 lg:mx-0 lg:max-w-none">
                     <div>
                         <div className="flex flex-col items-center">
+                            {
+                                nameString && (
                             <img
-                                // src={data?.user?.picture ? data?.user?.picture : noProfilePictureImage.src}
-                                src="https://unhabitatfiles.blob.core.windows.net/dynamicfile/WhatsApp%20Image%202024-01-18%20at%2018.56.31_0c09e556.jpg?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-12-30T03:55:20Z&st=2024-01-21T19:55:20Z&spr=https,http&sig=H8RR4rew46jvp9TlFV3SFzFaCFovj80n4TwHbn0%2FJu4%3D"
+                                src={data?.user?.picture ? data?.user?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
                                 alt=""
                                 className="h-32 w-32 flex-none rounded-full bg-white dark:bg-gray-800 object-cover"
                             />
+                                )
+                            }
                             <h2 className="mt-4 text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
                                 {data?.user?.name}
                             </h2>
