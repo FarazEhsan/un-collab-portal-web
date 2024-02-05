@@ -328,6 +328,17 @@ export default function SideNav({children, navData}: SideNavProps) {
                                             {userNavigation.map((item) => (
                                                 <Menu.Item key={item.name}>
                                                     {({active}) => (
+                                                        item.name === 'Sign out' ? (
+                                                            <a
+                                                                href={item.href}
+                                                                className={classNames(
+                                                                    active ? "bg-gray-50 dark:bg-gray-700" : "",
+                                                                    "block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-gray-100"
+                                                                )}
+                                                            >
+                                                                {item.name}
+                                                            </a>
+                                                        ) :
                                                         <Link
                                                             href={item.href}
                                                             className={classNames(
