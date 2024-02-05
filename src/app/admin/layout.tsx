@@ -6,6 +6,7 @@ import {FlagIcon} from "@heroicons/react/20/solid";
 import {AcademicCapIcon} from "@heroicons/react/24/solid";
 import {ApolloProvider} from "@apollo/client";
 import {client} from '../../utils/apolloclient'
+import { withRole } from "@/hoc/role-hoc";
 
 interface AdminLayoutProps {
     children: ReactNode;
@@ -39,4 +40,4 @@ const AdminLayout = ({children}: AdminLayoutProps) => {
     );
 };
 
-export default AdminLayout;
+export default withRole(AdminLayout, ['admin']);
