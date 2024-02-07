@@ -2,7 +2,6 @@
 import React, {useState} from "react";
 import Badge from "@/components/badge";
 import ProjectSlideOver from "@/components/overlays/project-slide-over";
-import CarouselModal from "@/components/modals/carousel-modal";
 
 
 export type Project = {
@@ -37,11 +36,6 @@ const ProjectCard = ({project, onUpdateProfile}: ProjectCardProps) => {
                             <img
                                 src={project?.pictures[0]}
                                 className="h-full w-full object-cover"
-                            />
-                            <CarouselModal
-                                open={openCarouselModal}
-                                images={project?.pictures}
-                                setOpen={setOpenCarouselModal}
                             />
                         </div>
                     ) : (
@@ -85,7 +79,8 @@ const ProjectCard = ({project, onUpdateProfile}: ProjectCardProps) => {
 
                 </div>
             </div>
-            <ProjectSlideOver open={open} setOpen={setOpen} project={project} onUpdateProfile={onUpdateProfile}/>
+            <ProjectSlideOver open={open} setOpen={setOpen} project={project}
+                              onUpdateProfile={onUpdateProfile}/>
         </div>
     );
 };
