@@ -64,6 +64,7 @@ const ProfilePage = () => {
           _id
           name
           description
+          pictures
           startTime
           endTime
           relatedSDGs {
@@ -79,6 +80,8 @@ const ProfilePage = () => {
         variables: {id: auth0User?.sub?.toString()},
     });
 
+    console.log(data)
+
     useLayoutEffect(() => {
         if (!auth0Loading) {
             console.log('calling refecth')
@@ -91,7 +94,6 @@ const ProfilePage = () => {
         console.log("Updating profile through refetch");
         refetch();
     };
-
 
 
     // console.log(nameString)
@@ -110,11 +112,11 @@ const ProfilePage = () => {
                         <div className="flex flex-col items-center">
                             {
                                 nameString && (
-                            <img
-                                src={data?.user?.picture ? data?.user?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
-                                alt=""
-                                className="h-32 w-32 flex-none rounded-full bg-white dark:bg-gray-800 object-cover"
-                            />
+                                    <img
+                                        src={data?.user?.picture ? data?.user?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
+                                        alt=""
+                                        className="h-32 w-32 flex-none rounded-full bg-white dark:bg-gray-800 object-cover"
+                                    />
                                 )
                             }
                             <h2 className="mt-4 text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
@@ -439,17 +441,18 @@ const ProfilePage = () => {
                             />
                         </div>
 
-                        <div className="grid xl:grid-cols-3 md:grid-cols-2 gap-4 mt-4">
+                        <div
+                            className="grid xl:grid-cols-3 md:grid-cols-2 gap-4 mt-4">
                             {data?.user?.projects?.map((project: any) => {
                                 return (
-                                    <ProjectCard
-                                        key={project._id}
-                                        name={project.name}
-                                        description={project.description}
-                                        startTime={project.startTime}
-                                        endTime={project.endTime}
-                                        relatedSDGs={project.relatedSDGs}
-                                    />
+                                    <>
+                                        <ProjectCard
+                                            key={project._id}
+                                            project={project}
+                                            onUpdateProfile={handleUpdateProfile}
+                                        />
+
+                                    </>
                                 );
                             })}
                         </div>

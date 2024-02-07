@@ -4,21 +4,17 @@ import {XMarkIcon} from '@heroicons/react/24/outline'
 import CarouselModal from "@/components/modals/carousel-modal";
 import Button from "@/components/button/Button";
 import EditProjectSlideOver from "@/app/(home)/profile/edit-project-slide-over";
+import Badge from "@/components/badge";
+import {Project} from "@/components/cards/project-card";
 
 interface SlideOverProps {
     open: boolean,
-    setOpen: React.Dispatch<SetStateAction<boolean>>
+    setOpen: React.Dispatch<SetStateAction<boolean>>,
+    project: Project
+    onUpdateProfile: () => void
 }
 
-const data = {
-    heroImage: 'https://source.unsplash.com/random',
-    title: 'ProjectCard Title',
-    sdgs: ['sdg1', 'sdg2', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3', 'sdg3'],
-    timeline: {from: '01/01/2021', to: '01/01/2023'},
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent consectetur faucibus tortor, id finibus lectus auctor in. Vivamus luctus iaculis dui, id posuere eros congue aliquam. In lobortis gravida iaculis. Vestibulum at ultricies arcu, eu scelerisque sem. Praesent in massa bibendum, egestas libero a, dignissim urna. Duis in mollis est. Nunc feugiat ipsum cursus urna vestibulum, sed fermentum eros mollis. Lorem ipsum dolor sit amet, consectetur adipiscing elit.'
-}
-
-export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
+export default function ProjectSlideOver({open, setOpen, project, onUpdateProfile}: SlideOverProps) {
     const [openCarouselModal, setOpenCarouselModal] = useState(false);
     const [openEditProjectSlideOver, setOpenEditProjectSlideOver] = useState(false);
     return (
@@ -88,18 +84,25 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                                         <Button colorType="link"
                                                                 onClick={() => setOpenEditProjectSlideOver(!openEditProjectSlideOver)}>Edit</Button>
                                                     </div>
-                                                    <div
-                                                        onClick={() => setOpenCarouselModal(!openCarouselModal)}
-                                                        className="relative h-40 sm:h-56 cursor-pointer">
-                                                        <img
-                                                            src="https://source.unsplash.com/random/300x500"
-                                                            className="h-full w-full object-cover"
-                                                        />
-                                                        <CarouselModal
-                                                            open={openCarouselModal}
-                                                            images={[]}
-                                                            setOpen={setOpenCarouselModal}/>
-                                                    </div>
+                                                    {
+                                                        project?.pictures ? (
+                                                            <div
+                                                                onClick={() => setOpenCarouselModal(!openCarouselModal)}
+                                                                className="relative h-40 sm:h-56 cursor-pointer">
+                                                                <img
+                                                                    src={project?.pictures[0]}
+                                                                    className="h-full w-full object-cover"
+                                                                />
+                                                                <CarouselModal
+                                                                    open={openCarouselModal}
+                                                                    images={project?.pictures}
+                                                                    setOpen={setOpenCarouselModal}/>
+                                                            </div>
+                                                        ) : (
+                                                            ''
+                                                        )
+                                                    }
+
                                                     <div
                                                         className="mt-6 px-4 sm:mt-8 sm:flex sm:items-end sm:px-6">
                                                         <div
@@ -108,8 +111,7 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                                                 <div
                                                                     className="flex items-center">
                                                                     <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 sm:text-2xl">
-                                                                        Project
-                                                                        Name
+                                                                        {project?.name}
                                                                     </h3>
                                                                 </div>
                                                             </div>
@@ -126,7 +128,7 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                                         </dt>
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
                                                             <p>
-                                                                {data.timeline.from} - {data.timeline.to}
+                                                                {project?.startTime} - {project?.endTime}
                                                             </p>
                                                         </dd>
                                                     </div>
@@ -137,7 +139,7 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                                         </dt>
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
                                                             <p>
-                                                                {data.description}
+                                                                {project?.description}
                                                             </p>
                                                         </dd>
                                                     </div>
@@ -147,30 +149,25 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                                                         </dt>
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
                                                             <ul>
-                                                                <li className="text-gray-900 dark:text-gray-100">No
-                                                                    Poverty
-                                                                </li>
-                                                                <li className="text-gray-900 dark:text-gray-100">Zero
-                                                                    Hunger
-                                                                </li>
-                                                                <li className="text-gray-900 dark:text-gray-100">Quality
-                                                                    Education
-                                                                </li>
+                                                                {project?.relatedSDGs?.map((sdg, index) => (
+                                                                    <Badge key={index} text={sdg?.name}
+                                                                           classNames="mr-2 my-1"/>
+                                                                ))}
                                                             </ul>
                                                         </dd>
                                                     </div>
-                                                    <div>
-                                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">Key
-                                                            Achievements
-                                                        </dt>
-                                                        <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 dark:text-gray-100">None</dd>
-                                                    </div>
-                                                    <div>
-                                                        <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">Partners</dt>
-                                                        <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
-                                                            Tom Chef
-                                                        </dd>
-                                                    </div>
+                                                    {/*<div>*/}
+                                                    {/*    <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">Key*/}
+                                                    {/*        Achievements*/}
+                                                    {/*    </dt>*/}
+                                                    {/*    <dd className="mt-1 text-sm text-gray-900 sm:col-span-2 dark:text-gray-100">None</dd>*/}
+                                                    {/*</div>*/}
+                                                    {/*<div>*/}
+                                                    {/*    <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">Partners</dt>*/}
+                                                    {/*    <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">*/}
+                                                    {/*        Tom Chef*/}
+                                                    {/*    </dd>*/}
+                                                    {/*</div>*/}
                                                 </dl>
                                             </div>
                                         </div>
@@ -180,7 +177,8 @@ export default function ProjectSlideOver({open, setOpen}: SlideOverProps) {
                         </div>
                     </div>
                     <EditProjectSlideOver open={openEditProjectSlideOver}
-                                          data={[]}
+                                          data={project}
+                                          onUpdateProfile={onUpdateProfile}
                                           setOpen={setOpenEditProjectSlideOver}/>
                 </div>
             </Dialog>

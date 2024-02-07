@@ -8,6 +8,8 @@ import ComboBox from "@/components/form/combo-box";
 import {gql, useMutation, useQuery} from "@apollo/client";
 // @ts-ignore
 import Joi from "joi-browser";
+import {FileInput} from "flowbite-react";
+import uploadImage from "@/utils/azureblobupload";
 
 interface SlideOverProps {
     open: boolean;
@@ -47,6 +49,7 @@ export default function AddProjectSlideOver({
 
 
     const [relatedSDGs, setRelatedSDGs] = useState([]);
+    const [files, setFiles] = useState<Array<File>>([]);
 
 
     useEffect(() => {
@@ -70,6 +73,12 @@ export default function AddProjectSlideOver({
         relatedSDGs: null,
         //   user: null,
     });
+
+    const handleFileChange = (e: any) => {
+        if (e.target.files) {
+            setFiles(Array.from(e.target.files));
+        }
+    }
     const validateForm = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -135,12 +144,13 @@ export default function AddProjectSlideOver({
     };
 
     const ADD_NEW_PROJECT = gql`
-    mutation AddNewProduct(
+    mutation AddNewProject(
       $user: ID!
       $name: String!
       $startTime: String!
       $endTime: String
       $relatedSDGs: [String!]
+      $pictures: [String!]
       $description: String!
     ) {
       createProject(
@@ -150,6 +160,7 @@ export default function AddProjectSlideOver({
           startTime: $startTime
           endTime: $endTime
           description: $description
+          pictures: $pictures
           relatedSDGs: $relatedSDGs
         }
       ) {
@@ -158,6 +169,7 @@ export default function AddProjectSlideOver({
         description
         startTime
         endTime
+        pictures
         relatedSDGs {
           id
           name
@@ -174,7 +186,12 @@ export default function AddProjectSlideOver({
     const postData = async () => {
         console.log(projectInfo);
 
-        //TODO: Implement
+        let uploadedFiles: String[] = []
+        if (files) {
+            uploadedFiles = await Promise.all(files.map((file: any) => {
+                return uploadImage('dynamicfile', file)
+            }))
+        }
 
         const variables = {
             user: data._id,
@@ -183,6 +200,7 @@ export default function AddProjectSlideOver({
             endTime: projectInfo.endTime,
             description: projectInfo.description,
             relatedSDGs: relatedSDGs,
+            pictures: uploadedFiles
         };
 
         await addNewProduct({variables: variables})
@@ -300,6 +318,23 @@ export default function AddProjectSlideOver({
                                                             name="description"
                                                             placeholder="A short description of your project"
                                                             onChange={handleElementChange}
+                                                        />
+                                                    </div>
+                                                    <div id="fileUpload"
+                                                         className="mt-4">
+                                                        <div
+                                                            className="mb-2 block">
+                                                            <label
+                                                                htmlFor='attachments'
+                                                                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
+                                                                Attachments
+                                                            </label>
+                                                        </div>
+                                                        <FileInput
+                                                            id="attachments"
+                                                            multiple
+                                                            accept='image/*'
+                                                            onChange={handleFileChange}
                                                         />
                                                     </div>
                                                 </div>

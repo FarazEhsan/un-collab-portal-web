@@ -8,12 +8,14 @@ import ComboBox from "@/components/form/combo-box";
 import {gql, useMutation, useQuery} from "@apollo/client";
 // @ts-ignore
 import Joi from "joi-browser";
+import uploadImage from "@/utils/azureblobupload";
+import {FileInput} from "flowbite-react";
 
 interface SlideOverProps {
     open: boolean;
     data: any
     setOpen: React.Dispatch<SetStateAction<boolean>>;
-    // onUpdateProfile: () => void;
+    onUpdateProfile: () => void;
 }
 
 const GET_ALL_SDG = gql`
@@ -35,6 +37,8 @@ const projectInfoSchema = {
 
 export default function EditProjectSlideOver({
                                                  open,
+                                                 data,
+                                                 onUpdateProfile,
                                                  setOpen,
                                              }: SlideOverProps) {
     const {
@@ -46,17 +50,24 @@ export default function EditProjectSlideOver({
 
     const [relatedSDGs, setRelatedSDGs] = useState([]);
 
+    useEffect(() => {
+        const sdgs = data?.relatedSDGs?.map((sdg: any) => {
+                return sdg?.id
+            }
+        )
+        setRelatedSDGs(sdgs);
+    }, []);
 
     useEffect(() => {
         console.log('Related SDGs was updated, new value is: ', relatedSDGs)
     }, [relatedSDGs])
 
     const [projectInfo, setProductInfo] = useState({
-        name: "",
-        startTime: "",
-        endTime: "",
-        description: "",
-        relatedSDGs: [""],
+        name: data.name,
+        startTime: data?.startTime,
+        endTime: data?.endTime,
+        description: data?.description,
+        relatedSDGs: [...data?.relatedSDGs],
         // user: "",
     });
 
@@ -132,60 +143,74 @@ export default function EditProjectSlideOver({
         return error ? error.details[0].message : null;
     };
 
-    const ADD_NEW_PROJECT = gql`
-    mutation AddNewProduct(
-      $user: ID!
-      $name: String!
-      $startTime: String!
-      $endTime: String
-      $relatedSDGs: [String!]
-      $description: String!
-    ) {
-      createProject(
-        createProjectInput: {
-          user: $user
-          name: $name
-          startTime: $startTime
-          endTime: $endTime
-          description: $description
-          relatedSDGs: $relatedSDGs
-        }
-      ) {
-        _id
-        name
-        description
-        startTime
-        endTime
-        relatedSDGs {
-          id
-          name
-        }
-      }
+    const UPDATE_PROJECT = gql`
+    mutation UpdateProject(
+  $_id: String!
+    $name: String!
+    $startTime: String!
+    $endTime: String
+    $relatedSDGs: [String!]
+    $description: String!
+    $pictures: [String!]
+) {
+  updateProject(
+    id: $_id
+    updateProjectInput: {
+      name: $name
+      startTime: $startTime
+      endTime: $endTime
+      description: $description
+      relatedSDGs: $relatedSDGs
+      pictures: $pictures
     }
+  ) {
+    _id
+    name
+    description
+    startTime
+    endTime
+    pictures
+    relatedSDGs {
+      id
+      name
+    }
+  }
+}
+
   `;
 
 
-    const [addNewProduct, {data: newProject, loading, error}] =
-        useMutation(ADD_NEW_PROJECT);
+    const [updateProject, {data: updatedProject, loading, error}] =
+        useMutation(UPDATE_PROJECT);
 
-
+    const [files, setFiles] = useState<Array<File>>([]);
+    const handleFileChange = (e: any) => {
+        if (e.target.files) {
+            setFiles(Array.from(e.target.files));
+        }
+    }
     const postData = async () => {
-        // console.log(projectInfo);
-        //
-        // //TODO: Implement
-        //
-        // const variables = {
-        //     user: data._id,
-        //     name: projectInfo.name,
-        //     startTime: projectInfo.startTime,
-        //     endTime: projectInfo.endTime,
-        //     description: projectInfo.description,
-        //     relatedSDGs: relatedSDGs,
-        // };
-        //
-        // await addNewProduct({ variables: variables })
-        // onUpdateProfile()
-        // setOpen(false);
+
+        let uploadedFiles: String[] = []
+        if (files) {
+            uploadedFiles = await Promise.all(files.map((file: any) => {
+                return uploadImage('dynamicfile', file)
+            }))
+        }
+        const variables =
+            {
+                _id: data?._id,
+                name: projectInfo.name,
+                startTime: projectInfo.startTime,
+                endTime: projectInfo.endTime,
+                description: projectInfo.description,
+                relatedSDGs: relatedSDGs,
+                pictures: uploadedFiles
+            }
+
+        await updateProject({variables: variables})
+        onUpdateProfile()
+        setOpen(false);
     };
 
     return (
@@ -268,6 +293,7 @@ export default function EditProjectSlideOver({
                                                             label="Project Start Date"
                                                             name="startTime"
                                                             type="date"
+                                                            value={projectInfo?.startTime}
                                                             onChange={handleElementChange}
                                                             error={errors?.startTime}
                                                         />
@@ -277,7 +303,9 @@ export default function EditProjectSlideOver({
                                                             label="Project End Date"
                                                             name="endTime"
                                                             type="date"
+                                                            value={projectInfo?.endTime}
                                                             onChange={handleElementChange}
+                                                            error={errors?.endTime}
                                                         />
                                                     </div>
                                                     <div className="mt-4">
@@ -297,7 +325,26 @@ export default function EditProjectSlideOver({
                                                             label="Description"
                                                             name="description"
                                                             placeholder="A short description of your project"
+                                                            value={projectInfo?.description}
+                                                            error={errors?.description}
                                                             onChange={handleElementChange}
+                                                        />
+                                                    </div>
+                                                    <div id="fileUpload"
+                                                         className="mt-4">
+                                                        <div
+                                                            className="mb-2 block">
+                                                            <label
+                                                                htmlFor='attachments'
+                                                                className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
+                                                                Attachments
+                                                            </label>
+                                                        </div>
+                                                        <FileInput
+                                                            id="attachments"
+                                                            multiple
+                                                            accept='image/*'
+                                                            onChange={handleFileChange}
                                                         />
                                                     </div>
                                                 </div>
