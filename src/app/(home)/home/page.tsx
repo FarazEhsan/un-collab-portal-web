@@ -23,6 +23,10 @@ export default function Home() {
       _id
     }
   }
+  reactionCounts{
+      _id
+      count
+    }
     author{
       userName
       picture

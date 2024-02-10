@@ -192,11 +192,6 @@ export default function EditProjectSlideOver({
     const postData = async () => {
 
         let uploadedFiles: String[] = []
-        if (files) {
-            uploadedFiles = await Promise.all(files.map((file: any) => {
-                return uploadImage('dynamicfile', file)
-            }))
-        }
         const variables =
             {
                 _id: data?._id,
@@ -205,8 +200,15 @@ export default function EditProjectSlideOver({
                 endTime: projectInfo.endTime,
                 description: projectInfo.description,
                 relatedSDGs: relatedSDGs,
-                pictures: uploadedFiles
             }
+        if (files) {
+            uploadedFiles = await Promise.all(files.map((file: any) => {
+                return uploadImage('dynamicfile', file)
+            }))
+            // @ts-ignore
+            if (uploadedFiles?.length) variables.pictures = uploadedFiles
+        }
+
 
         await updateProject({variables: variables})
         onUpdateProfile()

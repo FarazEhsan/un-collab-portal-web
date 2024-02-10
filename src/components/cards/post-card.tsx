@@ -114,7 +114,12 @@ const PostCard = ({
       //refetchCommentData();
     };
 
+    const handleTopicReactionCountUpdated = (newCount: any) =>{
+      console.log('new reaction count', newCount);
+    }
+
     socket?.on("topicReactionPosted", handleTopicReactionPosted);
+    socket?.on("updatedTopicReactionCounts", handleTopicReactionCountUpdated);
     socket?.on("commentPosted", handleTopicCommentPosted);
 
     return () => {

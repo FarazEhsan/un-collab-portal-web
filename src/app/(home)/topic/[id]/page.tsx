@@ -39,6 +39,10 @@ const TopicDetails = ({params}: { params: { id: string } }) => {
       _id
     }
   }
+  reactionCounts{
+      _id
+      count
+    }
   commentsCount
     comments{
     _id

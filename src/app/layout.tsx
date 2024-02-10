@@ -17,7 +17,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en" className="h-full bg-white">
+        <html lang="en" className="h-full bg-gray-50">
         <body className="dark:bg-gray-950">
         <UserProvider profileUrl="/api/auth/me">
             <ThemeProvider attribute="class" defaultTheme="system">
