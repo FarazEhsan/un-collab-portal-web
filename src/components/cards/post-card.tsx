@@ -226,6 +226,16 @@ const PostCard = ({
           reactionCount={postDetails?.reactionCounts}
         />
       </div>
+      {
+        limitComments && (
+              <div>
+                <h4 className="mt-6 text-base font-medium leading-6 text-gray-900 dark:text-gray-200">
+                  Comments: {postDetails?.commentsCount}
+                </h4>
+              </div>
+          )
+      }
+
 
       {/*Comments*/}
       {!limitComments && (

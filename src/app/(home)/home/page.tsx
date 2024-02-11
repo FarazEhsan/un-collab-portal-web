@@ -17,6 +17,7 @@ export default function Home() {
     title
     images
     createdAt
+    commentsCount
     reactions{
     type
     user{
