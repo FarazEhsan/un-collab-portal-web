@@ -137,7 +137,7 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
 
                         <ReactionButtons selectedReaction={selectedReaction}
                                          setSelectedReaction={onReactionChange}
-                                         reactionCount={reactionsCount}/>
+                                         reactionCount={comment?.reactionCounts}/>
                     </div>
                 </div>
             </div>

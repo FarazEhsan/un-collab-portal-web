@@ -23,11 +23,13 @@ export default function Home() {
       _id
     }
   }
-  reactionCounts{
-      _id
-      count
-    }
+    reactionCounts{
+       UPVOTE
+       DOWNVOTE
+}
+
     author{
+    name
       userName
       picture
     }

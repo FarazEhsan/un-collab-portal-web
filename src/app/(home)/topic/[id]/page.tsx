@@ -40,14 +40,18 @@ const TopicDetails = ({params}: { params: { id: string } }) => {
     }
   }
   reactionCounts{
-      _id
-      count
-    }
+       UPVOTE
+       DOWNVOTE
+}
   commentsCount
     comments{
     _id
         text
         createdAt
+        reactionCounts{
+       UPVOTE
+       DOWNVOTE
+}
        reactions{
         type
         user{

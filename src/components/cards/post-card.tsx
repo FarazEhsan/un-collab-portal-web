@@ -146,6 +146,7 @@ const PostCard = ({
   };
 
   useEffect(() => {
+    console.log(postDetails?.author?.name)
     setNameString(getNameString(postDetails?.author?.name));
   }, [postDetails]);
 
@@ -222,7 +223,7 @@ const PostCard = ({
         <ReactionButtons
           selectedReaction={selectedReaction}
           setSelectedReaction={onReactionChange}
-          reactionCount={reactionsCount}
+          reactionCount={postDetails?.reactionCounts}
         />
       </div>
 

@@ -8,7 +8,7 @@ import {ReactionType} from "@/utils/extraFunctions";
 interface ReactionButtonProps {
     selectedReaction: string | null,
     setSelectedReaction: any,
-    reactionCount: { up: number, down: number }
+    reactionCount: { UPVOTE: number, DOWNVOTE: number }
 }
 
 export default function ReactionButtons({
@@ -19,7 +19,7 @@ export default function ReactionButtons({
     const reactions = [
         {
             name: ReactionType.Up,
-            count: reactionCount.up,
+            count: reactionCount?.UPVOTE,
             bgColor: 'text-gray-400',
             selectedColor: 'text-green-500',
             icon: FaCaretUp,
@@ -27,7 +27,7 @@ export default function ReactionButtons({
         },
         {
             name: ReactionType.Down,
-            count: reactionCount.down,
+            count: reactionCount?.DOWNVOTE,
             bgColor: 'text-gray-400',
             selectedColor: 'text-red-500',
             icon: FaCaretDown,
