@@ -7,6 +7,8 @@ import Button from "@/components/button/Button";
 import AddGroupSlideOver from "./add-group-slide-over";
 import {gql} from "@apollo/client/core";
 import {useQuery} from "@apollo/client";
+import SingleColumnContainer
+    from "@/components/navigation/singleColumnContainer";
 
 export default function GroupManagement() {
     const [openAddGroupSlideOver, setOpenAddGroupSlideOver] = useState(false);
@@ -57,24 +59,31 @@ export default function GroupManagement() {
         refetch();
     };
     return (
-        <div className="h-dvh p-4">
-            <h3>Group Management</h3>
-            <hr/>
-            <br></br>
-            <Button
-                colorType="primary"
-                classNames="ml-auto"
-                onClick={() => setOpenAddGroupSlideOver(!openAddGroupSlideOver)}
-            >
-                Add Group
-            </Button>
+        <SingleColumnContainer>
+            <div className="md:flex md:items-center md:justify-between">
+                <div className="min-w-0 flex-1">
+                    <h2 className="text-2xl font-bold leading-7 text-gray-900 dark:text-gray-100 sm:truncate sm:text-3xl sm:tracking-tight">
+                        Group Management
+                    </h2>
+                </div>
+                <div className="mt-4 flex md:ml-4 md:mt-0">
+                    <Button
+                        colorType="primary"
+                        classNames="ml-auto"
+                        onClick={() => setOpenAddGroupSlideOver(!openAddGroupSlideOver)}
+                    >
+                        Add Group
+                    </Button>
+                </div>
+            </div>
+
 
             <AddGroupSlideOver
                 open={openAddGroupSlideOver}
                 setOpen={setOpenAddGroupSlideOver}
                 handleGroupAdded={handleGroupAdded}
             />
-            <div className="ag-theme-quartz w-5/12 p-4">
+            <div className="ag-theme-quartz mt-8">
                 {!allGroupsLoading && (
                     <AgGridReact
                         rowData={rowData}
@@ -86,6 +95,6 @@ export default function GroupManagement() {
                     />
                 )}
             </div>
-        </div>
+        </SingleColumnContainer>
     );
 }

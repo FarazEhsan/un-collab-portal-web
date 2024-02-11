@@ -7,6 +7,8 @@ import Button from "@/components/button/Button";
 import AddSDGSlideOver from "./add-sdg-slide-over";
 import {gql} from "@apollo/client/core";
 import {useQuery} from "@apollo/client";
+import SingleColumnContainer
+    from "@/components/navigation/singleColumnContainer";
 
 export default function SDFManagement() {
     const [openAddSDGSlideOver, setOpenAddSDGSlideOver] = useState(false);
@@ -59,24 +61,31 @@ export default function SDFManagement() {
         refetch();
     };
     return (
-        <div className="h-dvh p-4">
-            <h3>SDG Management</h3>
-            <hr/>
-            <br></br>
-            <Button
-                colorType="primary"
-                classNames="ml-auto"
-                onClick={() => setOpenAddSDGSlideOver(!openAddSDGSlideOver)}
-            >
-                Add SDG
-            </Button>
+        <SingleColumnContainer>
+            <div className="md:flex md:items-center md:justify-between">
+                <div className="min-w-0 flex-1">
+                    <h2 className="text-2xl font-bold leading-7 text-gray-900 dark:text-gray-100 sm:truncate sm:text-3xl sm:tracking-tight">
+                        SDG Management
+                    </h2>
+                </div>
+                <div className="mt-4 flex md:ml-4 md:mt-0">
+                    <Button
+                        colorType="primary"
+                        classNames="ml-auto"
+                        onClick={() => setOpenAddSDGSlideOver(!openAddSDGSlideOver)}
+                    >
+                        Add SDG
+                    </Button>
+                </div>
+            </div>
+
 
             <AddSDGSlideOver
                 open={openAddSDGSlideOver}
                 setOpen={setOpenAddSDGSlideOver}
                 handleSDGAdded={handleSDGAdded}
             />
-            <div className="ag-theme-quartz w-5/12 p-4">
+            <div className="ag-theme-quartz mt-8">
                 {!allSDGsLoading && (
                     <AgGridReact
                         rowData={rowData}
@@ -88,6 +97,6 @@ export default function SDFManagement() {
                     />
                 )}
             </div>
-        </div>
+        </SingleColumnContainer>
     );
 }

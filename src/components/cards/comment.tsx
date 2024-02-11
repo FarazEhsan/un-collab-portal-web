@@ -157,7 +157,6 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
                         value={reply}
                         label="Add a Comment"
                         name="comment"
-                        image={image}
                     />
                 </div>
             </Transition>

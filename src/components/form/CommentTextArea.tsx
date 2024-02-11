@@ -1,5 +1,10 @@
 'use client'
-import {ChangeEventHandler, FocusEventHandler, FormEventHandler} from 'react'
+import {
+    ChangeEventHandler,
+    FocusEventHandler,
+    FormEventHandler, useEffect,
+    useState
+} from 'react'
 import {
     FaceFrownIcon,
     FaceSmileIcon,
@@ -10,6 +15,8 @@ import {
 } from '@heroicons/react/20/solid'
 import {PaperAirplaneIcon} from "@heroicons/react/24/outline";
 import {useUser} from "@auth0/nextjs-auth0/client";
+import {getNameString} from "@/utils/extraFunctions";
+import {gql, useQuery} from "@apollo/client";
 
 const moods = [
     {
@@ -67,7 +74,6 @@ interface CommentTextAreaProps {
     onChange?: ChangeEventHandler,
     onFocus?: FocusEventHandler,
     onSubmit: FormEventHandler,
-    image: string
 }
 
 export default function CommentTextArea({
@@ -81,19 +87,34 @@ export default function CommentTextArea({
                                             onChange,
                                             onFocus,
                                             onSubmit,
-                                            image
 
                                         }: CommentTextAreaProps) {
     // const [selected, setSelected] = useState(moods[5])
     const {user, error: dataError, isLoading} = useUser();
+    const GET_USER_DETAILS = gql`
+    query GetUserDetails($id: String!) {
+      user(id: $id) {
+        _id
+        name
+        picture
+      }
+    }
+  `;
+
+    const {loading, error: gqlDataError, data, refetch} = useQuery(GET_USER_DETAILS, {
+        variables: {id: user?.sub?.toString()},
+    });
+    const [nameString, setNameString] = useState('')
+    useEffect(() => {
+        setNameString(getNameString(data?.user?.name));
+    }, [data]);
 
     return (
         <div className={`flex items-start space-x-4 ${className}`}>
             <div className="flex-shrink-0">
                 <img
                     className="inline-block h-8 w-8 rounded-full object-cover"
-                    // src={user?.picture ? user?.picture : noProfilePictureImage.src}
-                    src={image}
+                    src={data?.user?.picture ? data?.user?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
                     alt=""
                 />
             </div>

@@ -237,7 +237,6 @@ const PostCard = ({
                   value={comment}
                   label="Add a Comment"
                   name="comment"
-                  image={postDetails?.author?.picture ? postDetails?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
               />
             </div>
             <div className="mt-6">

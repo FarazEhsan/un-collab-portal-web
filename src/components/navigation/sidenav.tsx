@@ -16,6 +16,7 @@ import UN_Habitat_Logo from "../../../public/UN-Habitat_logo_English.png";
 import {useUser} from '@auth0/nextjs-auth0/client';
 import noProfilePictureImage from "../../../public/no-profile-picture.jpg";
 import {gql, useQuery} from "@apollo/client";
+import {usePathname} from "next/navigation";
 
 export type NavItem = {
     name: string;
@@ -23,7 +24,13 @@ export type NavItem = {
     icon: any;
     current: boolean;
 };
-const userNavigation = [
+let userNavigation = [
+    {name: "Your profile", href: "/profile"},
+    {name: "Sign out", href: "/api/auth/logout"},
+];
+
+const adminNavigation = [
+    {name: "Admin Panel", href: "/admin"},
     {name: "Your profile", href: "/profile"},
     {name: "Sign out", href: "/api/auth/logout"},
 ];
@@ -38,6 +45,16 @@ export default function SideNav({children, navData}: SideNavProps) {
     const {theme, setTheme} = useTheme();
     const {user, error, isLoading} = useUser();
     const [nameString, setNameString] = useState('')
+    const pathname = usePathname();
+    useEffect(() => {
+        // @ts-ignore
+        if (user?.unhroles?.find((role: string) => role === 'admin')){
+            userNavigation = [
+                ...adminNavigation
+            ]
+        }
+    }, []);
+
 
     const GET_USER_DETAILS = gql`
     query GetUserDetails($id: String!) {
@@ -134,7 +151,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                                                 <Link
                                                                     href={item.href}
                                                                     className={classNames(
-                                                                        item.current
+                                                                        item.href === pathname
                                                                             ? "bg-gray-50 text-custom-teal dark:bg-gray-800 dark:text-custom-orange"
                                                                             : "text-gray-700 dark:text-gray-400 hover:text-custom-blue hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-custom-blue",
                                                                         "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -142,7 +159,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                                                 >
                                                                     {React.createElement(item.icon, {
                                                                         className: classNames(
-                                                                            item.current
+                                                                            item.href === pathname
                                                                                 ? "text-custom-teal dark:text-custom-orange"
                                                                                 : "text-gray-400 group-hover:text-custom-blue",
                                                                             "h-6 w-6 shrink-0"
@@ -187,7 +204,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                                 <Link
                                                     href={item.href}
                                                     className={classNames(
-                                                        item.current
+                                                        item.href === pathname
                                                             ? "bg-gray-50 text-custom-teal dark:bg-gray-800 dark:text-custom-orange"
                                                             : "text-gray-700 dark:text-gray-400 hover:text-custom-blue hover:bg-gray-50 dark:hover:bg-gray-800 dark:hover:text-custom-blue",
                                                         "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
@@ -195,7 +212,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                                 >
                                                     {React.createElement(item.icon, {
                                                         className: classNames(
-                                                            item.current
+                                                            item.href === pathname
                                                                 ? "text-custom-teal dark:text-custom-orange"
                                                                 : "text-gray-400 group-hover:text-custom-blue",
                                                             "h-6 w-6 shrink-0"
