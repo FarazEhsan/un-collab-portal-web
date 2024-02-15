@@ -53,7 +53,8 @@ export default function SideNav({children, navData}: SideNavProps) {
                 ...adminNavigation
             ]
         }
-    }, []);
+    }, [user]);
+    // console.log(user?.unhroles?.find((role: string) => role === 'admin'))
 
 
     const GET_USER_DETAILS = gql`
