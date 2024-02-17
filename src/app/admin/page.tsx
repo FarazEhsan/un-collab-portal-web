@@ -1,5 +1,5 @@
 "use client"
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
 import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme
 import {AgGridReact} from "ag-grid-react";
@@ -9,6 +9,11 @@ import {gql} from "@apollo/client/core";
 import {useQuery} from "@apollo/client";
 import SingleColumnContainer
     from "@/components/navigation/singleColumnContainer";
+import {
+    SizeColumnsToContentStrategy,
+    SizeColumnsToFitGridStrategy,
+    SizeColumnsToFitProvidedWidthStrategy,
+} from 'ag-grid-community';
 
 export default function AdminHome() {
     let rowImmutableStore;
@@ -32,49 +37,21 @@ export default function AdminHome() {
         refetch
     } = useQuery(GET_ALL_USERS)
 
-    const onGridReady = useCallback((params:any) => {
-        console.log(allUsers)
-        if (allUsers && !allUsersLoading) {
-            rowImmutableStore = allUsers?.allusers;
-            setRowData(allUsers?.allusers)
-        }
-    }, []);
 
-    // useEffect(() => {
-    //     if (!allUsersLoading) {
-    //         console.log('All users', allUsers)
-    //         rowImmutableStore = allUsers?.allusers;
-    //         setRowData(allUsers?.allusers)
-    //     }
-    //
-    // }, [allUsersLoading])
+    useEffect(() => {
+        if (!allUsersLoading) {
+            console.log('All users', allUsers)
+            setRowData(JSON.parse(JSON.stringify(allUsers?.allusers)))
+        }
+
+    }, [allUsersLoading])
 
     const [rowData, setRowData] = useState<any[]>(allUsers?.allusers);
-    const getRowId = useMemo(() => {
-        return (params:any) => params.data.id;
-    }, []);
+
     // Column Definitions: Defines & controls grid columns.
     const [colDefs, setColDefs] = useState([
         {field: '_id', hide: true},
-        {
-            headerName: 'Name',
-            editable: true,
-            valueGetter: (params:any) => {
-                return params.data.name;
-            },
-            valueSetter: (params:any) => {
-                const newVal = params.newValue;
-                const newObj = {...params.data}
-                console.log(newVal, params.data.name)
-                const valueChanged = params.data.name !== newVal;
-                if (valueChanged) {
-                    newObj.name = newVal;
-                    params.data = {...params.data, name: newVal};
-                    console.log('params.data',params.data)
-                }
-                return valueChanged;
-            },
-        },
+        {field: 'name', editable: true},
         {field: 'userName', editable: true},
         {field: 'email', editable: true},
         {field: 'edit'},
@@ -83,33 +60,40 @@ export default function AdminHome() {
             cellRenderer: 'agCheckboxCellRenderer',
             cellEditor: 'agCheckboxCellEditor',
             editable: true,
-            suppressKeyboardEvent: (params:any) => params.event.key === ' ',
+            suppressKeyboardEvent: (params: any) => params.event.key === ' ',
         },
     ]);
 
-    const autoSizeStrategy = {
-        type: 'fitGridWidth',
-        defaultMinWidth: 150,
-        columnLimits: [
-            {
-                colId: 'email',
-                minWidth: 250
-            },
-            {
-                colId: 'edit',
-                minWidth: 75
-            },
-            {
-                colId: 'deactivate',
-                minWidth: 100
-            }
-        ]
-    };
 
-
-    const onCellValueChanged = useCallback((event:any) => {
-        console.log('Data after change is', event.data);
+    const autoSizeStrategy = useMemo<
+        | SizeColumnsToFitGridStrategy
+        | SizeColumnsToFitProvidedWidthStrategy
+        | SizeColumnsToContentStrategy
+    >(() => {
+        return {
+            type: 'fitGridWidth',
+                defaultMinWidth: 150,
+                columnLimits: [
+                    {
+                        colId: 'email',
+                        minWidth: 250
+                    },
+                    {
+                        colId: 'edit',
+                        minWidth: 75
+                    },
+                    {
+                        colId: 'deactivate',
+                        minWidth: 100
+                    }
+                ]
+        };
     }, []);
+
+
+    const handleCellValueChanged = (params: any) => {
+        console.log("Edited params", params);
+    };
 
     const openAddUserModal = () => {
         console.log('Open Add User Modal')
@@ -118,28 +102,6 @@ export default function AdminHome() {
     const handleUserAdded = () => {
         refetch()
     }
-
-
-
-    const onCellEditRequest = useCallback(
-        (event:any) => {
-            const data = event.data;
-            const field = event.colDef.field;
-            const newValue = event.newValue;
-            const oldItem = rowImmutableStore.find((row:any) => row.id === data.id);
-            if (!oldItem || !field) {
-                return;
-            }
-            const newItem = { ...oldItem };
-            newItem[field] = newValue;
-            console.log('onCellEditRequest, updating ' + field + ' to ' + newValue);
-            rowImmutableStore = rowImmutableStore.map((oldItem) =>
-                oldItem.id == newItem.id ? newItem : oldItem
-            );
-            setRowData(rowImmutableStore);
-        },
-        [rowImmutableStore]
-    );
 
     return (
         <SingleColumnContainer>
@@ -165,14 +127,13 @@ export default function AdminHome() {
             <div className="mt-8 ag-theme-quartz"
             >
                 {!allUsersLoading &&
-					<AgGridReact rowData={rowData} columnDefs={colDefs}
-					             domLayout='autoHeight'
-					             getRowId={getRowId}
-					             readOnlyEdit={true}
-					             autoSizeStrategy={autoSizeStrategy}
-					             onCellEditRequest={onCellEditRequest}
-					             onGridReady={onGridReady}
-					             onCellValueChanged={onCellValueChanged}/>}
+					<AgGridReact
+						rowData={rowData}
+						columnDefs={colDefs}
+						domLayout="autoHeight"
+                        autoSizeStrategy={autoSizeStrategy}
+						onCellValueChanged={handleCellValueChanged}
+					/>}
             </div>
 
             <AddUserSlideOver

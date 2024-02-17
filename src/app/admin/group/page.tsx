@@ -1,5 +1,5 @@
 "use client";
-import {useEffect, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import {AgGridReact} from "ag-grid-react";
@@ -9,7 +9,11 @@ import {gql} from "@apollo/client/core";
 import {useQuery} from "@apollo/client";
 import SingleColumnContainer
     from "@/components/navigation/singleColumnContainer";
-
+import {
+    SizeColumnsToContentStrategy,
+    SizeColumnsToFitGridStrategy,
+    SizeColumnsToFitProvidedWidthStrategy,
+} from 'ag-grid-community';
 export default function GroupManagement() {
     const [openAddGroupSlideOver, setOpenAddGroupSlideOver] = useState(false);
     //1- Get all users gql
@@ -46,6 +50,27 @@ export default function GroupManagement() {
         {field: "name", editable:true},
         {field: "description"}
     ]);
+
+    const autoSizeStrategy = useMemo<
+        | SizeColumnsToFitGridStrategy
+        | SizeColumnsToFitProvidedWidthStrategy
+        | SizeColumnsToContentStrategy
+    >(() => {
+        return {
+            type: 'fitGridWidth',
+            defaultMinWidth: 150,
+            columnLimits: [
+                {
+                    colId: 'name',
+                    minWidth: 150
+                },
+                {
+                    colId: 'code',
+                    minWidth: 150
+                },
+            ]
+        };
+    }, []);
 
     const handleCellValueChanged = (params: any) => {
         console.log("Edited params", params);
@@ -89,6 +114,7 @@ export default function GroupManagement() {
                         rowData={rowData}
                         columnDefs={colDefs}
                         domLayout="autoHeight"
+                        autoSizeStrategy={autoSizeStrategy}
                         onCellValueChanged={handleCellValueChanged}
                     />
                 )}
