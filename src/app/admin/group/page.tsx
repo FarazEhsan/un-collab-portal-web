@@ -34,7 +34,7 @@ export default function GroupManagement() {
     useEffect(() => {
         if (!allGroupsLoading) {
             console.log("All Groups", allGroups);
-            setRowData(allGroups?.allgroups);
+            setRowData(JSON.parse(JSON.stringify(allGroups?.allgroups))); // Deep copy
         }
     }, [allGroupsLoading]);
 
@@ -43,7 +43,7 @@ export default function GroupManagement() {
     // Column Definitions: Defines & controls grid columns.
     const [colDefs, setColDefs] = useState([
         {field: "_id", hide: true},
-        {field: "name"},
+        {field: "name", editable:true},
         {field: "description"}
     ]);
 
@@ -89,9 +89,7 @@ export default function GroupManagement() {
                         rowData={rowData}
                         columnDefs={colDefs}
                         domLayout="autoHeight"
-                        onCellValueChanged={() => {
-                            handleCellValueChanged;
-                        }}
+                        onCellValueChanged={handleCellValueChanged}
                     />
                 )}
             </div>
