@@ -31,6 +31,7 @@ let userNavigation = [
 
 const adminNavigation = [
     {name: "Admin Panel", href: "/admin"},
+    {name: "Home", href: "/home"},
     {name: "Your profile", href: "/profile"},
     {name: "Sign out", href: "/api/auth/logout"},
 ];
