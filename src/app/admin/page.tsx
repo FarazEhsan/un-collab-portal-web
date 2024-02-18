@@ -13,6 +13,7 @@ import {
     SizeColumnsToContentStrategy,
     SizeColumnsToFitGridStrategy,
     SizeColumnsToFitProvidedWidthStrategy,
+    SuppressKeyboardEventParams
 } from 'ag-grid-community';
 
 export default function AdminHome() {
@@ -58,9 +59,12 @@ export default function AdminHome() {
         {
             field: 'deactivate',
             cellRenderer: 'agCheckboxCellRenderer',
-            cellEditor: 'agCheckboxCellEditor',
-            editable: true,
-            suppressKeyboardEvent: (params: any) => params.event.key === ' ',
+            cellRendererParams: {
+                disabled: false,
+            },
+            suppressKeyboardEvent: (
+                params: SuppressKeyboardEventParams<any, boolean>
+            ) => params.event.key === ' ',
         },
     ]);
 

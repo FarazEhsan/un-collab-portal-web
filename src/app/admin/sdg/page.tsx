@@ -13,6 +13,7 @@ import {
     SizeColumnsToContentStrategy,
     SizeColumnsToFitGridStrategy,
     SizeColumnsToFitProvidedWidthStrategy,
+    SuppressKeyboardEventParams
 } from 'ag-grid-community';
 export default function SDFManagement() {
     const [openAddSDGSlideOver, setOpenAddSDGSlideOver] = useState(false);
@@ -51,6 +52,16 @@ export default function SDFManagement() {
         {field: "name", editable:true},
         {field: "code", editable:true},
         {field: "shortDescription", editable:true},
+        {
+            field: 'deactivate',
+            cellRenderer: 'agCheckboxCellRenderer',
+            cellRendererParams: {
+                disabled: false,
+            },
+            suppressKeyboardEvent: (
+                params: SuppressKeyboardEventParams<any, boolean>
+            ) => params.event.key === ' ',
+        },
     ]);
 
     const autoSizeStrategy = useMemo<

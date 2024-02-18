@@ -13,6 +13,7 @@ import {
     SizeColumnsToContentStrategy,
     SizeColumnsToFitGridStrategy,
     SizeColumnsToFitProvidedWidthStrategy,
+    SuppressKeyboardEventParams
 } from 'ag-grid-community';
 export default function GroupManagement() {
     const [openAddGroupSlideOver, setOpenAddGroupSlideOver] = useState(false);
@@ -48,7 +49,17 @@ export default function GroupManagement() {
     const [colDefs, setColDefs] = useState([
         {field: "_id", hide: true},
         {field: "name", editable:true},
-        {field: "description"}
+        {field: "description"},
+        {
+            field: 'deactivate',
+            cellRenderer: 'agCheckboxCellRenderer',
+            cellRendererParams: {
+                disabled: false,
+            },
+            suppressKeyboardEvent: (
+                params: SuppressKeyboardEventParams<any, boolean>
+            ) => params.event.key === ' ',
+        },
     ]);
 
     const autoSizeStrategy = useMemo<
