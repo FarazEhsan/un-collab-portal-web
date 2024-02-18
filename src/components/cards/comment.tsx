@@ -20,6 +20,7 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
     const [displayCommentBox, setDisplayCommentBox] = useState(false);
     const [reply, setReply] = useState('');
     const [nameString, setNameString] = useState('');
+    const [reactionCount, setReactionCount] = useState({UPVOTE: 0, DOWNVOTE: 0})
 
     const handleCommentChange = (e: ChangeEvent<HTMLInputElement>) => {
         setReply(e.target.value);
@@ -61,6 +62,9 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
     useEffect(() => {
         renderReactions(comment?.reactions);
         setReactionData(comment?.reactions);
+        if (comment?.reactionCounts) {
+            setReactionCount(comment?.reactionCounts);
+        }
     }, []);
 
     const onReactionChange = (reaction: string) => {
@@ -93,7 +97,16 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
             }
         };
 
+        const handleCommentReactionCountUpdated = (newCount: any) => {
+            console.log('new reaction count', newCount);
+            if (newCount.commentId === comment?._id) {
+                setReactionCount(newCount?.reactionCounts);
+            }
+        }
+
         socket?.on("commentReactionPosted", handleCommentReactionPosted);
+        socket?.on("updatedCommentReactionCounts", handleCommentReactionCountUpdated);
+
 
         return () => {
             // Clean up the listener when the component is unmounted
@@ -137,7 +150,7 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
 
                         <ReactionButtons selectedReaction={selectedReaction}
                                          setSelectedReaction={onReactionChange}
-                                         reactionCount={comment?.reactionCounts}/>
+                                         reactionCount={reactionCount}/>
                     </div>
                 </div>
             </div>
