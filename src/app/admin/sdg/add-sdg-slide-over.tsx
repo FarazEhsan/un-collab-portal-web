@@ -1,11 +1,11 @@
-import React, {Fragment, SetStateAction, useRef} from "react";
+// @ts-ignore
+import Joi from "joi-browser";
+import React, {Fragment, SetStateAction} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
 import {gql, useMutation} from "@apollo/client";
-// @ts-ignore
-import Joi from "joi-browser";
 import {useJoiForm} from "@/hooks/useJoiForm";
 import {Schema} from "joi";
 
@@ -21,26 +21,7 @@ const sdgSchema: Schema = Joi.object({
     shortDescription: Joi.string().required().label("Short Description"),
 });
 
-export default function AddUserSlideOver({
-                                             open,
-                                             setOpen,
-                                             handleSDGAdded
-                                         }: SlideOverProps) {
-    const sdgInfo = {
-        name: "",
-        code: "",
-        shortDescription: "",
-    };
-
-    const userAuth0Info = useRef<any>(null);
-    const {
-        data: formData,
-        errors,
-        handleChange,
-        handleSubmit,
-    } = useJoiForm(sdgInfo, sdgSchema);
-
-    const ADD_NEW_SDG = gql`
+const ADD_NEW_SDG = gql`
     mutation AddNewSDG(
       $name: String!
       $code: String!
@@ -60,19 +41,35 @@ export default function AddUserSlideOver({
       }
     }`;
 
+export default function AddUserSlideOver({
+                                             open,
+                                             setOpen,
+                                             handleSDGAdded
+                                         }: SlideOverProps) {
     const [addNewSDG, {data: newSDG, loading, error}] =
         useMutation(ADD_NEW_SDG);
 
+    const sdgInfo = {
+        name: "",
+        code: "",
+        shortDescription: "",
+    };
+    // const userAuth0Info = useRef<any>(null);
+    const {
+        data: formData,
+        errors,
+        handleChange,
+        handleSubmit,
+    } = useJoiForm(sdgInfo, sdgSchema);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log("calling handle submin");
+        // console.log("calling handle submin");
         handleSubmit(e, postData);
 
     };
 
     const postData = async () => {
-
         const variables = {
             name: formData.name,
             code: formData.code,

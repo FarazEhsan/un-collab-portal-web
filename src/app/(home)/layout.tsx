@@ -10,7 +10,7 @@ import {
     UsersIcon,
 } from '@heroicons/react/24/outline'
 import {ApolloProvider} from '@apollo/client';
-import {client} from '../../utils/apolloclient'
+import {client} from '@/utils/apolloclient'
 
 interface HomeLayoutProps {
     children: ReactNode

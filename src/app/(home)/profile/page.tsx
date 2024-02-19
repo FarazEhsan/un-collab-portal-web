@@ -17,23 +17,7 @@ import UpdateGroupsSlideOver
     from "@/app/(home)/profile/update-groups-slide-over";
 import {getNameString} from "@/utils/extraFunctions";
 
-const ProfilePage = () => {
-    const [openEditPersonalInfoSlideOver, setOpenEditPersonalInfoSlideOver] =
-        useState(false);
-    const [openEditContactInfoSlideOver, setOpenEditContactInfoSlideOver] =
-        useState(false);
-    const [openAddProjectSlideOver, setOpenAddProjectSlideOver] = useState(false);
-    const [openUpdateGroupsSlideOver, setOpenUpdateGroupsSlideOver] = useState(false)
-    const [nameString, setNameString] = useState('')
-
-
-    const {
-        user: auth0User,
-        error: auth0UserError,
-        isLoading: auth0Loading,
-    } = useUser();
-
-    const GET_USER_DETAILS = gql`
+const GET_USER_DETAILS = gql`
     query GetUserDetails($id: String!) {
       user(id: $id) {
         _id
@@ -76,30 +60,42 @@ const ProfilePage = () => {
     }
   `;
 
+const ProfilePage = () => {
+    const {
+        user: auth0User,
+        error: auth0UserError,
+        isLoading: auth0Loading,
+    } = useUser();
+
     const {loading, error, data, refetch} = useQuery(GET_USER_DETAILS, {
         variables: {id: auth0User?.sub?.toString()},
     });
 
-    console.log(data)
+    const [openEditPersonalInfoSlideOver, setOpenEditPersonalInfoSlideOver] =
+        useState(false);
+    const [openEditContactInfoSlideOver, setOpenEditContactInfoSlideOver] =
+        useState(false);
+    const [openAddProjectSlideOver, setOpenAddProjectSlideOver] = useState(false);
+    const [openUpdateGroupsSlideOver, setOpenUpdateGroupsSlideOver] = useState(false)
+    const [nameString, setNameString] = useState('')
+
+    // console.log(data)
+    useEffect(() => {
+        setNameString(getNameString(data?.user?.name));
+    }, [data]);
 
     useLayoutEffect(() => {
         if (!auth0Loading) {
             console.log('calling refecth')
             refetch();
         }
-
     }, [auth0User, auth0Loading]);
+
     const handleUpdateProfile = () => {
         // Update the main profile data
         console.log("Updating profile through refetch");
         refetch();
     };
-
-
-    // console.log(nameString)
-    useEffect(() => {
-        setNameString(getNameString(data?.user?.name));
-    }, [data]);
 
     return (
         <SingleColumnContainer>

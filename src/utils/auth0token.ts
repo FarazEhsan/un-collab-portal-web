@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-
 async function getManagementApiToken() {
     const params = new URLSearchParams({
         grant_type: `${process.env.NEXT_PUBLIC_AUTH0_GRANT_TYPE}`,

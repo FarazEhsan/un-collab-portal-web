@@ -2,66 +2,14 @@
 import {
     ChangeEventHandler,
     FocusEventHandler,
-    FormEventHandler, useEffect,
+    FormEventHandler,
+    useEffect,
     useState
 } from 'react'
-import {
-    FaceFrownIcon,
-    FaceSmileIcon,
-    FireIcon,
-    HandThumbUpIcon,
-    HeartIcon,
-    XMarkIcon,
-} from '@heroicons/react/20/solid'
 import {PaperAirplaneIcon} from "@heroicons/react/24/outline";
 import {useUser} from "@auth0/nextjs-auth0/client";
 import {getNameString} from "@/utils/extraFunctions";
 import {gql, useQuery} from "@apollo/client";
-
-const moods = [
-    {
-        name: 'Excited',
-        value: 'excited',
-        icon: FireIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-red-500'
-    },
-    {
-        name: 'Loved',
-        value: 'loved',
-        icon: HeartIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-pink-400'
-    },
-    {
-        name: 'Happy',
-        value: 'happy',
-        icon: FaceSmileIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-green-400'
-    },
-    {
-        name: 'Sad',
-        value: 'sad',
-        icon: FaceFrownIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-yellow-400'
-    },
-    {
-        name: 'Thumbsy',
-        value: 'thumbsy',
-        icon: HandThumbUpIcon,
-        iconColor: 'text-white',
-        bgColor: 'bg-blue-500'
-    },
-    {
-        name: 'I feel nothing',
-        value: null,
-        icon: XMarkIcon,
-        iconColor: 'text-gray-400',
-        bgColor: 'bg-transparent'
-    },
-]
 
 interface CommentTextAreaProps {
     label: string,
@@ -75,6 +23,16 @@ interface CommentTextAreaProps {
     onFocus?: FocusEventHandler,
     onSubmit: FormEventHandler,
 }
+
+const GET_USER_DETAILS = gql`
+    query GetUserDetails($id: String!) {
+      user(id: $id) {
+        _id
+        name
+        picture
+      }
+    }
+  `;
 
 export default function CommentTextArea({
                                             label = 'Label',
@@ -91,20 +49,18 @@ export default function CommentTextArea({
                                         }: CommentTextAreaProps) {
     // const [selected, setSelected] = useState(moods[5])
     const {user, error: dataError, isLoading} = useUser();
-    const GET_USER_DETAILS = gql`
-    query GetUserDetails($id: String!) {
-      user(id: $id) {
-        _id
-        name
-        picture
-      }
-    }
-  `;
 
-    const {loading, error: gqlDataError, data, refetch} = useQuery(GET_USER_DETAILS, {
+    const {
+        loading,
+        error: gqlDataError,
+        data,
+        refetch
+    } = useQuery(GET_USER_DETAILS, {
         variables: {id: user?.sub?.toString()},
     });
-    const [nameString, setNameString] = useState('')
+
+    const [nameString, setNameString] = useState('');
+
     useEffect(() => {
         setNameString(getNameString(data?.user?.name));
     }, [data]);

@@ -1,4 +1,6 @@
 'use client'
+// @ts-ignore
+import Joi from 'joi-browser'
 import React, {Fragment, SetStateAction, useEffect, useState} from 'react'
 import {Dialog, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
@@ -9,8 +11,6 @@ import Button from "@/components/button/Button";
 import TextArea from "@/components/form/TextArea";
 import {FileInput} from "flowbite-react";
 import useSocket from "@/hooks/useSocketClient";
-// @ts-ignore
-import Joi from 'joi-browser'
 import {Schema} from "joi";
 import {useJoiForm} from "@/hooks/useJoiForm";
 import uploadImage from '@/utils/azureblobupload';
@@ -34,6 +34,10 @@ export default function CreatePostSlideOver({
                                             }: SlideOverProps) {
     const {user, error, isLoading} = useUser();
     const socket = useSocket();
+
+    const [files, setFiles] = useState<Array<File>>([]);
+
+
     useEffect(() => {
         if (socket)
             socket.emit('findAllForumEvents');
@@ -44,8 +48,6 @@ export default function CreatePostSlideOver({
         description: '',
     }
 
-    const [files, setFiles] = useState<Array<File>>([]);
-
     const {data: formData, errors, handleChange, handleSubmit} = useJoiForm(
         postData,
         postSchema
@@ -55,10 +57,8 @@ export default function CreatePostSlideOver({
         e.preventDefault();
         handleSubmit(e, sendData)
 
-
         setOpen(false);
     }
-
 
     const sendData = async () => {
         let uploadedFiles: String[] = []

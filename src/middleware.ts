@@ -1,7 +1,6 @@
 import {UserProfile} from '@auth0/nextjs-auth0/client';
 import {withMiddlewareAuthRequired} from '@auth0/nextjs-auth0/edge';
 
-
 //Commented the role based access control for now as it was messing up the useUser hook
 // Define a type for the roles
 type Role = 'admin' | 'user';

@@ -1,11 +1,11 @@
+// @ts-ignore
+import Joi from "joi-browser";
 import React, {Fragment, SetStateAction, useRef} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
 import {gql, useMutation} from "@apollo/client";
-// @ts-ignore
-import Joi from "joi-browser";
 import {useJoiForm} from "@/hooks/useJoiForm";
 import getManagementApiToken from "@/utils/auth0token";
 import {Schema} from "joi";
@@ -22,26 +22,7 @@ const userInfoSchema: Schema = Joi.object({
     email: Joi.string().email().label("Email"),
 });
 
-export default function AddUserSlideOver({
-                                             open,
-                                             setOpen,
-                                             handleUserAdded
-                                         }: SlideOverProps) {
-    const userInfo = {
-        firstName: "",
-        lastName: "",
-        email: "",
-    };
-
-    const userAuth0Info = useRef<any>(null);
-    const {
-        data: formData,
-        errors,
-        handleChange,
-        handleSubmit,
-    } = useJoiForm(userInfo, userInfoSchema);
-
-    const ADD_NEW_USER = gql`
+const ADD_NEW_USER = gql`
     mutation AddNewUser(
       $_id: ID!
       $name: String!
@@ -69,8 +50,28 @@ export default function AddUserSlideOver({
       }
     }`;
 
+export default function AddUserSlideOver({
+                                             open,
+                                             setOpen,
+                                             handleUserAdded
+                                         }: SlideOverProps) {
     const [addNewUser, {data: newUser, loading, error}] =
         useMutation(ADD_NEW_USER);
+
+    const userAuth0Info = useRef<any>(null);
+
+    const userInfo = {
+        firstName: "",
+        lastName: "",
+        email: "",
+    };
+
+    const {
+        data: formData,
+        errors,
+        handleChange,
+        handleSubmit,
+    } = useJoiForm(userInfo, userInfoSchema);
 
     async function submitFormToAuth0() {
         let userJson = null;
@@ -185,8 +186,6 @@ export default function AddUserSlideOver({
 
     const postData = async () => {
         console.log(" User info for mongo submission", userInfo);
-
-        //TODO: Implement
 
         const variables = {
             _id: userAuth0Info?.current.user_id,

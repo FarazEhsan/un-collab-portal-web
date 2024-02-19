@@ -46,15 +46,15 @@ const PostCard = ({
     const [reactionCount, setReactionCount] = useState({UPVOTE: 0, DOWNVOTE: 0})
 
     useEffect(() => {
-        console.log("postDetails.comments in post-card", postDetails.comments);
+        // console.log("postDetails.comments in post-card", postDetails.comments);
         socket?.emit("joinForum", postDetails._id);
         if (postDetails.comments) {
-            console.log("setting comments", postDetails.comments);
+            // console.log("setting comments", postDetails.comments);
             setAllComments(postDetails.comments);
         }
         if (postDetails.reactions) {
             setReactionData(postDetails.reactions);
-            // renderReactions(postDetails.reactions);
+            renderReactions(postDetails.reactions);
         }
         if (postDetails?.reactionCounts) {
             setReactionCount(postDetails?.reactionCounts);
@@ -63,7 +63,7 @@ const PostCard = ({
 
     useEffect(() => {
         const handleTopicReactionPosted = (newReaction: any) => {
-            console.log("reaction posted...", newReaction);
+            // console.log("reaction posted...", newReaction);
 
             if (reactionData) {
                 setReactionData([...reactionData, newReaction]);
@@ -71,18 +71,17 @@ const PostCard = ({
             }
         };
         const handleTopicCommentPosted = (newComment: any) => {
-            console.log("comment posted...");
-            console.log("new comment from commentPosted", newComment);
-            console.log("all comments", allComments);
+            // console.log("comment posted...");
+            // console.log("new comment from commentPosted", newComment);
+            // console.log("all comments", allComments);
             if (allComments) {
                 setAllComments([...allComments, newComment]);
             }
             setAllComments([newComment])
-            //refetchCommentData();
         };
 
         const handleTopicReactionCountUpdated = (newCount: any) => {
-            console.log('new reaction count', newCount);
+            // console.log('new reaction count', newCount);
             if (newCount.topicId === postDetails?._id) {
                 setReactionCount(newCount?.reactionCounts);
             }
@@ -95,12 +94,13 @@ const PostCard = ({
         return () => {
             // Clean up the listener when the component is unmounted
             socket?.off("topicReactionPosted", handleTopicReactionPosted);
+            socket?.off("updatedTopicReactionCounts", handleTopicReactionCountUpdated);
             socket?.off("commentPosted", handleTopicCommentPosted);
         };
     }, [allComments, reactionData]);
 
     useEffect(() => {
-        console.log(postDetails?.author?.name)
+        // console.log(postDetails?.author?.name)
         setNameString(getNameString(postDetails?.author?.name));
     }, [postDetails]);
 
@@ -120,7 +120,7 @@ const PostCard = ({
         };
 
         if (socket) {
-            console.log(commentData);
+            // console.log(commentData);
             socket?.emit("postComment", commentData);
             setComment("");
         }
@@ -132,7 +132,7 @@ const PostCard = ({
     };
 
     const postReaction = (reaction: string) => {
-        console.log("posting reaction:", reaction);
+        // console.log("posting reaction:", reaction);
         const reactionData = {
             type: reaction,
             user: auth0User?.sub?.toString(),
@@ -142,28 +142,18 @@ const PostCard = ({
         socket?.emit("postTopicReaction", reactionData);
     };
 
-
-    // const renderReactions = (reactionsData: any) => {
-    //   let up = 0;
-    //   let down = 0;
-    //   console.log("rendering reactions");
-    //   if (reactionsData) {
-    //     // up = 0
-    //     // down = 0
-    //     reactionsData?.map((r: any) => {
-    //       if (r.type === ReactionType.Up) up++;
-    //       if (r.type === ReactionType.Down) down++;
-    //       if (r.author === auth0User?._id) setSelectedReaction(r.type);
-    //     });
-    //   }
-    //   setReactionsCount({ up, down });
-    // };
+    const renderReactions = (reactionsData: any) => {
+        if (reactionsData) {
+            reactionsData?.map((r: any) => {
+                if (r.author === auth0User?._id) setSelectedReaction(r.type);
+            });
+        }
+    };
 
     return (
         <div
             className={`dark:bg-gray-900  bg-white border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 p-4 ${hoverClasses}`}
         >
-            {/*Image*/}
 
             {/*Post Body*/}
             <div className="">
@@ -198,6 +188,7 @@ const PostCard = ({
                 </div>
             </div>
 
+            {/*Image*/}
             {postDetails?.images?.length ? (
                 <div
                     onClick={() => setOpenCarouselModal(!openCarouselModal)}
@@ -242,7 +233,6 @@ const PostCard = ({
                 )
             }
 
-
             {/*Comments*/}
             {!limitComments && (
                 <>
@@ -266,7 +256,6 @@ const PostCard = ({
                         />
                     </div>
                 </>
-
             )}
         </div>
     );

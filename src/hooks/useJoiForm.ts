@@ -1,6 +1,5 @@
 import {ChangeEvent, FormEvent, useState} from 'react';
 // @ts-ignore
-// @ts-ignore
 import Joi, {Schema, ValidationResult} from "joi-browser";
 
 interface FormState {
@@ -24,7 +23,6 @@ export function useJoiForm(initialState: FormState, schema: Schema) {
         for (let item of error.details) errors[item.path[0]] = item.message;
         return errors;
     };
-
 
     const validateProperty = ({name, value}: {
         name: string;

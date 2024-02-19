@@ -14,9 +14,15 @@ interface SlideOverProps {
     onUpdateProfile: () => void
 }
 
-export default function ProjectSlideOver({open, setOpen, project, onUpdateProfile}: SlideOverProps) {
+export default function ProjectSlideOver({
+                                             open,
+                                             setOpen,
+                                             project,
+                                             onUpdateProfile
+                                         }: SlideOverProps) {
     const [openCarouselModal, setOpenCarouselModal] = useState(false);
     const [openEditProjectSlideOver, setOpenEditProjectSlideOver] = useState(false);
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={setOpen}>
@@ -150,8 +156,10 @@ export default function ProjectSlideOver({open, setOpen, project, onUpdateProfil
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
                                                             <ul>
                                                                 {project?.relatedSDGs?.map((sdg, index) => (
-                                                                    <Badge key={index} text={sdg?.name}
-                                                                           classNames="mr-2 my-1"/>
+                                                                    <Badge
+                                                                        key={index}
+                                                                        text={sdg?.name}
+                                                                        classNames="mr-2 my-1"/>
                                                                 ))}
                                                             </ul>
                                                         </dd>

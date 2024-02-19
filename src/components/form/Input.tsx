@@ -2,7 +2,6 @@ import {ExclamationCircleIcon} from '@heroicons/react/20/solid';
 import {ChangeEventHandler, FocusEventHandler} from "react";
 import {classNames} from "@/utils/extraFunctions";
 
-
 interface InputProps {
     label: string,
     type?: string,

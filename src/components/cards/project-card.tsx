@@ -24,8 +24,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({project, onUpdateProfile}: ProjectCardProps) => {
     const [open, setOpen] = useState(false);
-    const [openCarouselModal, setOpenCarouselModal] = useState(false);
-    console.log(project)
+    // console.log(project)
     return (
         <div
             className="relative h-fit bg-white hover:bg-gray-100 dark:bg-gray-900 dark:hover:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-md dark:shadow-gray-950 cursor-pointer">

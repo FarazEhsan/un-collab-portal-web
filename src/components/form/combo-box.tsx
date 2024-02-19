@@ -4,7 +4,6 @@ import Badge from "@/components/badge";
 import {CheckIcon, ChevronUpDownIcon} from "@heroicons/react/24/outline";
 import {classNames} from "@/utils/extraFunctions";
 
-
 const ComboBox = ({
                       multiple,
                       items,
@@ -23,7 +22,6 @@ const ComboBox = ({
                 return item.name.toLowerCase().includes(query.toLowerCase())
             })
 
-    // @ts-ignore
     // @ts-ignore
     return (
         <Combobox as="div" value={selectedData} onChange={setSelectedData}

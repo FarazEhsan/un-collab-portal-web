@@ -1,11 +1,11 @@
+// @ts-ignore
+import Joi from "joi-browser";
 import React, {Fragment, SetStateAction} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
 import {gql, useMutation} from "@apollo/client";
-// @ts-ignore
-import Joi from "joi-browser";
 import {useJoiForm} from "@/hooks/useJoiForm";
 import {Schema} from "joi";
 
@@ -20,25 +20,7 @@ const groupSchema: Schema = Joi.object({
     description: Joi.string().required().label("Description"),
 });
 
-export default function AddGroupSlideOver({
-                                              open,
-                                              setOpen,
-                                              handleGroupAdded
-                                          }: SlideOverProps) {
-    const groupInfo = {
-        name: "",
-        description: ""
-    };
-
-
-    const {
-        data: formData,
-        errors,
-        handleChange,
-        handleSubmit,
-    } = useJoiForm(groupInfo, groupSchema);
-
-    const ADD_NEW_Group = gql`
+const ADD_NEW_Group = gql`
     mutation AddNewGroup(
       $name: String!
       $description: String!
@@ -54,9 +36,25 @@ export default function AddGroupSlideOver({
       }
     }`;
 
+export default function AddGroupSlideOver({
+                                              open,
+                                              setOpen,
+                                              handleGroupAdded
+                                          }: SlideOverProps) {
     const [addNewGroup, {data: newGroup, loading, error}] =
         useMutation(ADD_NEW_Group);
 
+    const groupInfo = {
+        name: "",
+        description: ""
+    };
+
+    const {
+        data: formData,
+        errors,
+        handleChange,
+        handleSubmit,
+    } = useJoiForm(groupInfo, groupSchema);
 
     const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();

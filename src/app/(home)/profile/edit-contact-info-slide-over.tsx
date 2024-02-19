@@ -1,11 +1,11 @@
 "use client";
+// @ts-ignore
+import Joi from "joi-browser";
 import React, {Fragment, SetStateAction} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
-// @ts-ignore
-import Joi from "joi-browser";
 import {gql, useMutation} from "@apollo/client";
 import {Schema} from "joi";
 import {useJoiForm} from "@/hooks/useJoiForm";
@@ -26,34 +26,8 @@ const contactInfoSchema: Schema = Joi.object({
     tiktok: Joi.string().label("TikTok").allow(""),
     twitter: Joi.string().label("Twitter").allow(""),
 });
-export default function EditContactInfoSlideOver({
-                                                     open,
-                                                     setOpen,
-                                                     data,
-                                                     onUpdateProfile,
-                                                 }: SlideOverProps) {
-    const contactInfo = {
-        email: data?.email,
-        contactNumber: data?.contactNumber,
-        facebook: data?.facebook,
-        instagram: data?.instagram,
-        linkedin: data?.linkedin,
-        tiktok: data?.tiktok,
-        twitter: data?.twitter,
-    };
 
-    const {data: formData, errors, handleChange, handleSubmit} = useJoiForm(
-        contactInfo,
-        contactInfoSchema
-    );
-
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        handleSubmit(e, postData);
-
-    };
-
-    const UPDATE_CONTACT_INFO = gql`
+const UPDATE_CONTACT_INFO = gql`
     mutation UpdateContactInfo(
       $userid: String!
       $email: String
@@ -101,14 +75,38 @@ export default function EditContactInfoSlideOver({
     }
   `;
 
+export default function EditContactInfoSlideOver({
+                                                     open,
+                                                     setOpen,
+                                                     data,
+                                                     onUpdateProfile,
+                                                 }: SlideOverProps) {
     const [updateContact, {data: updatedData, loading, error}] =
         useMutation(UPDATE_CONTACT_INFO);
 
+    const contactInfo = {
+        email: data?.email,
+        contactNumber: data?.contactNumber,
+        facebook: data?.facebook,
+        instagram: data?.instagram,
+        linkedin: data?.linkedin,
+        tiktok: data?.tiktok,
+        twitter: data?.twitter,
+    };
+
+    const {data: formData, errors, handleChange, handleSubmit} = useJoiForm(
+        contactInfo,
+        contactInfoSchema
+    );
+
+    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        handleSubmit(e, postData);
+
+    };
+
     const postData = async () => {
-        console.log(contactInfo);
-
-        //TODO: Implement
-
+        // console.log(contactInfo);
         const variables = {
             userid: data?._id,
             email: formData.email,
@@ -119,11 +117,9 @@ export default function EditContactInfoSlideOver({
             tiktok: formData.tiktok,
             linkedin: formData.linkedin,
         };
-        console.log("whats with the variables?", variables);
-
+        // console.log("whats with the variables?", variables);
         await updateContact({variables: variables});
-        console.log("Update data adter contact update", data);
-
+        // console.log("Update data adter contact update", data);
         onUpdateProfile();
         setOpen(false);
     };

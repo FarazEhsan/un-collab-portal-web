@@ -1,7 +1,7 @@
 "use client"
 import {useEffect, useMemo, useState} from "react";
-import 'ag-grid-community/styles/ag-grid.css'; // Core CSS
-import 'ag-grid-community/styles/ag-theme-quartz.css'; // Theme
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-quartz.css';
 import {AgGridReact} from "ag-grid-react";
 import Button from "@/components/button/Button";
 import AddUserSlideOver from "./add-user-slide-over";
@@ -16,13 +16,7 @@ import {
     SuppressKeyboardEventParams
 } from 'ag-grid-community';
 
-export default function AdminHome() {
-    let rowImmutableStore;
-
-    const [openAddUserSlideOver, setOpenAddUserSlideOver] = useState(false);
-    //1- Get all users gql
-
-    const GET_ALL_USERS = gql`query GetAllUsers {
+const GET_ALL_USERS = gql`query GetAllUsers {
       allusers{
         _id
         name
@@ -31,6 +25,7 @@ export default function AdminHome() {
       }
     }`
 
+export default function AdminHome() {
     const {
         data: allUsers,
         loading: allUsersLoading,
@@ -38,17 +33,8 @@ export default function AdminHome() {
         refetch
     } = useQuery(GET_ALL_USERS)
 
-
-    useEffect(() => {
-        if (!allUsersLoading) {
-            console.log('All users', allUsers)
-            setRowData(JSON.parse(JSON.stringify(allUsers?.allusers)))
-        }
-
-    }, [allUsersLoading])
-
+    const [openAddUserSlideOver, setOpenAddUserSlideOver] = useState(false);
     const [rowData, setRowData] = useState<any[]>(allUsers?.allusers);
-
     // Column Definitions: Defines & controls grid columns.
     const [colDefs, setColDefs] = useState([
         {field: '_id', hide: true},
@@ -68,6 +54,13 @@ export default function AdminHome() {
         },
     ]);
 
+    useEffect(() => {
+        if (!allUsersLoading) {
+            console.log('All users', allUsers)
+            setRowData(JSON.parse(JSON.stringify(allUsers?.allusers)))
+        }
+
+    }, [allUsersLoading])
 
     const autoSizeStrategy = useMemo<
         | SizeColumnsToFitGridStrategy
@@ -76,24 +69,23 @@ export default function AdminHome() {
     >(() => {
         return {
             type: 'fitGridWidth',
-                defaultMinWidth: 150,
-                columnLimits: [
-                    {
-                        colId: 'email',
-                        minWidth: 250
-                    },
-                    {
-                        colId: 'edit',
-                        minWidth: 75
-                    },
-                    {
-                        colId: 'deactivate',
-                        minWidth: 100
-                    }
-                ]
+            defaultMinWidth: 150,
+            columnLimits: [
+                {
+                    colId: 'email',
+                    minWidth: 250
+                },
+                {
+                    colId: 'edit',
+                    minWidth: 75
+                },
+                {
+                    colId: 'deactivate',
+                    minWidth: 100
+                }
+            ]
         };
     }, []);
-
 
     const handleCellValueChanged = (params: any) => {
         console.log("Edited params", params);
@@ -135,7 +127,7 @@ export default function AdminHome() {
 						rowData={rowData}
 						columnDefs={colDefs}
 						domLayout="autoHeight"
-                        autoSizeStrategy={autoSizeStrategy}
+						autoSizeStrategy={autoSizeStrategy}
 						onCellValueChanged={handleCellValueChanged}
 					/>}
             </div>

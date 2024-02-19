@@ -1,3 +1,5 @@
+// @ts-ignore
+import Joi from "joi-browser";
 import React, {Fragment, SetStateAction, useEffect, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
@@ -6,8 +8,6 @@ import Button from "@/components/button/Button";
 import TextArea from "@/components/form/TextArea";
 import ComboBox from "@/components/form/combo-box";
 import {gql, useMutation, useQuery} from "@apollo/client";
-// @ts-ignore
-import Joi from "joi-browser";
 import uploadImage from "@/utils/azureblobupload";
 import {FileInput} from "flowbite-react";
 
@@ -18,6 +18,14 @@ interface SlideOverProps {
     onUpdateProfile: () => void;
 }
 
+const projectInfoSchema = {
+    name: Joi.string().required().max(55),
+    startTime: Joi.date().iso().required(),
+    endTime: Joi.string(),
+    description: Joi.string().required().max(1000),
+    relatedSDGs: Joi.array().min(1).required(),
+};
+
 const GET_ALL_SDG = gql`
   query GetAllSDGS {
     allsdgs {
@@ -27,123 +35,7 @@ const GET_ALL_SDG = gql`
   }
 `;
 
-const projectInfoSchema = {
-    name: Joi.string().required().max(55),
-    startTime: Joi.date().iso().required(),
-    endTime: Joi.string(),
-    description: Joi.string().required().max(1000),
-    relatedSDGs: Joi.array().min(1).required(),
-};
-
-export default function EditProjectSlideOver({
-                                                 open,
-                                                 data,
-                                                 onUpdateProfile,
-                                                 setOpen,
-                                             }: SlideOverProps) {
-    const {
-        loading: sdgLoading,
-        error: sdgError,
-        data: sdgData,
-    } = useQuery(GET_ALL_SDG);
-
-
-    const [relatedSDGs, setRelatedSDGs] = useState([]);
-
-    useEffect(() => {
-        const sdgs = data?.relatedSDGs?.map((sdg: any) => {
-                return sdg?.id
-            }
-        )
-        setRelatedSDGs(sdgs);
-    }, []);
-
-    useEffect(() => {
-        console.log('Related SDGs was updated, new value is: ', relatedSDGs)
-    }, [relatedSDGs])
-
-    const [projectInfo, setProductInfo] = useState({
-        name: data.name,
-        startTime: data?.startTime,
-        endTime: data?.endTime,
-        description: data?.description,
-        relatedSDGs: [...data?.relatedSDGs],
-        // user: "",
-    });
-
-    const [errors, setErrors] = useState({
-        name: null,
-        startTime: null,
-        endTime: null,
-        description: null,
-        relatedSDGs: null,
-        //   user: null,
-    });
-    const validateForm = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        const result = Joi.validate(projectInfo, projectInfoSchema, {
-            abortEarly: false,
-        });
-        console.log("result from joi", result);
-
-        const {error} = result;
-
-        if (!error) {
-            postData();
-        } else {
-            const errorData = {
-                name: null,
-                startTime: null,
-                endTime: null,
-                description: null,
-                relatedSDGs: null,
-                // user: null,
-            };
-            for (let item of error.details) {
-                const name = item.path[0];
-                // @ts-ignore
-                errorData[name] = item.message;
-            }
-            // console.log(errors);
-            setErrors(errorData);
-            return errorData;
-        }
-    };
-
-    const handleElementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value, type} = e.target;
-
-        console.log("name: " + name + " and  value: " + value);
-
-        console.log("type is", type);
-        let errorData = {...errors};
-        const errorMessage = validateProperty(e);
-        if (errorMessage) {
-            // @ts-ignore
-            errorData[name] = errorMessage;
-        } else {
-            // @ts-ignore
-            delete errorData[name];
-        }
-        let projectData = {...projectInfo};
-        // @ts-ignore
-        projectData[name] = value;
-        setProductInfo(projectData);
-        setErrors(errorData);
-    };
-
-    const validateProperty = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const {name, value} = e.target;
-        const obj = {[name]: value};
-        // @ts-ignore
-        const subSchema = {[name]: projectInfoSchema[name]};
-        const result = Joi.validate(obj, subSchema);
-        const {error} = result;
-        return error ? error.details[0].message : null;
-    };
-
-    const UPDATE_PROJECT = gql`
+const UPDATE_PROJECT = gql`
     mutation UpdateProject(
   $_id: String!
     $name: String!
@@ -179,18 +71,118 @@ export default function EditProjectSlideOver({
 
   `;
 
+export default function EditProjectSlideOver({
+                                                 open,
+                                                 data,
+                                                 onUpdateProfile,
+                                                 setOpen,
+                                             }: SlideOverProps) {
+    const {
+        loading: sdgLoading,
+        error: sdgError,
+        data: sdgData,
+    } = useQuery(GET_ALL_SDG);
 
     const [updateProject, {data: updatedProject, loading, error}] =
         useMutation(UPDATE_PROJECT);
 
+    const [projectInfo, setProductInfo] = useState({
+        name: data.name,
+        startTime: data?.startTime,
+        endTime: data?.endTime,
+        description: data?.description,
+        relatedSDGs: [...data?.relatedSDGs],
+        // user: "",
+    });
+    const [errors, setErrors] = useState({
+        name: null,
+        startTime: null,
+        endTime: null,
+        description: null,
+        relatedSDGs: null,
+        //user: null,
+    });
+    const [relatedSDGs, setRelatedSDGs] = useState([]);
     const [files, setFiles] = useState<Array<File>>([]);
+
+    useEffect(() => {
+        const sdgs = data?.relatedSDGs?.map((sdg: any) => {
+                return sdg?.id
+            }
+        )
+        setRelatedSDGs(sdgs);
+    }, []);
+
+    // useEffect(() => {
+    //     console.log('Related SDGs was updated, new value is: ', relatedSDGs)
+    // }, [relatedSDGs]);
+
+    const validateForm = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const result = Joi.validate(projectInfo, projectInfoSchema, {
+            abortEarly: false,
+        });
+        // console.log("result from joi", result);
+        const {error} = result;
+        if (!error) {
+            postData();
+        } else {
+            const errorData = {
+                name: null,
+                startTime: null,
+                endTime: null,
+                description: null,
+                relatedSDGs: null,
+                // user: null,
+            };
+            for (let item of error.details) {
+                const name = item.path[0];
+                // @ts-ignore
+                errorData[name] = item.message;
+            }
+            // console.log(errors);
+            setErrors(errorData);
+            return errorData;
+        }
+    };
+
+    const handleElementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value, type} = e.target;
+        // console.log("name: " + name + " and  value: " + value);
+        // console.log("type is", type);
+        let errorData = {...errors};
+        const errorMessage = validateProperty(e);
+        if (errorMessage) {
+            // @ts-ignore
+            errorData[name] = errorMessage;
+        } else {
+            // @ts-ignore
+            delete errorData[name];
+        }
+        let projectData = {...projectInfo};
+        // @ts-ignore
+        projectData[name] = value;
+        setProductInfo(projectData);
+        setErrors(errorData);
+    };
+
+    const validateProperty = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const {name, value} = e.target;
+        const obj = {[name]: value};
+        // @ts-ignore
+        const subSchema = {[name]: projectInfoSchema[name]};
+        const result = Joi.validate(obj, subSchema);
+        const {error} = result;
+        return error ? error.details[0].message : null;
+    };
+
     const handleFileChange = (e: any) => {
         if (e.target.files) {
             setFiles(Array.from(e.target.files));
         }
     }
     const postData = async () => {
-
         let uploadedFiles: String[] = []
         const variables =
             {
@@ -208,7 +200,6 @@ export default function EditProjectSlideOver({
             // @ts-ignore
             if (uploadedFiles?.length) variables.pictures = uploadedFiles
         }
-
 
         await updateProject({variables: variables})
         onUpdateProfile()

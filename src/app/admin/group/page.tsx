@@ -1,7 +1,7 @@
 "use client";
 import {useEffect, useMemo, useState} from "react";
-import "ag-grid-community/styles/ag-grid.css"; // Core CSS
-import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-quartz.css";
 import {AgGridReact} from "ag-grid-react";
 import Button from "@/components/button/Button";
 import AddGroupSlideOver from "./add-group-slide-over";
@@ -15,11 +15,8 @@ import {
     SizeColumnsToFitProvidedWidthStrategy,
     SuppressKeyboardEventParams
 } from 'ag-grid-community';
-export default function GroupManagement() {
-    const [openAddGroupSlideOver, setOpenAddGroupSlideOver] = useState(false);
-    //1- Get all users gql
 
-    const GET_ALL_GROUPS = gql`
+const GET_ALL_GROUPS = gql`
     query GetAllGroups {
       allgroups {
         _id
@@ -29,6 +26,7 @@ export default function GroupManagement() {
     }
   `;
 
+export default function GroupManagement() {
     const {
         data: allGroups,
         loading: allGroupsLoading,
@@ -36,19 +34,12 @@ export default function GroupManagement() {
         refetch,
     } = useQuery(GET_ALL_GROUPS);
 
-    useEffect(() => {
-        if (!allGroupsLoading) {
-            console.log("All Groups", allGroups);
-            setRowData(JSON.parse(JSON.stringify(allGroups?.allgroups))); // Deep copy
-        }
-    }, [allGroupsLoading]);
-
+    const [openAddGroupSlideOver, setOpenAddGroupSlideOver] = useState(false);
     const [rowData, setRowData] = useState<any[]>(allGroups?.allgroups);
-
     // Column Definitions: Defines & controls grid columns.
     const [colDefs, setColDefs] = useState([
         {field: "_id", hide: true},
-        {field: "name", editable:true},
+        {field: "name", editable: true},
         {field: "description"},
         {
             field: 'deactivate',
@@ -61,6 +52,13 @@ export default function GroupManagement() {
             ) => params.event.key === ' ',
         },
     ]);
+
+    useEffect(() => {
+        if (!allGroupsLoading) {
+            console.log("All Groups", allGroups);
+            setRowData(JSON.parse(JSON.stringify(allGroups?.allgroups))); // Deep copy
+        }
+    }, [allGroupsLoading]);
 
     const autoSizeStrategy = useMemo<
         | SizeColumnsToFitGridStrategy
@@ -94,6 +92,7 @@ export default function GroupManagement() {
     const handleGroupAdded = () => {
         refetch();
     };
+
     return (
         <SingleColumnContainer>
             <div className="flex items-center justify-between">
@@ -113,12 +112,12 @@ export default function GroupManagement() {
                 </div>
             </div>
 
-
             <AddGroupSlideOver
                 open={openAddGroupSlideOver}
                 setOpen={setOpenAddGroupSlideOver}
                 handleGroupAdded={handleGroupAdded}
             />
+
             <div className="ag-theme-quartz mt-8">
                 {!allGroupsLoading && (
                     <AgGridReact

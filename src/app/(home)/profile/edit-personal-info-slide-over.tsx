@@ -1,10 +1,10 @@
+// @ts-ignore
+import Joi from "joi-browser";
 import React, {Fragment, SetStateAction, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
 import {XMarkIcon} from "@heroicons/react/24/outline";
 import Input from "@/components/form/Input";
 import Button from "@/components/button/Button";
-// @ts-ignore
-import Joi from "joi-browser";
 import {gql, useMutation} from "@apollo/client";
 import {useJoiForm} from "@/hooks/useJoiForm";
 import {Schema} from "joi";
@@ -25,31 +25,10 @@ const personalInfoSchema: Schema = Joi.object({
     dob: Joi.date().required().label("Date of Birth"),
     country: Joi.string().min(3).label("Country"),
     city: Joi.string().min(3).label("City"),
-    picture: Joi.string().label("Picture").allow(null)  
+    picture: Joi.string().label("Picture").allow(null)
 });
-export default function EditPersonalInfoSlideOver({
-                                                      open,
-                                                      data,
-                                                      setOpen,
-                                                      onUpdateProfile
-                                                  }: SlideOverProps) {
-    const personalInfo = {
-        firstName: data?.firstName,
-        lastName: data?.lastName,
-        dob: data?.dob,
-        country: data?.country,
-        city: data?.city,
-        picture: data?.picture
-    };
 
-
-    const {data: formData, errors, handleChange, handleSubmit} = useJoiForm(
-        personalInfo,
-        personalInfoSchema
-    );
-
-
-    const UPDATE_PERSONAL_INFO = gql`
+const UPDATE_PERSONAL_INFO = gql`
     mutation UpdateContactInfo(
       $userid: String!
       $firstName: String
@@ -106,28 +85,40 @@ export default function EditPersonalInfoSlideOver({
     }
   `;
 
+export default function EditPersonalInfoSlideOver({
+                                                      open,
+                                                      data,
+                                                      setOpen,
+                                                      onUpdateProfile
+                                                  }: SlideOverProps) {
     const [updatePersonal, {data: updatedData, loading, error}] =
         useMutation(UPDATE_PERSONAL_INFO);
-
-    const dob = personalInfo.dob ? new Date(personalInfo?.dob) : new Date();
-    const formattedDob = dob.toISOString().split('T')[0];
 
     const [photo, setPhoto] = useState<File>()
     const [photoURL, setPhotoURL] = useState(data?.picture ? data?.picture : noProfilePictureImage.src);
 
+    const personalInfo = {
+        firstName: data?.firstName,
+        lastName: data?.lastName,
+        dob: data?.dob,
+        country: data?.country,
+        city: data?.city,
+        picture: data?.picture
+    };
+    const dob = personalInfo.dob ? new Date(personalInfo?.dob) : new Date();
+    const formattedDob = dob.toISOString().split('T')[0];
 
+    const {data: formData, errors, handleChange, handleSubmit} = useJoiForm(
+        personalInfo,
+        personalInfoSchema
+    );
     const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         handleSubmit(e, postData);
-
     };
 
     const postData = async () => {
-        console.log(personalInfo);
-
-        //TODO: Implement
-
-
+        // console.log(personalInfo);
         let variables = {
             userid: data._id,
             firstName: formData.firstName,
@@ -139,19 +130,14 @@ export default function EditPersonalInfoSlideOver({
         };
 
         if (photo) {
-            //TODO: fix this error
-            console.log('uploading photo', photo)
+            // console.log('uploading photo', photo)
             variables.picture = await uploadImage('dynamicfile', photo);
-            await updatePersonal({ variables: variables });
+            await updatePersonal({variables: variables});
+        } else {
+            await updatePersonal({variables: variables});
         }
-        else{
-            await updatePersonal({ variables: variables });
-        }
-        console.log("whats with the variables?", variables);
-
-        // TODO: Edit mutation to upload picture
-       
-        console.log("Update data adter personal update", data);
+        // console.log("whats with the variables?", variables);
+        // console.log("Update data adter personal update", data);
         onUpdateProfile()
         setOpen(false);
     };
@@ -161,7 +147,7 @@ export default function EditPersonalInfoSlideOver({
             setPhoto(e.target.files[0]);
             setPhotoURL(URL.createObjectURL(e.target.files[0]))
         } else setPhotoURL(noProfilePictureImage.src)
-        console.log(photo)
+        // console.log(photo)
     }
 
     return (
@@ -242,14 +228,13 @@ export default function EditPersonalInfoSlideOver({
                                                                 src={photoURL}
                                                                 alt=""
                                                             />
-                                                            {/*<Button colorType="link">Update</Button>*/}
                                                         </div>
                                                         <FileInput
                                                             id="picture"
                                                             accept='image/*'
                                                             onChange={handleFileChange}
                                                             name="picture"
-                                                            
+
                                                         />
                                                     </div>
                                                     <div className="mt-4">
@@ -273,7 +258,6 @@ export default function EditPersonalInfoSlideOver({
                                                         />
                                                     </div>
                                                     <div className="mt-4">
-
                                                         <Input
                                                             label="Date of Birth"
                                                             name="dob"

@@ -14,14 +14,7 @@ interface SlideOverProps {
     onUpdateProfile: () => void;
 }
 
-export default function UpdateGroupsSlideOver({
-                                                  open,
-                                                  data,
-                                                  setOpen,
-                                                  onUpdateProfile
-                                              }: SlideOverProps) {
-
-    const GET_ALL_GROUPS = gql`
+const GET_ALL_GROUPS = gql`
     query GetAllGroups{
     allgroups{
     _id
@@ -32,6 +25,12 @@ export default function UpdateGroupsSlideOver({
 }
   `;
 
+export default function UpdateGroupsSlideOver({
+                                                  open,
+                                                  data,
+                                                  setOpen,
+                                                  onUpdateProfile
+                                              }: SlideOverProps) {
     const {
         loading,
         error,
@@ -49,12 +48,13 @@ export default function UpdateGroupsSlideOver({
                 name: item.name
             }
         ))
-        console.log('filtered groups data', g)
+        // console.log('filtered groups data', g)
         if (g) setComboBoxData([...g])
     }, [groupsData]);
 
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault()
+        // TODO: implement onSubmit
         console.log(selectedGroups)
     }
 

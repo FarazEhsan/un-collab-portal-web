@@ -7,10 +7,7 @@ import {gql, useQuery} from "@apollo/client";
 import CardSkeleton from "@/components/skeletons/card-skeleton";
 import useSocket from "@/hooks/useSocketClient";
 
-export default function Home() {
-    const [openCreatePostSlideOver, setOpenCreatePostSlideOver] = useState(false);
-
-    const GET_ALL_TOPICS = gql`
+const GET_ALL_TOPICS = gql`
     query GetAllTopics{
   alltopics{
   _id
@@ -39,32 +36,31 @@ export default function Home() {
 }
   `;
 
-    const [topics, setTopics] = useState([])
-
+export default function Home() {
     const {loading, error, data, refetch} = useQuery(GET_ALL_TOPICS);
+
+    const [openCreatePostSlideOver, setOpenCreatePostSlideOver] = useState(false);
+    const [topics, setTopics] = useState([])
 
     const socket = useSocket();
 
-
-    const refetchPosts = () => {
-        console.log("Updating feed through refetch");
-        refetch();
-    }
-
-    useEffect(() => {
-        setTopics(data?.alltopics);
-        console.log('updating topics', data)
-    }, [data]);
-
     useEffect(() => {
         const handleTopicPosted = () => {
-            console.log('topic posted...');
+            // console.log('topic posted...');
             refetch();
         };
-
         socket?.on('topicPosted', handleTopicPosted);
     }, []);
 
+    useEffect(() => {
+        setTopics(data?.alltopics);
+        // console.log('updating topics', data)
+    }, [data]);
+
+    const refetchPosts = () => {
+        // console.log("Updating feed through refetch");
+        refetch();
+    }
 
     const secondaryColumnContent =
         <div>
@@ -99,10 +95,8 @@ export default function Home() {
                             ))
                         }
                     </div>
-
                 )
             }
-
         </TwoColumnContainer>
     )
 }

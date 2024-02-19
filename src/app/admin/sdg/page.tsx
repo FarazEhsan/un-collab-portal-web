@@ -15,11 +15,8 @@ import {
     SizeColumnsToFitProvidedWidthStrategy,
     SuppressKeyboardEventParams
 } from 'ag-grid-community';
-export default function SDFManagement() {
-    const [openAddSDGSlideOver, setOpenAddSDGSlideOver] = useState(false);
-    //1- Get all users gql
 
-    const GET_ALL_SDGs = gql`
+const GET_ALL_SDGs = gql`
     query GetAllSDGs {
       allsdgs {
         id
@@ -30,6 +27,7 @@ export default function SDFManagement() {
     }
   `;
 
+export default function SDFManagement() {
     const {
         data: allSDGs,
         loading: allSDGsLoading,
@@ -37,21 +35,14 @@ export default function SDFManagement() {
         refetch,
     } = useQuery(GET_ALL_SDGs);
 
-    useEffect(() => {
-        if (!allSDGsLoading) {
-            console.log("All SDGs", allSDGs);
-            setRowData(JSON.parse(JSON.stringify(allSDGs?.allsdgs)));
-        }
-    }, [allSDGsLoading]);
-
+    const [openAddSDGSlideOver, setOpenAddSDGSlideOver] = useState(false);
     const [rowData, setRowData] = useState<any[]>(allSDGs?.allsdgs);
-
     // Column Definitions: Defines & controls grid columns.
     const [colDefs, setColDefs] = useState([
         {field: "id", hide: true},
-        {field: "name", editable:true},
-        {field: "code", editable:true},
-        {field: "shortDescription", editable:true},
+        {field: "name", editable: true},
+        {field: "code", editable: true},
+        {field: "shortDescription", editable: true},
         {
             field: 'deactivate',
             cellRenderer: 'agCheckboxCellRenderer',
@@ -64,6 +55,13 @@ export default function SDFManagement() {
         },
     ]);
 
+    useEffect(() => {
+        if (!allSDGsLoading) {
+            // console.log("All SDGs", allSDGs);
+            setRowData(JSON.parse(JSON.stringify(allSDGs?.allsdgs)));
+        }
+    }, [allSDGsLoading]);
+
     const autoSizeStrategy = useMemo<
         | SizeColumnsToFitGridStrategy
         | SizeColumnsToFitProvidedWidthStrategy
@@ -72,9 +70,7 @@ export default function SDFManagement() {
         return {
             type: 'fitGridWidth',
             defaultMinWidth: 150,
-            columnLimits: [
-
-            ]
+            columnLimits: []
         };
     }, []);
 
@@ -107,7 +103,6 @@ export default function SDFManagement() {
                     </Button>
                 </div>
             </div>
-
 
             <AddSDGSlideOver
                 open={openAddSDGSlideOver}
