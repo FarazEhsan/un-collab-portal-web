@@ -1,9 +1,7 @@
 "use client";
 import SideNav, {NavItem} from "@/components/navigation/sidenav";
 import {ReactNode} from "react";
-import {HomeIcon,} from "@heroicons/react/24/outline";
-import {FlagIcon} from "@heroicons/react/20/solid";
-import {AcademicCapIcon} from "@heroicons/react/24/solid";
+import {HandRaisedIcon, HomeIcon, FlagIcon, AcademicCapIcon} from "@heroicons/react/24/outline";
 import {ApolloProvider} from "@apollo/client";
 import {client} from '@/utils/apolloclient'
 import {withRole} from "@/hoc/role-hoc";
@@ -25,6 +23,12 @@ const AdminLayout = ({children}: AdminLayoutProps) => {
             name: "Group",
             href: "/admin/group",
             icon: AcademicCapIcon,
+            current: false
+        },
+        {
+            name: "Moderation",
+            href: "/admin/moderation",
+            icon: HandRaisedIcon,
             current: false
         },
 
