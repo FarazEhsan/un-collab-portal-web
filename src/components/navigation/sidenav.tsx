@@ -11,11 +11,14 @@ import {
 import {classNames, getNameString} from "@/utils/extraFunctions";
 import {ChevronDownIcon, MagnifyingGlassIcon,} from "@heroicons/react/20/solid";
 import {useTheme} from "next-themes";
-import Link from "next/link";
+import {Link, usePathname} from "@/navigation";
 import UN_Habitat_Logo from "../../../public/UN-Habitat_logo_English.png";
 import {useUser} from '@auth0/nextjs-auth0/client';
 import {gql, useQuery} from "@apollo/client";
-import {usePathname} from "next/navigation";
+// import {usePathname} from "next/navigation";
+import {useTranslations} from "next-intl";
+import Dropdown from "@/components/form/dropdown";
+import {getLocale} from "next-intl/server";
 
 export type NavItem = {
     name: string;
@@ -24,17 +27,7 @@ export type NavItem = {
     current: boolean;
 };
 
-let userNavigation = [
-    {name: "Your profile", href: "/profile"},
-    {name: "Sign out", href: "/api/auth/logout"},
-];
 
-const adminNavigation = [
-    {name: "Admin Panel", href: "/admin"},
-    {name: "Home", href: "/home"},
-    {name: "Your profile", href: "/profile"},
-    {name: "Sign out", href: "/api/auth/logout"},
-];
 
 interface SideNavProps {
     children: ReactNode;
@@ -51,10 +44,31 @@ const GET_USER_DETAILS = gql`
     }
   `;
 
+
+const languages = [
+    {id:1, title: 'English', short: 'en'},
+    {id:2, title: 'Spanish', short: 'es'},
+    {id:3, title: 'German', short: 'de'},
+]
+
 export default function SideNav({children, navData}: SideNavProps) {
     const {theme, setTheme} = useTheme();
     const {user, error, isLoading} = useUser();
     const pathname = usePathname();
+    const t = useTranslations('UserNavigation');
+
+
+    let userNavigation = [
+        {name: t("yourProfile"), href: "/profile"},
+        {name: t("signOut"), href: "/api/auth/logout"},
+    ];
+
+    const adminNavigation = [
+        {name: "Admin Panel", href: "/admin"},
+        {name: "Home", href: "/home"},
+        {name: t("yourProfile"), href: "/profile"},
+        {name: t("signOut"), href: "/api/auth/logout"},
+    ];
 
     const {
         loading,
@@ -67,13 +81,13 @@ export default function SideNav({children, navData}: SideNavProps) {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [nameString, setNameString] = useState('')
+    const [selectedLanguage, setSelectedLanguage] = useState();
+
 
     useEffect(() => {
         // @ts-ignore
         if (user?.unhroles?.find((role: string) => role === 'admin')) {
-            userNavigation = [
-                ...adminNavigation
-            ]
+            userNavigation = [...adminNavigation]
         }
     }, [user]);
 
@@ -275,7 +289,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                 <input
                                     id="search-field"
                                     className="dark:bg-gray-900 block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:ring-0 sm:text-sm"
-                                    placeholder="Search..."
+                                    placeholder={t('search')+"..."}
                                     type="search"
                                     name="search"
                                     autoComplete="none"
@@ -283,6 +297,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                             </form>
                             <div
                                 className="flex items-center gap-x-4 lg:gap-x-6">
+                                <Dropdown label='Language' data={languages} selected={selectedLanguage} setSelected={setSelectedLanguage}/>
                                 <button
                                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                                     type="button"

@@ -1,0 +1,197 @@
+{
+  "Index": {
+    "title": "Hallo Welt!"
+  },
+  "UserNavigation": {
+    "dashboard": "Dashboard",
+    "search": "Suche",
+    "yourProfile": "Dein Profil",
+    "signOut": "Abmelden",
+    "language": "Sprache"
+  },
+  "Home": {
+    "createNewPost": "Neuen Beitrag erstellen"
+  },
+  "ProfilePage": {
+    "sections": {
+      "personalInfo": {
+        "header": {
+          "title": "Persönliche Informationen",
+          "subtitle": "Diese Informationen werden öffentlich angezeigt, also sei vorsichtig, was du teilst."
+        },
+        "fields": {
+          "city": "Stadt",
+          "country": "Land",
+          "age": "Alter"
+        }
+      },
+      "contactInfo": {
+        "header": {
+          "title": "Kontaktinformationen",
+          "subtitle": "Diese Informationen werden öffentlich angezeigt, also sei vorsichtig, was du teilst."
+        },
+        "fields": {
+          "email": "E-Mail",
+          "phone": "Telefon/WhatsApp"
+        }
+      },
+      "groups": {
+        "header": {
+          "title": "Gruppen",
+          "subtitle": "Diese Informationen werden öffentlich angezeigt, also sei vorsichtig, was du teilst."
+        },
+        "fields": {
+          "primaryGroups": "Hauptgruppen"
+        }
+      },
+      "highlights": {
+        "header": {
+          "title": "Highlights",
+          "subtitle": "Diese Informationen werden öffentlich angezeigt, also sei vorsichtig, was du teilst."
+        }
+      }
+    },
+    "buttons": {
+      "update": "Aktualisieren",
+      "add": "Hinzufügen"
+    }
+  },
+  "CreateNewPostSlideOver": {
+    "header": {
+      "title": "Neuer Beitrag",
+      "subTitle": "Beginne, indem du die Informationen unten ausfüllst, um deinen neuen Beitrag zu erstellen."
+    },
+    "fields": {
+      "title": {
+        "label": "Titel",
+        "placeholder": "z.B. Neuer Beitrag"
+      },
+      "description": {
+        "label": "Beschreibung",
+        "placeholder": "z.B. Dies ist mein neuer Beitrag"
+      },
+      "attachments": {
+        "label": "Anhänge",
+        "placeholder": "Dateien auswählen"
+      }
+    },
+    "buttons": {
+      "create": "Erstellen",
+      "cancel": "Abbrechen"
+    }
+  },
+  "EditPersonalInfoSlideOver": {
+    "header": {
+      "title": "Persönliche Informationen bearbeiten"
+    },
+    "fields": {
+      "firstName": {
+        "label": "Vorname",
+        "placeholder": "z.B. Faraz"
+      },
+      "lastName": {
+        "label": "Nachname",
+        "placeholder": "z.B. Ehsan"
+      },
+      "dob": {
+        "label": "Geburtsdatum",
+        "placeholder": "z.B. 01.01.2000"
+      },
+      "country": {
+        "label": "Land",
+        "placeholder": "z.B. Pakistan"
+      },
+      "city": {
+        "label": "Stadt",
+        "placeholder": "z.B. Islamabad"
+      },
+      "photo": {
+        "label": "Foto",
+        "placeholder": "Dateien auswählen"
+      }
+    },
+    "buttons": {
+      "update": "Aktualisieren",
+      "cancel": "Abbrechen"
+    }
+  },
+  "EditContactInfoSlideOver": {
+    "header": {
+      "title": "Kontaktinformationen bearbeiten"
+    },
+    "fields": {
+      "email": {
+        "label": "E-Mail",
+        "placeholder": "z.B. faraz.ehsan@example.com"
+      },
+      "phone": {
+        "label": "Telefon",
+        "placeholder": "z.B. 0123456789"
+      }
+    },
+    "buttons": {
+      "update": "Aktualisieren",
+      "cancel": "Abbrechen"
+    }
+  },
+  "UpdateGroupSlideOver": {
+    "header": {
+      "title": "Gruppen aktualisieren"
+    },
+    "fields": {
+      "groups": {
+        "label": "Gruppen"
+      }
+    },
+    "buttons": {
+      "update": "Aktualisieren",
+      "cancel": "Abbrechen"
+    }
+  },
+  "AddProjectSlideOver": {
+    "header": {
+      "title": "Projekt hinzufügen"
+    },
+    "fields": {
+      "title": {
+        "label": "Titel",
+        "placeholder": "z.B. Neues Projekt"
+      },
+      "startDate": {
+        "label": "Projektstartdatum",
+        "placeholder": "z.B. 01.01.2024"
+      },
+      "endDate": {
+        "label": "Projektenddatum",
+        "placeholder": "z.B. 10.01.2024"
+      },
+      "sdgs": {
+        "label": "SDGs"
+      },
+      "description": {
+        "label": "Beschreibung",
+        "placeholder": "z.B. Dies ist mein neues Projekt"
+      },
+      "attachments": {
+        "label": "Anhänge",
+        "placeholder": "Dateien auswählen"
+      }
+    },
+    "buttons": {
+      "create": "Erstellen",
+      "cancel": "Abbrechen"
+    }
+  },
+  "PostCard": {
+    "fields": {
+      "commentField": {
+        "placeholder": "Kommentar hinzufügen..."
+      },
+      "timeAgo": "vor",
+      "comments": "Kommentare"
+    },
+    "buttons": {
+      "reply": "Antworten"
+    }
+  }
+}

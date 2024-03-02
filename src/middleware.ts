@@ -1,23 +1,38 @@
-import {UserProfile} from '@auth0/nextjs-auth0/client';
-import {withMiddlewareAuthRequired} from '@auth0/nextjs-auth0/edge';
+import createMiddleware from 'next-intl/middleware';
+import {locales, localePrefix} from './navigation';
 
-//Commented the role based access control for now as it was messing up the useUser hook
-// Define a type for the roles
-type Role = 'admin' | 'user';
+export default createMiddleware({
+    defaultLocale: 'en',
+    localePrefix,
+    locales
+});
 
-// Define a mapping of roles to paths
-const rolePaths: Record<Role, string[]> = {
-    admin: ['/register', '/admin', '/profile', '/admin/user/add', '/home', '/'],
-    user: ['/dashboard', '/profile', '/'],
-    // Add more roles and paths as needed
+export const config = {
+    // Match only internationalized pathnames
+    matcher: ['/', '/(de|en|es)/:path*']
 };
 
-// Define a type for the user object that includes the roles property
-type UserWithRoles = UserProfile & {
-    'https://unhabitat-cop.com/roles': Role[];
-};
+// //Commented the role based access control for now as it was messing up the useUser hook
+// // Define a type for the roles
+// type Role = 'admin' | 'user';
+//
+// // Define a mapping of roles to paths
+// const rolePaths: Record<Role, string[]> = {
+//     admin: ['/register', '/admin', '/profile', '/admin/user/add', '/home', '/'],
+//     user: ['/dashboard', '/profile', '/'],
+//     // Add more roles and paths as needed
+// };
+//
+// // Define a type for the user object that includes the roles property
+// type UserWithRoles = UserProfile & {
+//     'https://unhabitat-cop.com/roles': Role[];
+// };
 
-export default withMiddlewareAuthRequired();
+// export default langMiddleware(req => {withMiddlewareAuthRequired(req)})
+
+
+
+// export default withMiddlewareAuthRequired(request => langMiddleware(request));
 
 // export default withMiddlewareAuthRequired(async function middleware(req) {
 //   const res = NextResponse.next();

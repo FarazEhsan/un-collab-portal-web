@@ -6,6 +6,7 @@ import CommentTextArea from "@/components/form/CommentTextArea";
 import {Transition} from "@headlessui/react";
 import {useUser} from "@auth0/nextjs-auth0/client";
 import {getNameString} from "@/utils/extraFunctions";
+import {useTranslations} from "next-intl";
 
 const Comment = ({comment, replies, topicId, socket, image}: any) => {
     const {
@@ -13,6 +14,7 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
         error: auth0UserError,
         isLoading: auth0Loading,
     } = useUser();
+    const t = useTranslations('PostCard.buttons');
 
     const [selectedReaction, setSelectedReaction] = useState('')
     const [reactionData, setReactionData] = useState<any>([]);
@@ -135,7 +137,7 @@ const Comment = ({comment, replies, topicId, socket, image}: any) => {
                                 ''
                             ) : (
                                 <Button colorType="link"
-                                        onClick={() => setDisplayCommentBox(!displayCommentBox)}>Reply</Button>
+                                        onClick={() => setDisplayCommentBox(!displayCommentBox)}>{t("reply")}</Button>
                             )
                         }
 

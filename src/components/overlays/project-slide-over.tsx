@@ -3,7 +3,7 @@ import {Dialog, Transition} from '@headlessui/react'
 import {XMarkIcon} from '@heroicons/react/24/outline'
 import CarouselModal from "@/components/modals/carousel-modal";
 import Button from "@/components/button/Button";
-import EditProjectSlideOver from "@/app/(home)/profile/edit-project-slide-over";
+import EditProjectSlideOver from "@/app/[locale]/(home)/profile/edit-project-slide-over";
 import Badge from "@/components/badge";
 import {Project} from "@/components/cards/project-card";
 

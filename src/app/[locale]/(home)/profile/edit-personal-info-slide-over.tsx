@@ -10,7 +10,7 @@ import {useJoiForm} from "@/hooks/useJoiForm";
 import {Schema} from "joi";
 import {FileInput} from "flowbite-react";
 import uploadImage from "@/utils/azureblobupload";
-import noProfilePictureImage from '../../../../public/no-profile-picture.jpg'
+import noProfilePictureImage from '../../../../../public/no-profile-picture.jpg'
 
 interface SlideOverProps {
     open: boolean;

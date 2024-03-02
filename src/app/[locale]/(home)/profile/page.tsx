@@ -6,15 +6,15 @@ import RoundButton from "@/components/button/round-button";
 import ProjectCard from "@/components/cards/project-card";
 import Button from "@/components/button/Button";
 import EditPersonalInfoSlideOver
-    from "@/app/(home)/profile/edit-personal-info-slide-over";
+    from "@/app/[locale]/(home)/profile/edit-personal-info-slide-over";
 import EditContactInfoSlideOver
-    from "@/app/(home)/profile/edit-contact-info-slide-over";
-import AddProjectSlideOver from "@/app/(home)/profile/add-project-slide-over";
+    from "@/app/[locale]/(home)/profile/edit-contact-info-slide-over";
+import AddProjectSlideOver from "@/app/[locale]/(home)/profile/add-project-slide-over";
 import {gql, useQuery} from "@apollo/client";
 import CardSkeleton from "@/components/skeletons/card-skeleton";
 import {useUser} from "@auth0/nextjs-auth0/client";
 import UpdateGroupsSlideOver
-    from "@/app/(home)/profile/update-groups-slide-over";
+    from "@/app/[locale]/(home)/profile/update-groups-slide-over";
 import {getNameString} from "@/utils/extraFunctions";
 
 const GET_USER_DETAILS = gql`

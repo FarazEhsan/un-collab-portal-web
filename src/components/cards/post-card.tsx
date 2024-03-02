@@ -7,7 +7,8 @@ import ReactionButtons from "@/components/form/reaction-buttons";
 import TimeAgo from "@/components/form/time-ago";
 import {useUser} from "@auth0/nextjs-auth0/client";
 import {getNameString} from "@/utils/extraFunctions";
-import Link from "next/link";
+import {Link} from "@/navigation";
+import {useTranslations} from "next-intl";
 
 type Comment = {
     _id: string;
@@ -36,6 +37,8 @@ const PostCard = ({
         error: auth0UserError,
         isLoading: auth0Loading,
     } = useUser();
+
+    const t = useTranslations('PostCard');
 
     const [openCarouselModal, setOpenCarouselModal] = useState(false);
     const [selectedReaction, setSelectedReaction] = useState("");
@@ -173,6 +176,7 @@ const PostCard = ({
                     </div>
                 </div>
                 <div className="mt-4">
+                    {/*TODO: link not working properly with locale*/}
                     {clickable ? (
                         <Link
                             className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100 hover:underline cursor-pointer"
@@ -227,7 +231,7 @@ const PostCard = ({
                 limitComments && (
                     <div>
                         <h4 className="mt-6 text-base font-medium leading-6 text-gray-900 dark:text-gray-200">
-                            Comments: {postDetails?.commentsCount}
+                            {t("fields.comments")} {postDetails?.commentsCount}
                         </h4>
                     </div>
                 )
@@ -241,7 +245,7 @@ const PostCard = ({
                             onSubmit={postComment}
                             onChange={handleCommentChange}
                             value={comment}
-                            label="Add a Comment"
+                            label={t("fields.commentField.placeholder")}
                             name="comment"
                         />
                     </div>

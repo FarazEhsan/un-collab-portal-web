@@ -1,0 +1,197 @@
+{
+  "Index": {
+    "title": "Hello world!"
+  },
+  "UserNavigation": {
+    "dashboard": "Dashboard",
+    "search": "Search",
+    "yourProfile": "Your Profile",
+    "signOut": "Sign out",
+    "language": "Language"
+  },
+  "Home": {
+    "createNewPost": "Create New Post"
+  },
+  "ProfilePage": {
+    "sections": {
+      "personalInfo": {
+        "header": {
+          "title": "Personal Info",
+          "subtitle": "This information will be displayed publicly so be careful what you share."
+        },
+        "fields": {
+          "city": "City",
+          "country": "Country",
+          "age": "Age"
+        }
+      },
+      "contactInfo": {
+        "header": {
+          "title": "Contact Info",
+          "subtitle": "This information will be displayed publicly so be careful what you share."
+        },
+        "fields": {
+          "email": "Email",
+          "phone": "Phone/Whatsapp"
+        }
+      },
+      "groups": {
+        "header": {
+          "title": "Groups",
+          "subtitle": "This information will be displayed publicly so be careful what you share."
+        },
+        "fields": {
+          "primaryGroups": "Primary Groups"
+        }
+      },
+      "highlights": {
+        "header": {
+          "title": "Highlights",
+          "subtitle": "This information will be displayed publicly so be careful what you share."
+        }
+      }
+    },
+    "buttons": {
+      "update": "Update",
+      "add": "Add"
+    }
+  },
+  "CreateNewPostSlideOver": {
+    "header": {
+      "title": "New post",
+      "subTitle": "Get started by filling in the information below to create your new post."
+    },
+    "fields": {
+      "title": {
+        "label": "Title",
+        "placeholder": "e.g. New post"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "e.g. This is my new post"
+      },
+      "attachments": {
+        "label": "Attachments",
+        "placeholder": "Choose Files"
+      }
+    },
+    "buttons": {
+      "create": "Create",
+      "cancel": "Cancel"
+    }
+  },
+  "EditPersonalInfoSlideOver": {
+    "header": {
+      "title": "Edit Personal Info"
+    },
+    "fields": {
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "e.g. Faraz"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeholder": "e.g. Ehsan"
+      },
+      "dob": {
+        "label": "Date of Brith",
+        "placeholder": "e.g. 01/01/2000"
+      },
+      "country": {
+        "label": "Country",
+        "placeholder": "e.g. Pakistan"
+      },
+      "city": {
+        "label": "City",
+        "placeholder": "e.g. Islamabad"
+      },
+      "photo": {
+        "label": "Photo",
+        "placeholder": "Choose Files"
+      }
+    },
+    "buttons": {
+      "update": "Update",
+      "cancel": "Cancel"
+    }
+  },
+  "EditContactInfoSlideOver": {
+    "header": {
+      "title": "Edit Contact Info"
+    },
+    "fields": {
+      "email": {
+        "label": "Email",
+        "placeholder": "e.g. faraz.ehsan@example.com"
+      },
+      "phone": {
+        "label": "Phone",
+        "placeholder": "e.g. 0123456789"
+      }
+    },
+    "buttons": {
+      "update": "Update",
+      "cancel": "Cancel"
+    }
+  },
+  "UpdateGroupSlideOver": {
+    "header": {
+      "title": "Update Groups"
+    },
+    "fields": {
+      "groups": {
+        "label": "Groups"
+      }
+    },
+    "buttons": {
+      "update": "Update",
+      "cancel": "Cancel"
+    }
+  },
+  "AddProjectSlideOver": {
+    "header": {
+      "title": "Add Project"
+    },
+    "fields": {
+      "title": {
+        "label": "Title",
+        "placeholder": "e.g. New Project"
+      },
+      "startDate": {
+        "label": "Project Start Date",
+        "placeholder": "e.g. 01/01/2024"
+      },
+      "endDate": {
+        "label": "Project End Date",
+        "placeholder": "e.g. 10/01/2024"
+      },
+      "sdgs": {
+        "label": "SDGs"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "e.g. This is my new project"
+      },
+      "attachments": {
+        "label": "Attachments",
+        "placeholder": "Choose Files"
+      }
+    },
+    "buttons": {
+      "create": "Create",
+      "cancel": "Cancel"
+    }
+  },
+  "PostCard": {
+    "fields": {
+      "commentField": {
+        "placeholder": "Add a Comment..."
+      },
+      "timeAgo": "ago",
+      "comments": "Comments"
+    },
+    "buttons": {
+      "reply": "Reply"
+    }
+  }
+}

@@ -6,6 +6,7 @@ import CreatePostSlideOver from "@/components/overlays/create-post-slide-over";
 import {gql, useQuery} from "@apollo/client";
 import CardSkeleton from "@/components/skeletons/card-skeleton";
 import useSocket from "@/hooks/useSocketClient";
+import {useTranslations} from "next-intl";
 
 const GET_ALL_TOPICS = gql`
     query GetAllTopics{
@@ -61,20 +62,20 @@ export default function Home() {
         // console.log("Updating feed through refetch");
         refetch();
     }
+    const t = useTranslations('Home');
 
     const secondaryColumnContent =
         <div>
             <button
                 onClick={() => setOpenCreatePostSlideOver(!openCreatePostSlideOver)}
                 className="bg-custom-orange hover:bg-amber-500 dark:bg-amber-500 dark:hover:bg-custom-orange text-gray-900 rounded-md font-semibold py-2 px-3 w-full">
-                Create New Post
+                {t('createNewPost')}
             </button>
             <CreatePostSlideOver open={openCreatePostSlideOver}
                                  setOpen={setOpenCreatePostSlideOver}
                                  onNewPostCreated={refetchPosts}
             />
         </div>
-
     return (
         <TwoColumnContainer secondaryContent={secondaryColumnContent}>
             {

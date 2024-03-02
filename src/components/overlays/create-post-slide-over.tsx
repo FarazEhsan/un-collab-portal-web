@@ -14,6 +14,7 @@ import useSocket from "@/hooks/useSocketClient";
 import {Schema} from "joi";
 import {useJoiForm} from "@/hooks/useJoiForm";
 import uploadImage from '@/utils/azureblobupload';
+import {useTranslations} from "next-intl";
 
 interface SlideOverProps {
     open: boolean,
@@ -34,6 +35,7 @@ export default function CreatePostSlideOver({
                                             }: SlideOverProps) {
     const {user, error, isLoading} = useUser();
     const socket = useSocket();
+    const t = useTranslations('CreateNewPostSlideOver');
 
     const [files, setFiles] = useState<Array<File>>([]);
 
@@ -125,14 +127,10 @@ export default function CreatePostSlideOver({
                                                     <div className="space-y-1">
                                                         <Dialog.Title
                                                             className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">
-                                                            New post
+                                                            {t("header.title")}
                                                         </Dialog.Title>
                                                         <p className="text-sm text-gray-500 dark:text-gray-400">
-                                                            Get started by
-                                                            filling in the
-                                                            information below to
-                                                            create your new
-                                                            post.
+                                                            {t("header.subTitle")}
                                                         </p>
                                                     </div>
                                                     <div
@@ -157,7 +155,8 @@ export default function CreatePostSlideOver({
                                             {/* Divider container */}
                                             <div>
                                                 <div className="mx-6 my-4">
-                                                    <Input label="Title"
+                                                    <Input label={t("fields.title.label")}
+                                                           placeholder={t("fields.title.placeholder")}
                                                            name="title"
                                                            required={true}
                                                            onChange={handleChange}
@@ -167,7 +166,8 @@ export default function CreatePostSlideOver({
                                                 </div>
                                                 <div className="mx-6 my-4">
                                                     <TextArea
-                                                        label="Description"
+                                                        label={t("fields.description.label")}
+                                                        placeholder={t("fields.description.placeholder")}
                                                         name="description"
                                                         onChange={handleChange}
                                                         value={formData?.description}
@@ -180,7 +180,7 @@ export default function CreatePostSlideOver({
                                                         <label
                                                             htmlFor='attachments'
                                                             className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
-                                                            Attachments
+                                                            {t("fields.attachments.label")}
                                                         </label>
                                                     </div>
                                                     <FileInput id="attachments"
@@ -200,9 +200,9 @@ export default function CreatePostSlideOver({
                                                 className="flex justify-end space-x-3">
                                                 <Button type="button"
                                                         colorType="secondary"
-                                                        onClick={() => setOpen(false)}>Cancel</Button>
+                                                        onClick={() => setOpen(false)}>{t("buttons.cancel")}</Button>
                                                 <Button
-                                                    type="submit">Create</Button>
+                                                    type="submit">{t("buttons.create")}</Button>
                                             </div>
                                         </div>
                                     </form>
