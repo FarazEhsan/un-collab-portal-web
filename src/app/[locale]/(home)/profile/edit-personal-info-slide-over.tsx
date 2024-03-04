@@ -11,6 +11,7 @@ import {Schema} from "joi";
 import {FileInput} from "flowbite-react";
 import uploadImage from "@/utils/azureblobupload";
 import noProfilePictureImage from '../../../../../public/no-profile-picture.jpg'
+import {useTranslations} from "next-intl";
 
 interface SlideOverProps {
     open: boolean;
@@ -93,6 +94,8 @@ export default function EditPersonalInfoSlideOver({
                                                   }: SlideOverProps) {
     const [updatePersonal, {data: updatedData, loading, error}] =
         useMutation(UPDATE_PERSONAL_INFO);
+
+    const t = useTranslations('EditPersonalInfoSlideOver');
 
     const [photo, setPhoto] = useState<File>()
     const [photoURL, setPhotoURL] = useState(data?.picture ? data?.picture : noProfilePictureImage.src);
@@ -190,7 +193,7 @@ export default function EditPersonalInfoSlideOver({
                                                     id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Edit Personal Info
+                                                    {t('header.title')}
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -218,7 +221,7 @@ export default function EditPersonalInfoSlideOver({
                                                         <label
                                                             htmlFor='profilePicture'
                                                             className="mb-2 block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
-                                                            Photo
+                                                            {t('fields.photo.label')}
                                                         </label>
                                                         <div
                                                             className="flex justify-center items-center mb-4">
@@ -239,7 +242,7 @@ export default function EditPersonalInfoSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="First Name"
+                                                            label= {t('fields.firstName.label')}
                                                             name="firstName"
                                                             placeholder={personalInfo.firstName}
                                                             value={formData?.firstName}
@@ -249,7 +252,7 @@ export default function EditPersonalInfoSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Last Name"
+                                                            label={t('fields.lastName.label')}
                                                             name="lastName"
                                                             placeholder={personalInfo.lastName}
                                                             value={formData?.lastName}
@@ -259,7 +262,7 @@ export default function EditPersonalInfoSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Date of Birth"
+                                                            label={t('fields.dob.label')}
                                                             name="dob"
                                                             type="date"
                                                             onChange={handleChange}
@@ -269,7 +272,7 @@ export default function EditPersonalInfoSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Country"
+                                                            label={t('fields.country.label')}
                                                             name="country"
                                                             placeholder={personalInfo.country}
                                                             value={formData?.country}
@@ -279,7 +282,7 @@ export default function EditPersonalInfoSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="City"
+                                                            label={t('fields.city.label')}
                                                             name="city"
                                                             placeholder={personalInfo.city}
                                                             value={formData?.city}
@@ -297,10 +300,10 @@ export default function EditPersonalInfoSlideOver({
                                                         onClick={() => setOpen(false)}
                                                         colorType="secondary"
                                                     >
-                                                        Cancel
+                                                        {t('buttons.cancel')}
                                                     </Button>
                                                     <Button
-                                                        type="submit">Update</Button>
+                                                        type="submit">{t('buttons.update')}</Button>
                                                 </div>
                                             </div>
                                         </form>

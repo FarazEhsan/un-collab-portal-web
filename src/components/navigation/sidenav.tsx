@@ -297,7 +297,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                             </form>
                             <div
                                 className="flex items-center gap-x-4 lg:gap-x-6">
-                                <Dropdown label='Language' data={languages} selected={selectedLanguage} setSelected={setSelectedLanguage}/>
+                                <Dropdown label={t('language')} data={languages} selected={selectedLanguage} setSelected={setSelectedLanguage}/>
                                 <button
                                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                                     type="button"

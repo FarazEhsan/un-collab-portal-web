@@ -6,6 +6,7 @@ import Button from "@/components/button/Button";
 import EditProjectSlideOver from "@/app/[locale]/(home)/profile/edit-project-slide-over";
 import Badge from "@/components/badge";
 import {Project} from "@/components/cards/project-card";
+import {useTranslations} from "next-intl";
 
 interface SlideOverProps {
     open: boolean,
@@ -22,6 +23,8 @@ export default function ProjectSlideOver({
                                          }: SlideOverProps) {
     const [openCarouselModal, setOpenCarouselModal] = useState(false);
     const [openEditProjectSlideOver, setOpenEditProjectSlideOver] = useState(false);
+
+    const t = useTranslations('ProjectDetailsSlideOver');
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -61,7 +64,7 @@ export default function ProjectSlideOver({
                                                 className="flex items-start justify-between">
                                                 <h2 id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100">
-                                                    Project Details
+                                                    {t('header.title')}
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -88,7 +91,7 @@ export default function ProjectSlideOver({
                                                     <div
                                                         className="flex justify-end mb-2">
                                                         <Button colorType="link"
-                                                                onClick={() => setOpenEditProjectSlideOver(!openEditProjectSlideOver)}>Edit</Button>
+                                                                onClick={() => setOpenEditProjectSlideOver(!openEditProjectSlideOver)}>{t('buttons.edit')}</Button>
                                                     </div>
                                                     {
                                                         project?.pictures ? (
@@ -130,7 +133,7 @@ export default function ProjectSlideOver({
                                                 <dl className="space-y-8 px-4 sm:space-y-6 sm:px-6">
                                                     <div>
                                                         <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">
-                                                            Timeline
+                                                            {t('fields.timeline.label')}
                                                         </dt>
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
                                                             <p>
@@ -141,7 +144,7 @@ export default function ProjectSlideOver({
                                                     <div>
 
                                                         <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">
-                                                            Description
+                                                            {t('fields.description.label')}
                                                         </dt>
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
                                                             <p>
@@ -151,7 +154,7 @@ export default function ProjectSlideOver({
                                                     </div>
                                                     <div>
                                                         <dt className="text-sm font-medium text-gray-500 dark:text-gray-200 sm:w-40 sm:flex-shrink-0">
-                                                            Targeted SDGs
+                                                            {t('fields.sdgs.label')}
                                                         </dt>
                                                         <dd className="mt-1 text-sm text-gray-900 dark:text-gray-100 sm:col-span-2">
                                                             <ul>

@@ -1,6 +1,6 @@
 'use client'
 import TwoColumnContainer from "@/components/navigation/twoColumnContainer";
-import PostCard from "@/components/cards/post-card";
+import PostCard from "@/app/[locale]/(home)/post-card";
 import {useEffect, useState} from "react";
 import CreatePostSlideOver from "@/components/overlays/create-post-slide-over";
 import {gql, useQuery} from "@apollo/client";

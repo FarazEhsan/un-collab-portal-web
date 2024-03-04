@@ -5,7 +5,7 @@ import SingleColumnContainer
     from "@/components/navigation/singleColumnContainer";
 import CardSkeleton from "@/components/skeletons/card-skeleton";
 import useSocketClient from "@/hooks/useSocketClient";
-import PostCard from "@/components/cards/post-card";
+import PostCard from "@/app/[locale]/(home)/post-card";
 
 const GET_TOPIC_DETAILS = gql`
     query TopicDetails($id: String!) {

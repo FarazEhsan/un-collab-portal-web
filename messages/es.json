@@ -148,9 +148,10 @@
       "cancel": "Cancelar"
     }
   },
-  "AddProjectSlideOver": {
+  "ProjectSlideOver": {
     "header": {
-      "title": "Agregar Proyecto"
+      "addProject": "Agregar Proyecto",
+      "editProject": "Editar Proyecto"
     },
     "fields": {
       "title": {
@@ -179,7 +180,27 @@
     },
     "buttons": {
       "create": "Crear",
+      "update": "Actualizar",
       "cancel": "Cancelar"
+    }
+  },
+  "ProjectDetailsSlideOver": {
+    "header": {
+      "title": "Detalles del Proyecto"
+    },
+    "fields": {
+      "timeline": {
+        "label": "Línea de Tiempo"
+      },
+      "sdgs": {
+        "label": "ODS Objetivos"
+      },
+      "description": {
+        "label": "Descripción"
+      }
+    },
+    "buttons": {
+      "edit": "Editar"
     }
   },
   "PostCard": {

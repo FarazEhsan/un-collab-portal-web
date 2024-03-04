@@ -10,6 +10,7 @@ import ComboBox from "@/components/form/combo-box";
 import {gql, useMutation, useQuery} from "@apollo/client";
 import {FileInput} from "flowbite-react";
 import uploadImage from "@/utils/azureblobupload";
+import {useTranslations} from "next-intl";
 
 interface SlideOverProps {
     open: boolean;
@@ -83,6 +84,8 @@ export default function AddProjectSlideOver({
 
     const [addNewProduct, {data: newProject, loading, error}] =
         useMutation(ADD_NEW_PROJECT);
+
+    const t = useTranslations('ProjectSlideOver');
 
     const [relatedSDGs, setRelatedSDGs] = useState([]);
     const [files, setFiles] = useState<Array<File>>([]);
@@ -237,7 +240,7 @@ export default function AddProjectSlideOver({
                                                     id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Add Project
+                                                    {t('header.addProject')}
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -263,18 +266,18 @@ export default function AddProjectSlideOver({
                                                 <div className="px-8">
                                                     <div>
                                                         <Input
-                                                            label="Title"
+                                                            label={t('fields.title.label')}
                                                             name="name"
                                                             type="text"
                                                             value={projectInfo?.name}
                                                             onChange={handleElementChange}
                                                             error={errors?.name}
-                                                            placeholder="Project Title"
+                                                            placeholder={t('fields.title.placeholder')}
                                                         />
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Project Start Date"
+                                                            label={t('fields.startDate.label')}
                                                             name="startTime"
                                                             type="date"
                                                             onChange={handleElementChange}
@@ -283,7 +286,7 @@ export default function AddProjectSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Project End Date"
+                                                            label={t('fields.endDate.label')}
                                                             name="endTime"
                                                             type="date"
                                                             onChange={handleElementChange}
@@ -296,16 +299,16 @@ export default function AddProjectSlideOver({
                                                                 items={sdgData?.allsdgs}
                                                                 selectedData={relatedSDGs}
                                                                 setSelectedData={setRelatedSDGs}
-                                                                label="SDGs"
+                                                                label={t('fields.sdgs.label')}
                                                                 name="relatedSDGs"
                                                             />
                                                         )}
                                                     </div>
                                                     <div className="mt-4">
                                                         <TextArea
-                                                            label="Description"
+                                                            label={t('fields.description.label')}
                                                             name="description"
-                                                            placeholder="A short description of your project"
+                                                            placeholder={t('fields.description.placeholder')}
                                                             onChange={handleElementChange}
                                                         />
                                                     </div>
@@ -316,7 +319,7 @@ export default function AddProjectSlideOver({
                                                             <label
                                                                 htmlFor='attachments'
                                                                 className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
-                                                                Attachments
+                                                                {t('fields.attachments.label')}
                                                             </label>
                                                         </div>
                                                         <FileInput
@@ -336,10 +339,10 @@ export default function AddProjectSlideOver({
                                                         onClick={() => setOpen(false)}
                                                         colorType="secondary"
                                                     >
-                                                        Cancel
+                                                        {t('buttons.cancel')}
                                                     </Button>
                                                     <Button
-                                                        type="submit">Create</Button>
+                                                        type="submit">{t('buttons.create')}</Button>
                                                 </div>
                                             </div>
                                         </form>

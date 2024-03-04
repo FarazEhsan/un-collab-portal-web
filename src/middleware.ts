@@ -1,7 +1,14 @@
 import createMiddleware from 'next-intl/middleware';
 import {locales, localePrefix} from './navigation';
+import {withMiddlewareAuthRequired} from "@auth0/nextjs-auth0/edge";
 
-export default createMiddleware({
+// export default createMiddleware({
+//     defaultLocale: 'en',
+//     localePrefix,
+//     locales
+// });
+
+const langMiddleware = createMiddleware({
     defaultLocale: 'en',
     localePrefix,
     locales
@@ -32,7 +39,7 @@ export const config = {
 
 
 
-// export default withMiddlewareAuthRequired(request => langMiddleware(request));
+export default withMiddlewareAuthRequired(request => langMiddleware(request));
 
 // export default withMiddlewareAuthRequired(async function middleware(req) {
 //   const res = NextResponse.next();

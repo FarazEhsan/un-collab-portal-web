@@ -9,6 +9,7 @@ import Button from "@/components/button/Button";
 import {gql, useMutation} from "@apollo/client";
 import {Schema} from "joi";
 import {useJoiForm} from "@/hooks/useJoiForm";
+import {useTranslations} from "next-intl";
 
 interface SlideOverProps {
     open: boolean;
@@ -83,6 +84,8 @@ export default function EditContactInfoSlideOver({
                                                  }: SlideOverProps) {
     const [updateContact, {data: updatedData, loading, error}] =
         useMutation(UPDATE_CONTACT_INFO);
+
+    const t = useTranslations('EditContactInfoSlideOver');
 
     const contactInfo = {
         email: data?.email,
@@ -164,7 +167,7 @@ export default function EditContactInfoSlideOver({
                                                     id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Edit Contact Info
+                                                    {t('header.title')}
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -190,7 +193,7 @@ export default function EditContactInfoSlideOver({
                                                 <div className="px-8">
                                                     <div>
                                                         <Input
-                                                            label="Email"
+                                                            label={t('fields.email.label')}
                                                             name="email"
                                                             type="email"
                                                             value={formData?.email}
@@ -201,7 +204,7 @@ export default function EditContactInfoSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Phone"
+                                                            label={t('fields.phone.label')}
                                                             name="contactNumber"
                                                             value={formData?.contactNumber}
                                                             onChange={handleChange}
@@ -269,10 +272,10 @@ export default function EditContactInfoSlideOver({
                                                         onClick={() => setOpen(false)}
                                                         colorType="secondary"
                                                     >
-                                                        Cancel
+                                                        {t('buttons.cancel')}
                                                     </Button>
                                                     <Button
-                                                        type="submit">Update</Button>
+                                                        type="submit">{t('buttons.update')}</Button>
                                                 </div>
                                             </div>
                                         </form>

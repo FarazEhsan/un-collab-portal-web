@@ -1,5 +1,6 @@
 import React from "react";
 import Comment from "@/components/cards/comment";
+import {useTranslations} from "next-intl";
 
 const CommentSection = ({
                             comments,
@@ -42,10 +43,12 @@ const CommentSection = ({
 
     const commentTree = renderComments();
 
+    const t = useTranslations('PostCard.fields');
+
     return (
         <div>
             <h4 className="mb-2 text-base font-medium leading-6 text-gray-900 dark:text-gray-200">
-                Comments: {commentsCount}
+                {t('comments')}: {commentsCount}
             </h4>
             {commentsCount === 0 ? (
                 <p className="text-base leading-6 text-gray-500 dark:text-gray-200">

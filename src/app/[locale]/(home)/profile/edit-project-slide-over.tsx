@@ -10,6 +10,7 @@ import ComboBox from "@/components/form/combo-box";
 import {gql, useMutation, useQuery} from "@apollo/client";
 import uploadImage from "@/utils/azureblobupload";
 import {FileInput} from "flowbite-react";
+import {useTranslations} from "next-intl";
 
 interface SlideOverProps {
     open: boolean;
@@ -82,6 +83,8 @@ export default function EditProjectSlideOver({
         error: sdgError,
         data: sdgData,
     } = useQuery(GET_ALL_SDG);
+
+    const t = useTranslations('ProjectSlideOver');
 
     const [updateProject, {data: updatedProject, loading, error}] =
         useMutation(UPDATE_PROJECT);
@@ -246,7 +249,7 @@ export default function EditProjectSlideOver({
                                                     id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Edit Project
+                                                    {t('header.editProject')}
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -272,18 +275,18 @@ export default function EditProjectSlideOver({
                                                 <div className="px-8">
                                                     <div>
                                                         <Input
-                                                            label="Title"
+                                                            label={t('fields.title.label')}
                                                             name="name"
                                                             type="text"
                                                             value={projectInfo?.name}
                                                             onChange={handleElementChange}
                                                             error={errors?.name}
-                                                            placeholder="Project Title"
+                                                            placeholder={t('fields.title.placeholder')}
                                                         />
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Project Start Date"
+                                                            label={t('fields.startDate.label')}
                                                             name="startTime"
                                                             type="date"
                                                             value={projectInfo?.startTime}
@@ -293,7 +296,7 @@ export default function EditProjectSlideOver({
                                                     </div>
                                                     <div className="mt-4">
                                                         <Input
-                                                            label="Project End Date"
+                                                            label={t('fields.endDate.label')}
                                                             name="endTime"
                                                             type="date"
                                                             value={projectInfo?.endTime}
@@ -308,16 +311,16 @@ export default function EditProjectSlideOver({
                                                                 items={sdgData?.allsdgs}
                                                                 selectedData={relatedSDGs}
                                                                 setSelectedData={setRelatedSDGs}
-                                                                label="SDGs"
+                                                                label={t('fields.sdgs.label')}
                                                                 name="relatedSDGs"
                                                             />
                                                         )}
                                                     </div>
                                                     <div className="mt-4">
                                                         <TextArea
-                                                            label="Description"
+                                                            label={t('fields.description.label')}
                                                             name="description"
-                                                            placeholder="A short description of your project"
+                                                            placeholder={t('fields.description.placeholder')}
                                                             value={projectInfo?.description}
                                                             error={errors?.description}
                                                             onChange={handleElementChange}
@@ -330,7 +333,7 @@ export default function EditProjectSlideOver({
                                                             <label
                                                                 htmlFor='attachments'
                                                                 className="block text-sm font-medium leading-6 text-gray-900 dark:text-gray-100">
-                                                                Attachments
+                                                                {t('fields.attachments.label')}
                                                             </label>
                                                         </div>
                                                         <FileInput
@@ -350,10 +353,10 @@ export default function EditProjectSlideOver({
                                                         onClick={() => setOpen(false)}
                                                         colorType="secondary"
                                                     >
-                                                        Cancel
+                                                        {t('buttons.cancel')}
                                                     </Button>
                                                     <Button
-                                                        type="submit">Update</Button>
+                                                        type="submit">{t('buttons.update')}</Button>
                                                 </div>
                                             </div>
                                         </form>

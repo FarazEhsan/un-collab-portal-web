@@ -9,7 +9,7 @@ export default function Dropdown({label, data, selected, setSelected}:any) {
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
-                <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+                <Menu.Button className="inline-flex w-full justify-center gap-x-1.5 drop-shadow-none rounded-md bg-white dark:bg-gray-800 px-3 py-2 text-sm font-semibold text-gray-900 dark:text-gray-100 ring-1 ring-inset ring-gray-300 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-950">
                     {label}
                     <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
                 </Menu.Button>
@@ -24,7 +24,7 @@ export default function Dropdown({label, data, selected, setSelected}:any) {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
             >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 z-10 mt-2 w-28 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                     <div className="py-1">
                         {
                             data && (
@@ -36,7 +36,7 @@ export default function Dropdown({label, data, selected, setSelected}:any) {
                                                 locale={d.short}
                                                 href='/'
                                                 className={classNames(
-                                                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                                                    active ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300',
                                                     'block px-4 py-2 text-sm'
                                                 )}
                                             >

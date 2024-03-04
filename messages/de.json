@@ -148,9 +148,10 @@
       "cancel": "Abbrechen"
     }
   },
-  "AddProjectSlideOver": {
+  "ProjectSlideOver": {
     "header": {
-      "title": "Projekt hinzufügen"
+      "addProject": "Projekt hinzufügen",
+      "editProject": "Projekt bearbeiten"
     },
     "fields": {
       "title": {
@@ -158,12 +159,12 @@
         "placeholder": "z.B. Neues Projekt"
       },
       "startDate": {
-        "label": "Projektstartdatum",
-        "placeholder": "z.B. 01.01.2024"
+        "label": "Startdatum des Projekts",
+        "placeholder": "z.B. 01/01/2024"
       },
       "endDate": {
-        "label": "Projektenddatum",
-        "placeholder": "z.B. 10.01.2024"
+        "label": "Enddatum des Projekts",
+        "placeholder": "z.B. 10/01/2024"
       },
       "sdgs": {
         "label": "SDGs"
@@ -179,7 +180,27 @@
     },
     "buttons": {
       "create": "Erstellen",
+      "update": "Aktualisieren",
       "cancel": "Abbrechen"
+    }
+  },
+  "ProjectDetailsSlideOver": {
+    "header": {
+      "title": "Projektdetails"
+    },
+    "fields": {
+      "timeline": {
+        "label": "Zeitplan"
+      },
+      "sdgs": {
+        "label": "Ziel-SDGs"
+      },
+      "description": {
+        "label": "Beschreibung"
+      }
+    },
+    "buttons": {
+      "edit": "Bearbeiten"
     }
   },
   "PostCard": {

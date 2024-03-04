@@ -16,6 +16,7 @@ import {useUser} from "@auth0/nextjs-auth0/client";
 import UpdateGroupsSlideOver
     from "@/app/[locale]/(home)/profile/update-groups-slide-over";
 import {getNameString} from "@/utils/extraFunctions";
+import {useTranslations} from "next-intl";
 
 const GET_USER_DETAILS = gql`
     query GetUserDetails($id: String!) {
@@ -66,6 +67,8 @@ const ProfilePage = () => {
         error: auth0UserError,
         isLoading: auth0Loading,
     } = useUser();
+
+    const t = useTranslations('ProfilePage');
 
     const {loading, error, data, refetch} = useQuery(GET_USER_DETAILS, {
         variables: {id: auth0User?.sub?.toString()},
@@ -209,12 +212,10 @@ const ProfilePage = () => {
                         <div className="flex flex-row items-center">
                             <div>
                                 <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
-                                    Personal Info
+                                    {t('sections.personalInfo.header.title')}
                                 </h2>
                                 <p className="mt-1 text-sm leading-6 text-gray-500 ">
-                                    This information will be displayed publicly
-                                    so be careful what
-                                    you share.
+                                    {t('sections.personalInfo.header.subtitle')}
                                 </p>
                             </div>
                             <Button
@@ -226,7 +227,7 @@ const ProfilePage = () => {
                                 colorType="link"
                                 classNames="ml-auto"
                             >
-                                Update
+                                {t('buttons.update')}
                             </Button>
                         </div>
                         <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
@@ -244,7 +245,7 @@ const ProfilePage = () => {
                             {/*</div>*/}
                             <div className="pt-6 sm:flex">
                                 <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">
-                                    City
+                                    {t('sections.personalInfo.fields.city')}
                                 </dt>
                                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                                     <div
@@ -255,7 +256,7 @@ const ProfilePage = () => {
                             </div>
                             <div className="pt-6 sm:flex">
                                 <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">
-                                    Country
+                                    {t('sections.personalInfo.fields.country')}
                                 </dt>
                                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                                     <div
@@ -266,7 +267,7 @@ const ProfilePage = () => {
                             </div>
                             <div className="pt-6 sm:flex">
                                 <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">
-                                    Age
+                                    {t('sections.personalInfo.fields.age')}
                                 </dt>
                                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                                     <div
@@ -287,12 +288,10 @@ const ProfilePage = () => {
                         <div className="flex flex-row items-center">
                             <div>
                                 <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
-                                    Contact Info
+                                    {t('sections.contactInfo.header.title')}
                                 </h2>
                                 <p className="mt-1 text-sm leading-6 text-gray-500 ">
-                                    This information will be displayed publicly
-                                    so be careful what
-                                    you share.
+                                    {t('sections.contactInfo.header.subtitle')}
                                 </p>
                             </div>
                             <Button
@@ -302,13 +301,13 @@ const ProfilePage = () => {
                                 colorType="link"
                                 classNames="ml-auto"
                             >
-                                Update
+                                {t('buttons.update')}
                             </Button>
                         </div>
                         <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
                             <div className="pt-6 sm:flex">
                                 <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">
-                                    Email
+                                    {t('sections.contactInfo.fields.email')}
                                 </dt>
                                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                                     <div
@@ -319,7 +318,7 @@ const ProfilePage = () => {
                             </div>
                             <div className="pt-6 sm:flex">
                                 <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">
-                                    Phone/Whatsapp
+                                    {t('sections.contactInfo.fields.phone')}
                                 </dt>
                                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                                     <div
@@ -374,24 +373,22 @@ const ProfilePage = () => {
                         <div className="flex flex-row items-center">
                             <div>
                                 <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
-                                    Groups
+                                    {t('sections.groups.header.title')}
                                 </h2>
                                 <p className="mt-1 text-sm leading-6 text-gray-500 ">
-                                    This information will be displayed publicly
-                                    so be careful what
-                                    you share.
+                                    {t('sections.groups.header.subtitle')}
                                 </p>
                             </div>
                             <Button colorType="link" classNames="ml-auto"
                                     onClick={() => setOpenUpdateGroupsSlideOver(!openUpdateGroupsSlideOver)}>
-                                Update
+                                {t('buttons.update')}
                             </Button>
                         </div>
 
                         <dl className="mt-4 space-y-6 divide-y divide-gray-100 dark:divide-gray-800 border-t border-gray-200 dark:border-gray-700 text-sm leading-6">
                             <div className="pt-6 sm:flex">
                                 <dt className="font-medium text-gray-900 dark:text-gray-100 sm:w-64 sm:flex-none sm:pr-6">
-                                    Primary Groups
+                                    {t('sections.groups.fields.primaryGroups')}
                                 </dt>
                                 <dd className="mt-1 flex justify-between gap-x-6 sm:mt-0 sm:flex-auto">
                                     <ul>
@@ -412,12 +409,10 @@ const ProfilePage = () => {
                         <div className="flex flex-row items-center">
                             <div>
                                 <h2 className="text-lg font-semibold leading-7 text-gray-900 dark:text-gray-100">
-                                    Highlights
+                                    {t('sections.highlights.header.title')}
                                 </h2>
                                 <p className="mt-1 text-sm leading-6 text-gray-500 ">
-                                    This information will be displayed publicly
-                                    so be careful what
-                                    you share.
+                                    {t('sections.highlights.header.subtitle')}
                                 </p>
                             </div>
                             <Button
@@ -427,7 +422,7 @@ const ProfilePage = () => {
                                     setOpenAddProjectSlideOver(!openAddProjectSlideOver)
                                 }
                             >
-                                Add
+                                {t('buttons.add')}
                             </Button>
                             <AddProjectSlideOver
                                 open={openAddProjectSlideOver}

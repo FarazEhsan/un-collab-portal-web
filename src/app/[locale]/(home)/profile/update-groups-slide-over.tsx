@@ -6,6 +6,7 @@ import Button from "@/components/button/Button";
 import Joi from "joi-browser";
 import {gql, useQuery} from "@apollo/client";
 import ComboBox from "@/components/form/combo-box";
+import {useTranslations} from "next-intl";
 
 interface SlideOverProps {
     open: boolean;
@@ -37,6 +38,8 @@ export default function UpdateGroupsSlideOver({
         data: groupsData,
         refetch
     } = useQuery(GET_ALL_GROUPS);
+
+    const t = useTranslations('UpdateGroupSlideOver');
 
     const [comboBoxData, setComboBoxData] = useState<Array<any>>([])
     const [selectedGroups, setSelectedGroups] = useState<Array<any>>([])
@@ -98,7 +101,7 @@ export default function UpdateGroupsSlideOver({
                                                     id="slide-over-heading"
                                                     className="text-base font-semibold leading-6 text-gray-900 dark:text-gray-100"
                                                 >
-                                                    Update groups
+                                                    {t('header.title')}
                                                 </h2>
                                                 <div
                                                     className="ml-3 flex h-7 items-center">
@@ -123,7 +126,7 @@ export default function UpdateGroupsSlideOver({
                                             <div>
                                                 <div className="px-8">
                                                     <ComboBox
-                                                        label='Groups'
+                                                        label={t('fields.groups.label')}
                                                         multiple
                                                         items={comboBoxData}
                                                         selectedData={selectedGroups}
@@ -139,10 +142,10 @@ export default function UpdateGroupsSlideOver({
                                                         onClick={() => setOpen(false)}
                                                         colorType="secondary"
                                                     >
-                                                        Cancel
+                                                        {t('buttons.cancel')}
                                                     </Button>
                                                     <Button
-                                                        type="submit">Update</Button>
+                                                        type="submit">{t('buttons.update')}</Button>
                                                 </div>
                                             </div>
                                         </form>

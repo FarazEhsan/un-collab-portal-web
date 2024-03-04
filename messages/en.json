@@ -148,9 +148,10 @@
       "cancel": "Cancel"
     }
   },
-  "AddProjectSlideOver": {
+  "ProjectSlideOver": {
     "header": {
-      "title": "Add Project"
+      "addProject": "Add Project",
+      "editProject": "Edit Project"
     },
     "fields": {
       "title": {
@@ -179,7 +180,27 @@
     },
     "buttons": {
       "create": "Create",
+      "update": "Update",
       "cancel": "Cancel"
+    }
+  },
+  "ProjectDetailsSlideOver": {
+    "header": {
+      "title": "Project Details"
+    },
+    "fields": {
+      "timeline": {
+        "label": "Timeline"
+      },
+      "sdgs": {
+        "label": "Targeted SDGs"
+      },
+      "description": {
+        "label": "Description"
+      }
+    },
+    "buttons": {
+      "edit": "Edit"
     }
   },
   "PostCard": {
