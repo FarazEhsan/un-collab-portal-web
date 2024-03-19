@@ -3,7 +3,6 @@ import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import {classNames} from "@/utils/extraFunctions";
 import {Link} from "@/navigation";
-import {getLocale} from "next-intl/server";
 
 export default function Dropdown({label, data, selected, setSelected}:any) {
     return (

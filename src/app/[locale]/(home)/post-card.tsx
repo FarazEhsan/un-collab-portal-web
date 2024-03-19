@@ -1,14 +1,16 @@
 "use client";
-import React, {ChangeEvent, useEffect, useState} from "react";
+import React, {ChangeEvent, Fragment, useEffect, useState} from "react";
 import CarouselModal from "@/components/modals/carousel-modal";
 import CommentSection from "@/components/cards/comment-section";
 import CommentTextArea from "@/components/form/CommentTextArea";
 import ReactionButtons from "@/components/form/reaction-buttons";
 import TimeAgo from "@/components/form/time-ago";
 import {useUser} from "@auth0/nextjs-auth0/client";
-import {getNameString} from "@/utils/extraFunctions";
+import {classNames, getNameString} from "@/utils/extraFunctions";
 import {useTranslations} from "next-intl";
 import {Link} from "@/navigation";
+import {EllipsisVerticalIcon} from "@heroicons/react/24/outline";
+import {Menu, Transition} from "@headlessui/react";
 
 type Comment = {
     _id: string;
@@ -22,6 +24,59 @@ type Comment = {
     };
 };
 
+const SideMenu = ({menuItems}:any) => {
+    return (
+        <Menu as="div" className='ml-auto self-start relative inline-block text-left'>
+            <div
+                className="text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                <Menu.Button>
+                    <EllipsisVerticalIcon height={24} width={24}/>
+                </Menu.Button>
+            </div>
+
+            <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+            >
+                <Menu.Items
+                    className="absolute right-0 z-10 w-28 origin-top-right rounded-md bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <div className="py-1">
+                        {
+                            menuItems && (
+                                menuItems.map((d: any) => (
+                                    <Menu.Item key={d.id}>
+                                        {({active}) => (
+                                            <Link
+                                                href='/'
+                                                className={classNames(
+                                                    active ? 'bg-gray-100 text-gray-900 dark:bg-gray-700 dark:text-gray-100' : 'text-gray-700 dark:text-gray-300',
+                                                    'block px-4 py-2 text-sm'
+                                                )}
+                                            >
+                                                {d.title}
+                                            </Link>
+                                        )}
+                                    </Menu.Item>
+                                ))
+                            )
+                        }
+                    </div>
+                </Menu.Items>
+            </Transition>
+        </Menu>
+    )
+}
+
+const sideMenuItems = [
+    {id:1, title: 'Translate'},
+    {id: 2, title: 'Report'}
+]
+
 const PostCard = ({
                       postDetails,
                       socket,
@@ -30,7 +85,7 @@ const PostCard = ({
                       limitComments = false,
                   }: any) => {
     let hoverClasses = "";
-    if (clickable) hoverClasses = "dark:hover:bg-gray-800 hover:bg-gray-100";
+    if (clickable) hoverClasses = "dark:hover:bg-gray-800 hover:bg-gray-50";
 
     const {
         user: auth0User,
@@ -160,7 +215,7 @@ const PostCard = ({
 
             {/*Post Body*/}
             <div className="">
-                <div className="flex flex-row items-center">
+                <div className="flex flex-row items-center ">
                     <img
                         className="inline-block h-10 w-10 rounded-full object-cover"
                         src={postDetails?.author?.picture ? postDetails?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
@@ -174,96 +229,105 @@ const PostCard = ({
                         {/*    hours ago</p>*/}
                         <TimeAgo timestamp={postDetails?.createdAt}/>
                     </div>
-                </div>
-                <div className="mt-4">
-                    {/*TODO: link not working properly with locale*/}
-                    {clickable ? (
-                        <Link
-                            className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100 hover:underline cursor-pointer"
-                            href={`/topic/${postDetails._id}`}
-                        >
-                            {postDetails?.title}
-                        </Link>
-                    ) : (
-                        <h2 className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">
-                            {postDetails?.title}
-                        </h2>
-                    )}
-                </div>
-            </div>
+                    <SideMenu menuItems={sideMenuItems}/>
 
-            {/*Image*/}
-            {postDetails?.images?.length ? (
-                <div
-                    onClick={() => setOpenCarouselModal(!openCarouselModal)}
-                    className="h-96 my-4 rounded-md"
-                >
-                    <img
-                        src={postDetails.images[0]}
-                        className="h-full w-full object-contain rounded-md"
-                    />
-                    <CarouselModal
-                        open={openCarouselModal}
-                        setOpen={setOpenCarouselModal}
-                        images={postDetails.images}
-                    />
-                </div>
-            ) : (
-                ""
-            )}
+        </div>
+    <div className="mt-4">
+        {clickable ? (
+            <Link
+                className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100 hover:underline cursor-pointer"
+                href={`/topic/${postDetails._id}`}
+            >
+                {postDetails?.title}
+            </Link>
+        ) : (
+            <h2 className="text-lg font-medium leading-7 text-gray-900 dark:text-gray-100">
+                {postDetails?.title}
+            </h2>
+        )}
+    </div>
+</div>
 
-            <div>
-                <p className="text-base leading-6 text-gray-800 dark:text-gray-200">
-                    {postDetails?.description?.substring(0, 225)}
-                    {postDetails?.description?.length > 255 ? "..." : ""}
-                </p>
-            </div>
-
-            {/*Reactions*/}
-            <div className="mt-6">
-                <ReactionButtons
-                    selectedReaction={selectedReaction}
-                    setSelectedReaction={onReactionChange}
-                    reactionCount={reactionCount}
+    {/*Image*/
+    }
+    {
+        postDetails?.images?.length ? (
+            <div
+                onClick={() => setOpenCarouselModal(!openCarouselModal)}
+                className="h-96 my-4 rounded-md"
+            >
+                <img
+                    src={postDetails.images[0]}
+                    className="h-full w-full object-contain rounded-md"
+                />
+                <CarouselModal
+                    open={openCarouselModal}
+                    setOpen={setOpenCarouselModal}
+                    images={postDetails.images}
                 />
             </div>
-            {
-                limitComments && (
-                    <div>
-                        <h4 className="mt-6 text-base font-medium leading-6 text-gray-900 dark:text-gray-200">
-                            {t("comments")} {postDetails?.commentsCount}
-                        </h4>
-                    </div>
-                )
-            }
+        ) : (
+            ""
+        )
+    }
 
-            {/*Comments*/}
-            {!limitComments && (
-                <>
-                    <div className="mt-6">
-                        <CommentTextArea
-                            onSubmit={postComment}
-                            onChange={handleCommentChange}
-                            value={comment}
-                            label={t("commentField.placeholder")}
-                            placeholder={t("commentField.placeholder")}
-                            name="comment"
-                        />
-                    </div>
-                    <div className="mt-6">
-                        <CommentSection
-                            comments={allComments}
-                            topicId={postDetails?._id}
-                            commentsCount={postDetails?.commentsCount}
-                            limitComments={limitComments}
-                            socket={socket}
-                            image={postDetails?.author?.picture ? postDetails?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
-                        />
-                    </div>
-                </>
-            )}
-        </div>
-    );
+    <div>
+        <p className="text-base leading-6 text-gray-800 dark:text-gray-200">
+            {postDetails?.description?.substring(0, 225)}
+            {postDetails?.description?.length > 255 ? "..." : ""}
+        </p>
+    </div>
+
+    {/*Reactions*/
+    }
+    <div className="mt-6">
+        <ReactionButtons
+            selectedReaction={selectedReaction}
+            setSelectedReaction={onReactionChange}
+            reactionCount={reactionCount}
+        />
+    </div>
+    {
+        limitComments && (
+            <div>
+                <h4 className="mt-6 text-base font-medium leading-6 text-gray-900 dark:text-gray-200">
+                    {t("comments")} {postDetails?.commentsCount}
+                </h4>
+            </div>
+        )
+    }
+
+    {/*Comments*/
+    }
+    {
+        !limitComments && (
+            <>
+                <div className="mt-6">
+                    <CommentTextArea
+                        onSubmit={postComment}
+                        onChange={handleCommentChange}
+                        value={comment}
+                        label={t("commentField.placeholder")}
+                        placeholder={t("commentField.placeholder")}
+                        name="comment"
+                    />
+                </div>
+                <div className="mt-6">
+                    <CommentSection
+                        comments={allComments}
+                        topicId={postDetails?._id}
+                        commentsCount={postDetails?.commentsCount}
+                        limitComments={limitComments}
+                        socket={socket}
+                        image={postDetails?.author?.picture ? postDetails?.author?.picture : `https://ui-avatars.com/api/?name=${nameString}?background=random`}
+                    />
+                </div>
+            </>
+        )
+    }
+</div>
+)
+    ;
 };
 
 export default PostCard;
