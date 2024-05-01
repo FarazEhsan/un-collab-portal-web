@@ -119,7 +119,7 @@ export default function AdminHome() {
                             setOpenAddUserSlideOver(!openAddUserSlideOver)
                         }
                     >
-                        Add User
+                        Add User 
                     </Button>
                 </div>
             </div>
