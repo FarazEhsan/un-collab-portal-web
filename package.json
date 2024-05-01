@@ -26,6 +26,7 @@
     "joi": "^17.11.0",
     "joi-browser": "^13.4.0",
     "next": "14.0.3",
+    "next-intl": "^3.9.1",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",

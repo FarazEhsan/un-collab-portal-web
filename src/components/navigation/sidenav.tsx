@@ -2,21 +2,23 @@
 import React, {Fragment, ReactNode, useEffect, useState} from "react";
 import {Dialog, Menu, Transition} from "@headlessui/react";
 import {
-  Bars3Icon,
-  BellIcon,
-  MoonIcon,
-  SunIcon,
-  XMarkIcon,
+    Bars3Icon,
+    BellIcon,
+    MoonIcon,
+    SunIcon,
+    XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {classNames, getNameString} from "@/utils/extraFunctions";
 import {ChevronDownIcon, MagnifyingGlassIcon,} from "@heroicons/react/20/solid";
 import {useTheme} from "next-themes";
-import Link from "next/link";
+import {Link, usePathname} from "@/navigation";
 import UN_Habitat_Logo from "../../../public/UN-Habitat_logo_English.png";
 import {useUser} from '@auth0/nextjs-auth0/client';
-import noProfilePictureImage from "../../../public/no-profile-picture.jpg";
 import {gql, useQuery} from "@apollo/client";
-import {usePathname} from "next/navigation";
+// import {usePathname} from "next/navigation";
+import {useTranslations} from "next-intl";
+import Dropdown from "@/components/form/dropdown";
+import {getLocale} from "next-intl/server";
 
 export type NavItem = {
     name: string;
@@ -24,40 +26,15 @@ export type NavItem = {
     icon: any;
     current: boolean;
 };
-let userNavigation = [
-    {name: "Your profile", href: "/profile"},
-    {name: "Sign out", href: "/api/auth/logout"},
-];
 
-const adminNavigation = [
-    {name: "Admin Panel", href: "/admin"},
-    {name: "Your profile", href: "/profile"},
-    {name: "Sign out", href: "/api/auth/logout"},
-];
+
 
 interface SideNavProps {
     children: ReactNode;
     navData: NavItem[];
 }
 
-export default function SideNav({children, navData}: SideNavProps) {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-    const {theme, setTheme} = useTheme();
-    const {user, error, isLoading} = useUser();
-    const [nameString, setNameString] = useState('')
-    const pathname = usePathname();
-    useEffect(() => {
-        // @ts-ignore
-        if (user?.unhroles?.find((role: string) => role === 'admin')){
-            userNavigation = [
-                ...adminNavigation
-            ]
-        }
-    }, [user]);
-    // console.log(user?.unhroles?.find((role: string) => role === 'admin'))
-
-
-    const GET_USER_DETAILS = gql`
+const GET_USER_DETAILS = gql`
     query GetUserDetails($id: String!) {
       user(id: $id) {
         _id
@@ -67,12 +44,57 @@ export default function SideNav({children, navData}: SideNavProps) {
     }
   `;
 
-    const {loading, error:dataError, data, refetch} = useQuery(GET_USER_DETAILS, {
+
+const languages = [
+    {id:1, title: 'English', short: 'en'},
+    {id:2, title: 'Spanish', short: 'es'},
+    {id:3, title: 'German', short: 'de'},
+]
+
+export default function SideNav({children, navData}: SideNavProps) {
+    const {theme, setTheme} = useTheme();
+    const {user, error, isLoading} = useUser();
+    const pathname = usePathname();
+    const t = useTranslations('UserNavigation');
+
+
+    let userNavigation = [
+        {name: t("yourProfile"), href: "/profile"},
+        {name: t("signOut"), href: "/api/auth/logout"},
+    ];
+
+    const adminNavigation = [
+        {name: "Admin Panel", href: "/admin"},
+        {name: "Home", href: "/home"},
+        {name: t("yourProfile"), href: "/profile"},
+        {name: t("signOut"), href: "/api/auth/logout"},
+    ];
+
+    const {
+        loading,
+        error: dataError,
+        data,
+        refetch
+    } = useQuery(GET_USER_DETAILS, {
         variables: {id: user?.sub?.toString()},
     });
+
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [nameString, setNameString] = useState('')
+    const [selectedLanguage, setSelectedLanguage] = useState();
+
+
+    useEffect(() => {
+        // @ts-ignore
+        if (user?.unhroles?.find((role: string) => role === 'admin')) {
+            userNavigation = [...adminNavigation]
+        }
+    }, [user]);
+
     useEffect(() => {
         setNameString(getNameString(data?.user?.name));
     }, [data]);
+
     return (
         <>
             <div>
@@ -267,7 +289,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                 <input
                                     id="search-field"
                                     className="dark:bg-gray-900 block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 dark:placeholder:text-gray-600 focus:ring-0 sm:text-sm"
-                                    placeholder="Search..."
+                                    placeholder={t('search')+"..."}
                                     type="search"
                                     name="search"
                                     autoComplete="none"
@@ -275,6 +297,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                             </form>
                             <div
                                 className="flex items-center gap-x-4 lg:gap-x-6">
+                                <Dropdown label={t('language')} data={languages} selected={selectedLanguage} setSelected={setSelectedLanguage}/>
                                 <button
                                     onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                                     type="button"
@@ -347,7 +370,17 @@ export default function SideNav({children, navData}: SideNavProps) {
                                                 <Menu.Item key={item.name}>
                                                     {({active}) => (
                                                         item.name === 'Sign out' ? (
-                                                            <a
+                                                                <a
+                                                                    href={item.href}
+                                                                    className={classNames(
+                                                                        active ? "bg-gray-50 dark:bg-gray-700" : "",
+                                                                        "block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-gray-100"
+                                                                    )}
+                                                                >
+                                                                    {item.name}
+                                                                </a>
+                                                            ) :
+                                                            <Link
                                                                 href={item.href}
                                                                 className={classNames(
                                                                     active ? "bg-gray-50 dark:bg-gray-700" : "",
@@ -355,17 +388,7 @@ export default function SideNav({children, navData}: SideNavProps) {
                                                                 )}
                                                             >
                                                                 {item.name}
-                                                            </a>
-                                                        ) :
-                                                        <Link
-                                                            href={item.href}
-                                                            className={classNames(
-                                                                active ? "bg-gray-50 dark:bg-gray-700" : "",
-                                                                "block px-3 py-1 text-sm leading-6 text-gray-900 dark:text-gray-100"
-                                                            )}
-                                                        >
-                                                            {item.name}
-                                                        </Link>
+                                                            </Link>
                                                     )}
                                                 </Menu.Item>
                                             ))}

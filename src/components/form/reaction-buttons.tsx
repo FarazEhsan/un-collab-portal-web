@@ -4,7 +4,6 @@ import classNames from "classnames";
 import {FaCaretDown, FaCaretUp} from "react-icons/fa";
 import {ReactionType} from "@/utils/extraFunctions";
 
-
 interface ReactionButtonProps {
     selectedReaction: string | null,
     setSelectedReaction: any,

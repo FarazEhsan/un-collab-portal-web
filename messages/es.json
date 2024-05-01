@@ -1,0 +1,218 @@
+{
+  "Index": {
+    "title": "¡Hola, mundo!"
+  },
+  "UserNavigation": {
+    "dashboard": "Tablero",
+    "search": "Buscar",
+    "yourProfile": "Tu Perfil",
+    "signOut": "Cerrar sesión",
+    "language": "Idioma"
+  },
+  "Home": {
+    "createNewPost": "Crear nueva publicación"
+  },
+  "ProfilePage": {
+    "sections": {
+      "personalInfo": {
+        "header": {
+          "title": "Información Personal",
+          "subtitle": "Esta información se mostrará públicamente, así que ten cuidado con lo que compartes."
+        },
+        "fields": {
+          "city": "Ciudad",
+          "country": "País",
+          "age": "Edad"
+        }
+      },
+      "contactInfo": {
+        "header": {
+          "title": "Información de Contacto",
+          "subtitle": "Esta información se mostrará públicamente, así que ten cuidado con lo que compartes."
+        },
+        "fields": {
+          "email": "Correo electrónico",
+          "phone": "Teléfono/Whatsapp"
+        }
+      },
+      "groups": {
+        "header": {
+          "title": "Grupos",
+          "subtitle": "Esta información se mostrará públicamente, así que ten cuidado con lo que compartes."
+        },
+        "fields": {
+          "primaryGroups": "Grupos Principales"
+        }
+      },
+      "highlights": {
+        "header": {
+          "title": "Aspectos Destacados",
+          "subtitle": "Esta información se mostrará públicamente, así que ten cuidado con lo que compartes."
+        }
+      }
+    },
+    "buttons": {
+      "update": "Actualizar",
+      "add": "Agregar"
+    }
+  },
+  "CreateNewPostSlideOver": {
+    "header": {
+      "title": "Nueva publicación",
+      "subTitle": "Comienza llenando la información a continuación para crear tu nueva publicación."
+    },
+    "fields": {
+      "title": {
+        "label": "Título",
+        "placeholder": "por ejemplo, Nueva publicación"
+      },
+      "description": {
+        "label": "Descripción",
+        "placeholder": "por ejemplo, Esta es mi nueva publicación"
+      },
+      "attachments": {
+        "label": "Adjuntos",
+        "placeholder": "Seleccionar Archivos"
+      }
+    },
+    "buttons": {
+      "create": "Crear",
+      "cancel": "Cancelar"
+    }
+  },
+  "EditPersonalInfoSlideOver": {
+    "header": {
+      "title": "Editar Información Personal"
+    },
+    "fields": {
+      "firstName": {
+        "label": "Nombre",
+        "placeholder": "por ejemplo, Faraz"
+      },
+      "lastName": {
+        "label": "Apellido",
+        "placeholder": "por ejemplo, Ehsan"
+      },
+      "dob": {
+        "label": "Fecha de Nacimiento",
+        "placeholder": "por ejemplo, 01/01/2000"
+      },
+      "country": {
+        "label": "País",
+        "placeholder": "por ejemplo, Pakistán"
+      },
+      "city": {
+        "label": "Ciudad",
+        "placeholder": "por ejemplo, Islamabad"
+      },
+      "photo": {
+        "label": "Foto",
+        "placeholder": "Seleccionar Archivos"
+      }
+    },
+    "buttons": {
+      "update": "Actualizar",
+      "cancel": "Cancelar"
+    }
+  },
+  "EditContactInfoSlideOver": {
+    "header": {
+      "title": "Editar Información de Contacto"
+    },
+    "fields": {
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "por ejemplo, faraz.ehsan@example.com"
+      },
+      "phone": {
+        "label": "Teléfono",
+        "placeholder": "por ejemplo, 0123456789"
+      }
+    },
+    "buttons": {
+      "update": "Actualizar",
+      "cancel": "Cancelar"
+    }
+  },
+  "UpdateGroupSlideOver": {
+    "header": {
+      "title": "Actualizar Grupos"
+    },
+    "fields": {
+      "groups": {
+        "label": "Grupos"
+      }
+    },
+    "buttons": {
+      "update": "Actualizar",
+      "cancel": "Cancelar"
+    }
+  },
+  "ProjectSlideOver": {
+    "header": {
+      "addProject": "Agregar Proyecto",
+      "editProject": "Editar Proyecto"
+    },
+    "fields": {
+      "title": {
+        "label": "Título",
+        "placeholder": "por ejemplo, Nuevo Proyecto"
+      },
+      "startDate": {
+        "label": "Fecha de Inicio del Proyecto",
+        "placeholder": "por ejemplo, 01/01/2024"
+      },
+      "endDate": {
+        "label": "Fecha de Finalización del Proyecto",
+        "placeholder": "por ejemplo, 10/01/2024"
+      },
+      "sdgs": {
+        "label": "Objetivos de Desarrollo Sostenible (ODS)"
+      },
+      "description": {
+        "label": "Descripción",
+        "placeholder": "por ejemplo, Este es mi nuevo proyecto"
+      },
+      "attachments": {
+        "label": "Adjuntos",
+        "placeholder": "Seleccionar Archivos"
+      }
+    },
+    "buttons": {
+      "create": "Crear",
+      "update": "Actualizar",
+      "cancel": "Cancelar"
+    }
+  },
+  "ProjectDetailsSlideOver": {
+    "header": {
+      "title": "Detalles del Proyecto"
+    },
+    "fields": {
+      "timeline": {
+        "label": "Línea de Tiempo"
+      },
+      "sdgs": {
+        "label": "ODS Objetivos"
+      },
+      "description": {
+        "label": "Descripción"
+      }
+    },
+    "buttons": {
+      "edit": "Editar"
+    }
+  },
+  "PostCard": {
+    "fields": {
+      "commentField": {
+        "placeholder": "Agregar un comentario..."
+      },
+      "timeAgo": "hace",
+      "comments": "Comentarios"
+    },
+    "buttons": {
+      "reply": "Responder"
+    }
+  }
+}

@@ -1,15 +1,17 @@
+const createNextIntlPlugin = require('next-intl/plugin');
+const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	async redirects() {
-		return [
-			// Basic redirect
-			{
-				source: '/',
-				destination: '/home',
-				permanent: true,
-			},
-		]
-	},
+	// async redirects() {
+	// 	return [
+	// 		// Basic redirect
+	// 		{
+	// 			source: '/',
+	// 			destination: '/en/home',
+	// 			permanent: true,
+	// 		},
+	// 	]
+	// },
 };
 
-module.exports = nextConfig;
+module.exports = withNextIntl(nextConfig);
